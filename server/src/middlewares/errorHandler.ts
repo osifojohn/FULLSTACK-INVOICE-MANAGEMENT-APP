@@ -1,6 +1,7 @@
 import { STATUSCODE } from '../types';
+import { Request, Response } from 'express';
 
-const errorHandler = (err, req, res, next) => {
+const errorHandler = (err, req: Request, res: Response) => {
   const statusCode = res.statusCode ? res.statusCode : 500;
   switch (statusCode) {
     case STATUSCODE.BAD_REQUEST:

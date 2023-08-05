@@ -26,3 +26,8 @@ export interface IUserRequestAdmin {
   phone: string;
   organisation: string;
 }
+
+export interface ILogin {
+  email: string;
+  password: string;
+}
