@@ -2,11 +2,9 @@ import mongoose, { Schema, InferSchemaType, model } from 'mongoose';
 
 const IncomeSchema = new Schema(
   {
-    invoiceUrl: { type: String, required: true },
-    invoiceNumber: { type: String, required: true },
-    client: {
+    invoiceId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'ClientSchema',
+      ref: 'InvoiceSchema',
       required: true,
     },
     amountPaid: { type: Number, required: true },
