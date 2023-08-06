@@ -11,7 +11,7 @@ export enum STATUSCODE {
 
 export interface IOrganisation {
   name: string;
-  imgUrl?: string;
+  logoUrl?: string;
   phone?: string;
   email?: string;
   address?: string;

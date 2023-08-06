@@ -13,10 +13,10 @@ export const organisationRegister = async (
   req: Request<unknown, unknown, IOrganisation>,
   res: Response
 ) => {
-  const { name, imgUrl, phone, email, address, country } = req.body;
+  const { name, logoUrl, phone, email, address, country } = req.body;
   const { error } = validateOrganisation({
     name,
-    imgUrl,
+    logoUrl,
     phone,
     email,
     address,
@@ -38,7 +38,7 @@ export const organisationRegister = async (
 
     const org = await Organisation.create({
       name,
-      imgUrl,
+      logoUrl,
       phone,
       email,
       address,
