@@ -4,7 +4,7 @@ import { IOrganisation } from '../types';
 
 const OrganisationSchema = new Schema(
   {
-    name: { type: String, required: true, lowercase: true },
+    name: { type: String, required: true },
     email: { type: String },
     logoUrl: { type: String },
     phone: { type: String },
