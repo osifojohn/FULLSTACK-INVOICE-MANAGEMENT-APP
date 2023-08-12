@@ -1,14 +1,15 @@
 import { Schema, InferSchemaType, model } from 'mongoose';
 import Joi from 'joi';
+
 import { IOrganisation } from '../types';
 
 const OrganisationSchema = new Schema(
   {
     name: { type: String, required: true },
-    email: { type: String },
+    email: { type: String, required: true },
     logoUrl: { type: String },
     phone: { type: String },
-    address: { type: String },
+    address: { type: String, required: true },
     country: { type: String, required: true },
   },
   {

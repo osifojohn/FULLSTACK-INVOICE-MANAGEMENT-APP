@@ -4,10 +4,10 @@ const IncomeSchema = new Schema(
   {
     invoiceId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'InvoiceSchema',
+      ref: 'Invoice',
       required: true,
     },
-    amountPaid: { type: Number, required: true },
+    amount: { type: Number, required: true },
   },
   {
     timestamps: true,

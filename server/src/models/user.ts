@@ -1,5 +1,6 @@
 import mongoose, { Schema, InferSchemaType, model } from 'mongoose';
 import Joi from 'joi';
+
 import { IUserRequestAdmin } from '../types';
 
 const UserSchema = new Schema(
@@ -11,7 +12,7 @@ const UserSchema = new Schema(
     phone: { type: String, required: true },
     organisation: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'organisationSchema',
+      ref: 'organisation',
       required: true,
     },
     role: {

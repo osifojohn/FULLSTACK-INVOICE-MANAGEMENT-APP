@@ -9,26 +9,7 @@ const ClientSchema = new Schema(
     address: { type: String, required: true },
     country: { type: String, required: true },
     city: { type: String, required: true },
-    postalCode: { type: String },
-    invoice: {
-      type: [
-        {
-          url: String,
-          number: String,
-          status: {
-            enum: [
-              'draft',
-              'pending',
-              'not-paid',
-              'overdue',
-              'partially-paid',
-              'paid',
-            ],
-            default: 'draft',
-          },
-        },
-      ],
-    },
+    postalCode: { type: String, required: true },
   },
   {
     timestamps: true,

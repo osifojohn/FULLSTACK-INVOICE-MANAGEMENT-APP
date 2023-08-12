@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
+  "description": "expenses management, invoicing clients, and gaining financial insights",
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only --files src/index.ts",
@@ -29,10 +29,12 @@
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-async-handler": "^1.2.0",
+    "gmail-send": "^1.8.14",
     "helmet": "^7.0.0",
     "joi": "^17.9.2",
     "jsonwebtoken": "^9.0.1",
     "mongoose": "^7.4.1",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "pdfkit": "^0.13.0"
   }
 }

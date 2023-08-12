@@ -4,12 +4,13 @@ const ExpenseSchema = new Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'UserSchema',
+      ref: 'User',
       required: true,
     },
     category: { type: String, required: true },
     description: { type: String, required: true },
-    amountPaid: { type: Number, required: true },
+    amount: { type: Number, required: true },
+    receipt: { type: String },
   },
   {
     timestamps: true,
