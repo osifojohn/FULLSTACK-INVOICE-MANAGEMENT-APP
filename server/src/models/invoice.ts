@@ -1,39 +1,41 @@
-import mongoose, { Schema, InferSchemaType, model } from 'mongoose';
+import { Schema, InferSchemaType, model } from 'mongoose';
+import OrganisationSchema from './organisation';
+import ClientSchema from './client';
 
 const InvoiceSchema = new Schema(
   {
     invoiceUrl: { type: String },
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'UserSchema',
+    organisation: {
+      type: OrganisationSchema,
       required: true,
+    },
+    items: {
+      type: [
+        {
+          item: String,
+          quantity: Number,
+          description: String,
+        },
+      ],
     },
     invoiceNumber: { type: String },
     client: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'ClientSchema',
+      type: ClientSchema,
       required: true,
     },
     dueDate: { type: Number, required: true },
-    totalAmount: { type: Number, required: true },
+    totalAmount: { type: Number },
     status: {
-      type: [
-        {
-          url: String,
-          number: String,
-          status: {
-            enum: [
-              'draft',
-              'pending',
-              'not-paid',
-              'overdue',
-              'partially-paid',
-              'paid',
-            ],
-            default: 'draft',
-          },
-        },
+      type: String,
+      enum: [
+        'draft',
+        'pending',
+        'not-paid',
+        'overdue',
+        'partially-paid',
+        'paid',
       ],
+      default: 'draft',
     },
   },
   {

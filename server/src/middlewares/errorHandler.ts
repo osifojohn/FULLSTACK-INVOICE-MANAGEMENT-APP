@@ -1,7 +1,13 @@
-import { STATUSCODE } from '../types';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
-const errorHandler = (err, req: Request, res: Response) => {
+import { STATUSCODE } from '../types';
+
+export const errorHandler = (
+  err: Error,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const statusCode = res.statusCode ? res.statusCode : 500;
   switch (statusCode) {
     case STATUSCODE.BAD_REQUEST:
@@ -34,15 +40,12 @@ const errorHandler = (err, req: Request, res: Response) => {
       break;
     case STATUSCODE.SERVER_ERROR:
       res.json({
-        title: 'Server Error',
+        title: 'Internal or Server Error',
         message: err.message,
         stackTrace: err.stack,
       });
       break;
     default:
       console.log('No Error, All good !');
-      break;
   }
 };
-
-export default errorHandler;
