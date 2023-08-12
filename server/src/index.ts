@@ -8,6 +8,7 @@ import morgan from 'morgan';
 
 import { errorHandler } from './middlewares/errorHandler';
 import register from './routes/authRoutes';
+import client from './routes/clientRoutes';
 
 /* CONFIGURATION */
 dotenv.config();
@@ -22,6 +23,7 @@ app.use(cors());
 
 /* ROUTES */
 app.use('/auth', register);
+app.use('/client', client);
 
 app.use(errorHandler);
 

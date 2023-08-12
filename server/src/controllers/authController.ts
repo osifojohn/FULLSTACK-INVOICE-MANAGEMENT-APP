@@ -32,7 +32,7 @@ export const organisationRegister = asyncHandler(
 
     const isNameTaken = await Organisation.findOne({ name });
     if (isNameTaken) {
-      res.status(400);
+      res.status(STATUSCODE.BAD_REQUEST);
       throw new Error('Name already taken');
     }
 

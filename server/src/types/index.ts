@@ -18,16 +18,24 @@ export interface IOrganisation {
   country?: string;
 }
 
-export interface IUserRequestAdmin {
-  firstName: string;
-  lastName: string;
+export interface ILogin {
   email: string;
   password: string;
+}
+
+export interface IUserRequestAdmin extends ILogin {
+  firstName: string;
+  lastName: string;
   phone: string;
   organisation: string;
 }
 
-export interface ILogin {
+export interface IClient {
+  companyName: string;
   email: string;
-  password: string;
+  country: string;
+  city: string;
+  postalCode: string;
+  telephone: number;
+  address: string;
 }
