@@ -39,3 +39,8 @@ export interface IClient {
   telephone: number;
   address: string;
 }
+
+export type PaginationRequest = {
+  page: number;
+  limit: number;
+};

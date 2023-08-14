@@ -2,15 +2,17 @@ import express from 'express';
 
 import {
   addClient,
-  getClient,
-  getClients,
+  getSingleClient,
+  getAllClients,
   updateClient,
+  searchClients,
 } from '../controllers/clientController';
 
 const router = express.Router();
 
 router.post('/new-client', addClient);
-router.get('/all-clients', getClients);
-router.route('/:id').put(updateClient).get(getClient);
+router.get('/all-clients', getAllClients);
+// router.route('/:id').put(updateClient).get(getSingleClient);
+router.get('/search', searchClients);
 
 export default router;

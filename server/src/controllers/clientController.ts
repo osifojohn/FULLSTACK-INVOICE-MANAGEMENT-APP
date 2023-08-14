@@ -1,28 +1,97 @@
 import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 
-import { IClient, STATUSCODE } from '../types';
+import { IClient, PaginationRequest, STATUSCODE } from '../types';
 import Client, { validateClient } from '../models/client';
 
 //@desc Get all clients
 //@route GET /client/all-clients
 //@access private
-export const getClients = asyncHandler(async (req: Request, res: Response) => {
-  const contacts = await Client.find();
-  res.status(200).json(contacts);
-});
+export const getAllClients = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { page = 1, limit = 20 }: PaginationRequest = req.body;
+
+    if (typeof page !== 'number' || typeof limit !== 'number') {
+      res.status(STATUSCODE.BAD_REQUEST);
+      throw new Error('Invalid request');
+    }
+
+    const clients = await Client.find()
+      .limit(limit * 1)
+      .skip((page - 1) * limit)
+      .exec();
+
+    if (!clients || clients.length === 0) {
+      res.status(STATUSCODE.NOT_FOUND);
+      throw new Error('No search result found');
+    }
+
+    const count = await Client.count();
+
+    res.status(STATUSCODE.SUCCESS).json({
+      clients,
+      totalPages: Math.ceil(count / limit),
+      currentPage: page,
+    });
+  }
+);
+
+//@desc Search clients by name
+//@route GET /client/search
+//@access private
+export const searchClients = asyncHandler(
+  async (req: Request, res: Response) => {
+    const {
+      keyword,
+      page = 1,
+      limit = 20,
+    }: { keyword: string } & PaginationRequest = req.body;
+
+    if (!keyword || typeof keyword !== 'string') {
+      res.status(STATUSCODE.BAD_REQUEST);
+      throw new Error('Invalid keyword');
+    }
+
+    if (typeof page !== 'number' || typeof limit !== 'number') {
+      res.status(STATUSCODE.BAD_REQUEST);
+      throw new Error('Invalid  request');
+    }
+
+    const clients = await Client.find({
+      name: { $regex: keyword, $options: 'i' },
+    })
+      .limit(limit * 1)
+      .skip((page - 1) * limit)
+      .exec();
+
+    if (!clients || clients.length === 0) {
+      res.status(STATUSCODE.NOT_FOUND);
+      throw new Error('No search result found');
+    }
+
+    const count = await Client.count();
+
+    res.status(STATUSCODE.SUCCESS).json({
+      clients,
+      totalPages: Math.ceil(count / limit),
+      currentPage: page,
+    });
+  }
+);
 
 //@desc Get client
 //@route GET /client/:id
 //@access private
-export const getClient = asyncHandler(async (req: Request, res: Response) => {
-  const client = await Client.findById(req.params.id);
-  if (!client) {
-    res.status(STATUSCODE.BAD_REQUEST);
-    throw new Error('Client not found');
+export const getSingleClient = asyncHandler(
+  async (req: Request, res: Response) => {
+    const client = await Client.findById(req.params.id);
+    if (!client) {
+      res.status(STATUSCODE.BAD_REQUEST);
+      throw new Error('Client not found');
+    }
+    res.status(200).json(client);
   }
-  res.status(200).json(client);
-});
+);
 
 // @desc add new Client
 // @route POST /Client
@@ -50,7 +119,7 @@ export const addClient = asyncHandler(async (req: Request, res: Response) => {
   });
 
   if (error) {
-    res.status(400);
+    res.status(STATUSCODE.BAD_REQUEST);
     throw new Error(error.details[0].message);
   }
   const isNameTaken = await Client.findOne({ companyName });
@@ -112,7 +181,7 @@ export const updateClient = asyncHandler(
     });
 
     if (error) {
-      res.status(400);
+      res.status(STATUSCODE.BAD_REQUEST);
       throw new Error(error.details[0].message);
     }
 
