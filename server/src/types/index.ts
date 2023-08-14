@@ -18,16 +18,29 @@ export interface IOrganisation {
   country?: string;
 }
 
-export interface IUserRequestAdmin {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  phone: string;
-  organisation: string;
-}
-
 export interface ILogin {
   email: string;
   password: string;
 }
+
+export interface IUserRequestAdmin extends ILogin {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  organisation: string;
+}
+
+export interface IClient {
+  companyName: string;
+  email: string;
+  country: string;
+  city: string;
+  postalCode: string;
+  telephone: number;
+  address: string;
+}
+
+export type PaginationRequest = {
+  page: number;
+  limit: number;
+};

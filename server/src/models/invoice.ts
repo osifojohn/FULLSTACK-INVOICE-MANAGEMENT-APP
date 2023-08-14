@@ -4,11 +4,8 @@ import ClientSchema from './client';
 
 const InvoiceSchema = new Schema(
   {
-    invoiceUrl: { type: String },
-    organisation: {
-      type: OrganisationSchema,
-      required: true,
-    },
+    invoiceUrl: String,
+    organisation: OrganisationSchema,
     items: {
       type: [
         {
@@ -18,13 +15,10 @@ const InvoiceSchema = new Schema(
         },
       ],
     },
-    invoiceNumber: { type: String },
-    client: {
-      type: ClientSchema,
-      required: true,
-    },
+    invoiceNumber: String,
+    client: ClientSchema,
     dueDate: { type: Number, required: true },
-    totalAmount: { type: Number },
+    totalAmount: Number,
     status: {
       type: String,
       enum: [
