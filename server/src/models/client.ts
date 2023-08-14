@@ -5,7 +5,6 @@ import { IClient } from '../types';
 
 const ClientSchema = new Schema(
   {
-    companyName: { type: String },
     name: { type: String, required: true },
     email: { type: String, required: true },
     telephone: { type: String, required: true },
@@ -29,7 +28,6 @@ export default model<Client>('Client', ClientSchema);
 
 export function validateClient(client: IClient) {
   const schema = Joi.object({
-    companyName: Joi.string().min(2).max(60),
     name: Joi.string().min(2).max(30).required(),
     email: Joi.string()
       .min(5)

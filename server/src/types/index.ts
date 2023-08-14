@@ -31,7 +31,7 @@ export interface IUserRequestAdmin extends ILogin {
 }
 
 export interface IClient {
-  companyName: string;
+  name: string;
   email: string;
   country: string;
   city: string;

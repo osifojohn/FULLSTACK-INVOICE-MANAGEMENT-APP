@@ -97,9 +97,8 @@ export const getSingleClient = asyncHandler(
 // @route POST /Client
 // @access private
 export const addClient = asyncHandler(async (req: Request, res: Response) => {
-  console.log(req.body);
   const {
-    companyName,
+    name,
     email,
     country,
     city,
@@ -109,7 +108,7 @@ export const addClient = asyncHandler(async (req: Request, res: Response) => {
   }: IClient = req.body;
 
   const { error } = validateClient({
-    companyName,
+    name,
     email,
     country,
     city,
@@ -122,7 +121,7 @@ export const addClient = asyncHandler(async (req: Request, res: Response) => {
     res.status(STATUSCODE.BAD_REQUEST);
     throw new Error(error.details[0].message);
   }
-  const isNameTaken = await Client.findOne({ companyName });
+  const isNameTaken = await Client.findOne({ name });
   if (isNameTaken) {
     res.status(STATUSCODE.BAD_REQUEST);
     throw new Error('Existing Client');
@@ -139,7 +138,7 @@ export const addClient = asyncHandler(async (req: Request, res: Response) => {
   }
 
   const client = await Client.create({
-    companyName,
+    name,
     email,
     country,
     city,
@@ -149,7 +148,7 @@ export const addClient = asyncHandler(async (req: Request, res: Response) => {
   });
   if (client) {
     res.status(STATUSCODE.CREATED).json({
-      message: `${companyName} added to clients list`,
+      message: `${name} added to clients list`,
       id: client?._id.toString(),
     });
   }
@@ -161,7 +160,7 @@ export const addClient = asyncHandler(async (req: Request, res: Response) => {
 export const updateClient = asyncHandler(
   async (req: Request, res: Response) => {
     const {
-      companyName,
+      name,
       email,
       country,
       city,
@@ -171,7 +170,7 @@ export const updateClient = asyncHandler(
     }: IClient = req.body;
 
     const { error } = validateClient({
-      companyName,
+      name,
       email,
       country,
       city,
@@ -185,7 +184,10 @@ export const updateClient = asyncHandler(
       throw new Error(error.details[0].message);
     }
 
+    console.log(req.params.id);
+
     const client = await Client.findById(req.params.id);
+    console.log(client);
 
     if (!client) {
       res.status(STATUSCODE.BAD_REQUEST);
