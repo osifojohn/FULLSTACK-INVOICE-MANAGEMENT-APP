@@ -31,7 +31,7 @@ export interface IUserRequestAdmin extends ILogin {
 }
 
 export interface IClient {
-  companyName: string;
+  name: string;
   email: string;
   country: string;
   city: string;
@@ -43,4 +43,14 @@ export interface IClient {
 export type PaginationRequest = {
   page: number;
   limit: number;
+};
+
+export type expenseRequest = {
+  orgId: string;
+  userId: string;
+  name: string;
+  category: string;
+  description?: string;
+  amount: number;
+  receipt?: string;
 };
