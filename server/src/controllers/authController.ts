@@ -145,7 +145,8 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
         user: {
           firstName: foundUser.firstName,
           email: foundUser.email,
-          id: foundUser.id,
+          userId: foundUser.id,
+          orgId: foundUser.organisation,
         },
       },
       process.env.ACCESS_TOKEN_SECRET as string,

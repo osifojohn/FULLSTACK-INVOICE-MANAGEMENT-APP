@@ -10,7 +10,6 @@ import Client, { validateClient } from '../models/client';
 export const getAllClients = asyncHandler(
   async (req: Request, res: Response) => {
     const { page = 1, limit = 20 }: PaginationRequest = req.body;
-    console.log(page);
 
     if (typeof page !== 'number' || typeof limit !== 'number') {
       res.status(STATUSCODE.BAD_REQUEST);
@@ -185,7 +184,10 @@ export const updateClient = asyncHandler(
       throw new Error(error.details[0].message);
     }
 
+    console.log(req.params.id);
+
     const client = await Client.findById(req.params.id);
+    console.log(client);
 
     if (!client) {
       res.status(STATUSCODE.BAD_REQUEST);
