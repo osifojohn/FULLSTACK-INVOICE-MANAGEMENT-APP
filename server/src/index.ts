@@ -10,6 +10,7 @@ import { errorHandler } from './middlewares/errorHandler';
 import register from './routes/authRoutes';
 import client from './routes/clientRoutes';
 import expense from './routes/expenseRoutes';
+import invoice from './routes/invoiceRoutes';
 
 /* CONFIGURATION */
 dotenv.config();
@@ -26,6 +27,7 @@ app.use(cors());
 app.use('/auth', register);
 app.use('/client', client);
 app.use('/expense', expense);
+app.use('/invoice', invoice);
 
 app.use(errorHandler);
 
