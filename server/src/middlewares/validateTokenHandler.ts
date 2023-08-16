@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import jwt from 'jsonwebtoken';
+import { UserAuthHeader } from '../types';
 
 export const validateToken = asyncHandler(async (req, res, next) => {
   let token;

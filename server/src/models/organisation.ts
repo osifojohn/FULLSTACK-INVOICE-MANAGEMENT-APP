@@ -11,6 +11,7 @@ const OrganisationSchema = new Schema(
     phone: { type: String },
     address: { type: String, required: true },
     country: { type: String, required: true },
+    invoiceNumbers: [String],
   },
   {
     timestamps: true,

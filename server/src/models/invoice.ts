@@ -1,24 +1,33 @@
 import { Schema, InferSchemaType, model } from 'mongoose';
-import OrganisationSchema from './organisation';
-import ClientSchema from './client';
+import mongoose from 'mongoose';
 
-const EachInvoiceSchema = new Schema(
+const InvoiceSchema = new Schema(
   {
     invoiceUrl: String,
-    organisation: OrganisationSchema,
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    clientId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Client',
+      required: true,
+    },
     items: {
       type: [
         {
           item: String,
           quantity: Number,
           description: String,
+          price: Number,
         },
       ],
     },
+    moreDetails: String,
     invoiceNumber: String,
-    client: ClientSchema,
-    dueDate: { type: Number, required: true },
-    totalAmount: Number,
+    dueDate: { type: Date, required: true },
+    totalPrice: Number,
     status: {
       type: String,
       enum: [
@@ -37,6 +46,6 @@ const EachInvoiceSchema = new Schema(
   }
 );
 
-type EachInvoice = InferSchemaType<typeof EachInvoiceSchema>;
+type Invoice = InferSchemaType<typeof InvoiceSchema>;
 
-export default model<EachInvoice>('EachInvoice', EachInvoiceSchema);
+export default model<Invoice>('Invoice', InvoiceSchema);
