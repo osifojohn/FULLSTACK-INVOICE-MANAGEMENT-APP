@@ -19,7 +19,7 @@ const UserSchema = new Schema(
       type: String,
       enum: ['admin', 'worker'],
     },
-    active: { type: String, default: 'worker' },
+    active: { type: Boolean, default: true },
   },
   {
     timestamps: true,

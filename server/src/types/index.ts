@@ -54,3 +54,31 @@ export type expenseRequest = {
   amount: number;
   receipt?: string;
 };
+
+export type UserAuthHeader = {
+  firstName: string;
+  email: string;
+  userId: string;
+  role: string;
+  orgId: string;
+};
+
+type InvoiceItem = [
+  {
+    item: string;
+    quantity: number;
+    description: string;
+    price: number;
+  }
+];
+
+export type InvoiceRequest = {
+  clientId: string;
+  items: InvoiceItem;
+  invoiceUrl?: string;
+  invoiceNumber?: string;
+  moreDetails: string;
+  dueDate: Date;
+  totalPrice?: number;
+  status?: string;
+};

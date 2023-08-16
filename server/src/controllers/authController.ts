@@ -146,11 +146,12 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
           firstName: foundUser.firstName,
           email: foundUser.email,
           userId: foundUser.id,
+          role: foundUser.role,
           orgId: foundUser.organisation,
         },
       },
       process.env.ACCESS_TOKEN_SECRET as string,
-      { expiresIn: '15m' }
+      { expiresIn: '24hr' }
     );
     res.status(200).json({ accessToken });
   }

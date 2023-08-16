@@ -1,13 +1,11 @@
 import express from 'express';
-
-import {
-  adminSignup,
-  login,
-  organisationRegister,
-} from '../controllers/authController';
+import { handleCreateInvoice } from '../controllers/invoiceController';
+import { validateToken } from '../middlewares/validateTokenHandler';
 
 const router = express.Router();
 
-router.post('/invoice', login);
+router.use(validateToken);
+
+router.post('/add-new', handleCreateInvoice);
 
 export default router;
