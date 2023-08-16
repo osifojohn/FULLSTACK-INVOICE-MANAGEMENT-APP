@@ -184,8 +184,6 @@ export const updateClient = asyncHandler(
       throw new Error(error.details[0].message);
     }
 
-    console.log(req.params.id);
-
     const client = await Client.findById(req.params.id);
     console.log(client);
 
