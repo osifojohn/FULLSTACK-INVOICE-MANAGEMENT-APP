@@ -8,7 +8,11 @@ import {
   searchClients,
 } from '../controllers/clientController';
 
+import { validateToken } from '../middlewares/validateTokenHandler';
+
 const router = express.Router();
+
+router.use(validateToken);
 
 router.post('/new-client', addClient);
 router.get('/all-clients', getAllClients);

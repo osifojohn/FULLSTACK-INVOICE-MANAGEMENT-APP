@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
-import { IOrganisation } from '../types';
 
 export const handleCreateInvoice = asyncHandler(
-  async (req: Request, res: Response) => {}
+  async (req: Request, res: Response) => {
+    console.log(req?.user);
+    res.json({ message: 'success' });
+  }
 );

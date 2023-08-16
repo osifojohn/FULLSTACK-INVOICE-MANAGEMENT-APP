@@ -2,7 +2,7 @@ import { Schema, InferSchemaType, model } from 'mongoose';
 import OrganisationSchema from './organisation';
 import ClientSchema from './client';
 
-const InvoiceSchema = new Schema(
+const EachInvoiceSchema = new Schema(
   {
     invoiceUrl: String,
     organisation: OrganisationSchema,
@@ -37,6 +37,6 @@ const InvoiceSchema = new Schema(
   }
 );
 
-type Invoice = InferSchemaType<typeof InvoiceSchema>;
+type EachInvoice = InferSchemaType<typeof EachInvoiceSchema>;
 
-export default model<Invoice>('Income', InvoiceSchema);
+export default model<EachInvoice>('EachInvoice', EachInvoiceSchema);

@@ -41,11 +41,11 @@ export default model<Expense>('Expense', ExpenseSchema);
 export function validateExpense(expense: expenseRequest) {
   const schema = Joi.object({
     orgId: Joi.string().required().messages({
-      'string.orgId': 'Please pass  orgId Id along alongside with the header',
+      'string.orgId': 'Please pass  orgId Id along  with the header',
       'any.required': 'Org Id is required',
     }),
     userId: Joi.string().required().messages({
-      'string.userId': 'Please pass user Id along alongside with the header',
+      'string.userId': 'Please pass user Id along  with the header',
       'any.required': 'User Id is required',
     }),
     name: Joi.string().min(3).max(30).required().messages({
