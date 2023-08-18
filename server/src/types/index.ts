@@ -69,6 +69,7 @@ type InvoiceItem = [
     quantity: number;
     description: string;
     price: number;
+    amountSum: number;
   }
 ];
 
