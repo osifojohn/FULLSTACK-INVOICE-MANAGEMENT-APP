@@ -10,6 +10,7 @@ const OrganisationSchema = new Schema(
     logoUrl: { type: String },
     phone: { type: String },
     address: { type: String, required: true },
+    city: { type: String, required: true },
     country: { type: String, required: true },
   },
   {
@@ -33,6 +34,7 @@ export function validateOrganisation(org: IOrganisation) {
     email: Joi.string().min(5).max(255).email(),
     phone: Joi.string().min(10).max(14),
     address: Joi.string().min(4).max(50),
+    city: Joi.string().min(3).max(50),
     country: Joi.string().min(2).max(40).required(),
   });
 

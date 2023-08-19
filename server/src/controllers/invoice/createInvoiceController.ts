@@ -1,21 +1,26 @@
-import { Request, Response } from 'express';
+import { UploadApiResponse, v2 as cloudinary } from 'cloudinary';
 import asyncHandler from 'express-async-handler';
-import path from 'path';
+import { Request, Response } from 'express';
 import PDFDocument from 'pdfkit';
+import path from 'path';
 import fs from 'fs';
 
-import { InvoiceRequest, STATUSCODE, UserAuthHeader } from '../../types';
-import { Client, ClientType } from '../../models/client';
-import { Organisation, OrganisationType } from '../../models/organisation';
-import { Invoice, InvoiceType } from '../../models/invoice';
-import { generateInvoicePdf } from '../../utils/pdf-generator';
-
-import { v2 as cloudinary } from 'cloudinary';
 import { generateInvoiceNumber } from '../../utils/invoice-generateNumber';
+import { Organisation, OrganisationType } from '../../models/organisation';
+import { InvoiceRequest, STATUSCODE, UserAuthHeader } from '../../types';
+import { generateInvoicePdf } from '../../utils/pdf-generator';
+import { Invoice, InvoiceType } from '../../models/invoice';
+import { Client } from '../../models/client';
 
 export const handleCreateInvoice = asyncHandler(
   async (req: Request, res: Response) => {
-    const { clientId, items, dueDate, moreDetails }: InvoiceRequest = req.body;
+    const {
+      clientId,
+      items,
+      dueDate,
+      moreDetails,
+      paidToDate,
+    }: InvoiceRequest = req.body;
 
     const doc = new PDFDocument();
 
@@ -28,7 +33,7 @@ export const handleCreateInvoice = asyncHandler(
 
     const client = await Client.findById(clientId).exec();
     const organisation = await Organisation.findById(orgId).exec();
-    const latestInvoice = await Invoice.findOne()
+    const latestInvoice = await Invoice.findOne({ orgId })
       .sort({
         updatedAt: -1,
       })
@@ -60,7 +65,38 @@ export const handleCreateInvoice = asyncHandler(
 
     const writeStream = fs.createWriteStream(filePath);
 
-    generateInvoicePdf(doc, writeStream, client as ClientType);
+    const invoiceDetails = {
+      client,
+      organisation,
+      items,
+      dueDate,
+      moreDetails,
+      invoiceNumber,
+      subtotal,
+      paidToDate,
+    };
+
+    generateInvoicePdf(doc, writeStream, invoiceDetails);
+
+    const addInvoiceToDB = (result: UploadApiResponse) => {
+      const invoice = new Invoice({
+        orgId,
+        invoicePdf: {
+          public_id: result?.public_id,
+          url: result?.secure_url,
+        },
+        createdBy: userId,
+        clientId,
+        invoiceNumber,
+        items,
+        totalPrice: subtotal,
+        moreDetails,
+        dueDate,
+        paidToDate,
+        organizationName: organisation?.name,
+      });
+      invoice.save();
+    };
 
     writeStream.on('error', () => {
       res.status(STATUSCODE.SERVER_ERROR);
@@ -69,9 +105,6 @@ export const handleCreateInvoice = asyncHandler(
 
     writeStream.on('finish', () => {
       const readStream = fs.createReadStream(filePath);
-
-      res.setHeader('Content-Disposition', `inline; filename=${fileName}`);
-      res.setHeader('Content-Type', 'application/pdf');
 
       const cloudinaryUploadStream = cloudinary.uploader.upload_stream(
         {
@@ -82,27 +115,16 @@ export const handleCreateInvoice = asyncHandler(
         },
         (error, result) => {
           if (error) {
-            console.error('Cloudinary upload error:', error);
+            res.status(STATUSCODE.SERVER_ERROR);
+            throw new Error('Internal or Server Error');
           } else {
-            // Create new invoice with the  secure_url
-            console.log(result?.secure_url);
-            Invoice.create({
-              invoicePdf: {
-                public_id: result?.public_id,
-                url: result?.secure_url,
-              },
-              createdBy: userId,
-              clientId,
-              invoiceNumber,
-              items,
-              totalPrice: subtotal,
-              moreDetails,
-              dueDate,
-              organizationName: organisation?.name,
-            });
+            addInvoiceToDB(result as UploadApiResponse);
           }
         }
       );
+
+      res.setHeader('Content-Disposition', `inline; filename="${fileName}"`);
+      res.setHeader('Content-Type', 'application/pdf');
 
       // Read the saved file and send it in the response and cloudinary
       readStream.on('open', () => {

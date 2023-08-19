@@ -3,13 +3,10 @@ import mongoose from 'mongoose';
 
 const InvoiceSchema = new Schema(
   {
-    invoicePdf: {
-      public_id: {
-        type: String,
-      },
-      url: {
-        type: String,
-      },
+    orgId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Organisation',
+      required: true,
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
@@ -20,6 +17,14 @@ const InvoiceSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Client',
       required: true,
+    },
+    invoicePdf: {
+      public_id: {
+        type: String,
+      },
+      url: {
+        type: String,
+      },
     },
     items: {
       type: [
@@ -34,6 +39,10 @@ const InvoiceSchema = new Schema(
     },
     moreDetails: String,
     invoiceNumber: String,
+    paidToDate: {
+      type: Number,
+      required: true,
+    },
     dueDate: { type: Date },
     totalPrice: Number,
     status: {

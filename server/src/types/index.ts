@@ -1,3 +1,5 @@
+import { OrganisationType } from '../models/organisation';
+
 export enum STATUSCODE {
   SUCCESS = 200,
   CREATED = 201,
@@ -12,10 +14,11 @@ export enum STATUSCODE {
 export interface IOrganisation {
   name: string;
   logoUrl?: string;
-  phone?: string;
-  email?: string;
-  address?: string;
-  country?: string;
+  phone: string;
+  email: string;
+  city: string;
+  address: string;
+  country: string;
 }
 
 export interface ILogin {
@@ -40,7 +43,7 @@ export interface IClient {
   address: string;
 }
 
-export type PaginationRequest = {
+export type PaginationOptions = {
   page: number;
   limit: number;
 };
@@ -82,4 +85,24 @@ export type InvoiceRequest = {
   dueDate: Date;
   totalPrice?: number;
   status?: string;
+  paidToDate: number;
 };
+
+type subtotal = number;
+type invoiceNumber = number;
+type moreDetails = string;
+
+export type invoiceDetailType = InvoiceRequest &
+  ClientTypes &
+  OrganisationType &
+  InvoiceItem &
+  subtotal &
+  invoiceNumber &
+  moreDetails;
+
+//  client,
+//   organisation,
+//   items,
+//   dueDate,
+//   moreDetails,
+//   invoiceNumber,

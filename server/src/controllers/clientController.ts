@@ -1,15 +1,15 @@
 import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 
-import { IClient, PaginationRequest, STATUSCODE } from '../types';
-import Client, { validateClient } from '../models/client';
+import { IClient, PaginationOptions, STATUSCODE } from '../types';
+import { Client, validateClient } from '../models/client';
 
 //@desc Get all clients
 //@route GET /client/all-clients
 //@access private
 export const getAllClients = asyncHandler(
   async (req: Request, res: Response) => {
-    const { page = 1, limit = 20 }: PaginationRequest = req.body;
+    const { page = 1, limit = 20 }: PaginationOptions = req.body;
 
     if (typeof page !== 'number' || typeof limit !== 'number') {
       res.status(STATUSCODE.BAD_REQUEST);
@@ -45,7 +45,7 @@ export const searchClients = asyncHandler(
       keyword,
       page = 1,
       limit = 20,
-    }: { keyword: string } & PaginationRequest = req.body;
+    }: { keyword: string } & PaginationOptions = req.body;
 
     if (!keyword || typeof keyword !== 'string') {
       res.status(STATUSCODE.BAD_REQUEST);

@@ -1,13 +1,12 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import mongoose, { ConnectOptions } from 'mongoose';
+import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import morgan from 'morgan';
 
 import { errorHandler } from './middlewares/errorHandler';
-import { models } from './models';
 import register from './routes/authRoutes';
 import client from './routes/clientRoutes';
 import expense from './routes/expenseRoutes';
@@ -33,10 +32,8 @@ app.use('/invoice', invoice);
 app.use(errorHandler);
 
 /* MONGOOSE SETUP */
-// const createCollections = async (models) => {
-//   await Promise.all(models.map((model) => model.createCollection()));
-// };
 const PORT = process.env.PORT || 9000;
+
 mongoose
   .connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
@@ -46,6 +43,10 @@ mongoose
     app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
   })
   .catch((error) => console.log(`${error} did not connect`));
+
+// const createCollections = async (models) => {
+//   await Promise.all(models.map((model) => model.createCollection()));
+// };
 
 // const options: ConnectOptions = {
 //   readPreference: 'secondary',

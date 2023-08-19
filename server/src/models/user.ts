@@ -26,8 +26,9 @@ const UserSchema = new Schema(
   }
 );
 
-type User = InferSchemaType<typeof UserSchema>;
-export default model<User>('User', UserSchema);
+type UserType = InferSchemaType<typeof UserSchema>;
+const User = model<UserType>('User', UserSchema);
+export { UserType, User };
 
 export function validateUser(user: IUserRequestAdmin) {
   const schema = Joi.object({

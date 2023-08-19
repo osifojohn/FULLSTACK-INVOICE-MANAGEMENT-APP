@@ -5,7 +5,6 @@ export function generateInvoiceNumber(
   organisation: OrganisationType,
   latestInvoice: InvoiceType
 ) {
-  let initials;
   let increment;
 
   increment = '100';
@@ -14,15 +13,16 @@ export function generateInvoiceNumber(
     increment = Number(latestInvoice.invoiceNumber?.slice(12)) + 1;
   }
 
-  if (organisation) {
-    initials = organisation?.name.slice(0, 3)?.toUpperCase();
-  }
+  const initials = organisation?.name.slice(0, 3)?.toUpperCase();
+  console.log(initials);
 
   const today = new Date();
 
   const datePart = `${today.getFullYear()}${
     today.getMonth() + 1
   }${today.getDate()}`;
+
+  console.log(`${initials}-${datePart}-${increment}`);
 
   return `${initials}-${datePart}-${increment}`;
 }
