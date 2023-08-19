@@ -22,9 +22,11 @@ const ClientSchema = new Schema(
   }
 );
 
-type Client = InferSchemaType<typeof ClientSchema>;
+type ClientType = InferSchemaType<typeof ClientSchema>;
 
-export default model<Client>('Client', ClientSchema);
+const Client = model<ClientType>('Client', ClientSchema);
+
+export { Client, ClientType };
 
 export function validateClient(client: IClient) {
   const schema = Joi.object({

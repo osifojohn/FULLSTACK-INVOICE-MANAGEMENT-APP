@@ -11,16 +11,20 @@ const OrganisationSchema = new Schema(
     phone: { type: String },
     address: { type: String, required: true },
     country: { type: String, required: true },
-    invoiceNumbers: [String],
   },
   {
     timestamps: true,
   }
 );
 
-type Organisation = InferSchemaType<typeof OrganisationSchema>;
+type OrganisationType = InferSchemaType<typeof OrganisationSchema>;
 
-export default model<Organisation>('Organisation', OrganisationSchema);
+const Organisation = model<OrganisationType>(
+  'Organisation',
+  OrganisationSchema
+);
+
+export { Organisation, OrganisationType };
 
 export function validateOrganisation(org: IOrganisation) {
   const schema = Joi.object({

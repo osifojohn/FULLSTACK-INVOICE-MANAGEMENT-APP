@@ -3,7 +3,14 @@ import mongoose from 'mongoose';
 
 const InvoiceSchema = new Schema(
   {
-    invoiceUrl: String,
+    invoicePdf: {
+      public_id: {
+        type: String,
+      },
+      url: {
+        type: String,
+      },
+    },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
@@ -47,6 +54,8 @@ const InvoiceSchema = new Schema(
   }
 );
 
-type Invoice = InferSchemaType<typeof InvoiceSchema>;
+type InvoiceType = InferSchemaType<typeof InvoiceSchema>;
 
-export default model<Invoice>('Invoice', InvoiceSchema);
+const Invoice = model<InvoiceType>('Invoice', InvoiceSchema);
+
+export { InvoiceType, Invoice };

@@ -5,9 +5,13 @@ import PDFDocument from 'pdfkit';
 import fs from 'fs';
 
 import { InvoiceRequest, STATUSCODE, UserAuthHeader } from '../../types';
-import Client from '../../models/client';
-import Organisation from '../../models/organisation';
-import Invoice from '../../models/invoice';
+import { Client, ClientType } from '../../models/client';
+import { Organisation, OrganisationType } from '../../models/organisation';
+import { Invoice, InvoiceType } from '../../models/invoice';
+import { generateInvoicePdf } from '../../utils/pdf-generator';
+
+import { v2 as cloudinary } from 'cloudinary';
+import { generateInvoiceNumber } from '../../utils/invoice-generateNumber';
 
 export const handleCreateInvoice = asyncHandler(
   async (req: Request, res: Response) => {
@@ -22,27 +26,13 @@ export const handleCreateInvoice = asyncHandler(
       throw new Error('Invalid request');
     }
 
-    let invoiceNumber;
-    let invoiceNumberLetters;
-    let lastInvoiceNumberIncrement;
-
-    const retrivedClient = await Client.findById(clientId).exec();
+    const client = await Client.findById(clientId).exec();
     const organisation = await Organisation.findById(orgId).exec();
-
-    invoiceNumberLetters = organisation?.name.slice(0, 3)?.toUpperCase();
-
-    if (organisation?.invoiceNumbers?.length === 0) {
-      lastInvoiceNumberIncrement = '100';
-      invoiceNumber = invoiceNumberLetters + lastInvoiceNumberIncrement;
-    }
-
-    if (organisation?.invoiceNumbers?.length !== 0) {
-      const lastItem = organisation?.invoiceNumbers.length - 1;
-      const lastInvoiceNumberIncrement =
-        Number(organisation?.invoiceNumbers[lastItem].slice(3)) + 1;
-
-      invoiceNumber = invoiceNumberLetters + lastInvoiceNumberIncrement;
-    }
+    const latestInvoice = await Invoice.findOne()
+      .sort({
+        updatedAt: -1,
+      })
+      .exec();
 
     // getting sum per item and subTotal
     let subtotal = 0;
@@ -53,16 +43,10 @@ export const handleCreateInvoice = asyncHandler(
       subtotal += item.amountSum;
     });
 
-    await Invoice.create({
-      createdBy: userId,
-      clientId,
-      invoiceNumber,
-      items,
-      totalPrice: subtotal,
-      moreDetails,
-      dueDate,
-      organizationName: organisation?.name,
-    });
+    const invoiceNumber = generateInvoiceNumber(
+      organisation as OrganisationType,
+      latestInvoice as InvoiceType
+    );
 
     const fileName = invoiceNumber + '.pdf';
 
@@ -76,39 +60,68 @@ export const handleCreateInvoice = asyncHandler(
 
     const writeStream = fs.createWriteStream(filePath);
 
-    doc.pipe(writeStream);
+    generateInvoicePdf(doc, writeStream, client as ClientType);
 
-    // Add content to the PDF
-    doc.fontSize(20).text('Invoice', { align: 'center' });
-    doc.fontSize(12).text('Customer: John Doe');
-    doc.fontSize(12).text('Amount: $100');
-    // Finalize the PDF
-    doc.end();
+    writeStream.on('error', () => {
+      res.status(STATUSCODE.SERVER_ERROR);
+      throw new Error('Internal Server Error');
+    });
 
     writeStream.on('finish', () => {
-      // Read the saved file and send it in the response
-      fs.readFile(filePath, (err, data) => {
-        if (err) {
-          res.status(STATUSCODE.SERVER_ERROR);
-          throw new Error('Internal Server Error');
-        } else {
-          /// Add invoice number to list of invoices
-          organisation?.invoiceNumbers.push(invoiceNumber);
-          organisation?.save();
+      const readStream = fs.createReadStream(filePath);
 
-          res.setHeader('Content-Disposition', `inline; filename=${fileName}`);
-          res.setHeader('Content-Type', 'application/pdf');
-          res.send(data);
+      res.setHeader('Content-Disposition', `inline; filename=${fileName}`);
+      res.setHeader('Content-Type', 'application/pdf');
+
+      const cloudinaryUploadStream = cloudinary.uploader.upload_stream(
+        {
+          access_mode: 'public',
+          resource_type: 'auto',
+          public_id: `${invoiceNumber}`,
+          folder: 'invoices',
+        },
+        (error, result) => {
+          if (error) {
+            console.error('Cloudinary upload error:', error);
+          } else {
+            // Create new invoice with the  secure_url
+            console.log(result?.secure_url);
+            Invoice.create({
+              invoicePdf: {
+                public_id: result?.public_id,
+                url: result?.secure_url,
+              },
+              createdBy: userId,
+              clientId,
+              invoiceNumber,
+              items,
+              totalPrice: subtotal,
+              moreDetails,
+              dueDate,
+              organizationName: organisation?.name,
+            });
+          }
         }
+      );
+
+      // Read the saved file and send it in the response and cloudinary
+      readStream.on('open', () => {
+        // Start piping the PDF data to the cloudinary
+        readStream.pipe(cloudinaryUploadStream);
+
+        // Start piping the PDF data to the response
+        readStream.pipe(res);
+      });
+
+      // Clean up: close the read stream and delete the local PDF file
+      readStream.on('close', () => {
+        fs.unlinkSync(filePath);
+      });
+
+      readStream.on('error', () => {
+        res.status(STATUSCODE.SERVER_ERROR);
+        throw new Error('Internal or Server Error');
       });
     });
   }
 );
-
-function formatDate(date) {
-  const day = date.getDate();
-  const month = date.getMonth() + 1;
-  const year = date.getFullYear();
-
-  return year + '/' + month + '/' + day;
-}
