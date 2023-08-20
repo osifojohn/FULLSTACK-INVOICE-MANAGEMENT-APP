@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 // import { startOfDay, endOfDay, format, parseISO } from 'date-fns';
 
-import { PaginationRequest, STATUSCODE, expenseRequest } from '../types';
+import { PaginationOptions, STATUSCODE, expenseRequest } from '../types';
 import Expense, { validateExpense } from '../models/expense';
 
 // @desc add new Expense
@@ -58,7 +58,7 @@ export const addExpense = asyncHandler(async (req: Request, res: Response) => {
 //@access private
 export const getAllExpense = asyncHandler(
   async (req: Request, res: Response) => {
-    const { page = 1, limit = 20 }: PaginationRequest = req.body;
+    const { page = 1, limit = 20 }: PaginationOptions = req.body;
 
     if (typeof page !== 'number' || typeof limit !== 'number') {
       res.status(STATUSCODE.BAD_REQUEST);
@@ -94,7 +94,7 @@ export const searchExpense = asyncHandler(
       keyword,
       page = 1,
       limit = 20,
-    }: { keyword: string } & PaginationRequest = req.body;
+    }: { keyword: string } & PaginationOptions = req.body;
 
     if (!keyword || typeof keyword !== 'string') {
       res.status(STATUSCODE.BAD_REQUEST);

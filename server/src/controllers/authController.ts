@@ -3,10 +3,10 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
 
-import User, { validateUser } from '../models/user';
+import { validateUser, User } from '../models/user';
 import { ILogin, IOrganisation, IUserRequestAdmin, STATUSCODE } from '../types';
 import { validateOrganisation } from '../models/organisation';
-import Organisation from '../models/organisation';
+import { Organisation } from '../models/organisation';
 
 // @desc Create new organisation
 // @route POST /organisation

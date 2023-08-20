@@ -12,10 +12,11 @@ export enum STATUSCODE {
 export interface IOrganisation {
   name: string;
   logoUrl?: string;
-  phone?: string;
-  email?: string;
-  address?: string;
-  country?: string;
+  phone: string;
+  email: string;
+  city: string;
+  address: string;
+  country: string;
 }
 
 export interface ILogin {
@@ -40,7 +41,7 @@ export interface IClient {
   address: string;
 }
 
-export type PaginationRequest = {
+export type PaginationOptions = {
   page: number;
   limit: number;
 };
@@ -69,6 +70,7 @@ type InvoiceItem = [
     quantity: number;
     description: string;
     price: number;
+    amountSum: number;
   }
 ];
 
@@ -81,4 +83,18 @@ export type InvoiceRequest = {
   dueDate: Date;
   totalPrice?: number;
   status?: string;
+  paidToDate: number;
 };
+
+export interface invoiceDetailsType {
+  orgId: string;
+  userId: string;
+  clientId: string;
+  items: InvoiceItem;
+  dueDate: Date;
+  moreDetails: string;
+  invoiceNumber: string;
+  subtotal: number;
+  paidToDate: number;
+  organizationName: string;
+}

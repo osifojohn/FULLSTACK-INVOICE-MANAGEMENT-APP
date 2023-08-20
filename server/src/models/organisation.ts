@@ -10,17 +10,22 @@ const OrganisationSchema = new Schema(
     logoUrl: { type: String },
     phone: { type: String },
     address: { type: String, required: true },
+    city: { type: String, required: true },
     country: { type: String, required: true },
-    invoiceNumbers: [String],
   },
   {
     timestamps: true,
   }
 );
 
-type Organisation = InferSchemaType<typeof OrganisationSchema>;
+type OrganisationType = InferSchemaType<typeof OrganisationSchema>;
 
-export default model<Organisation>('Organisation', OrganisationSchema);
+const Organisation = model<OrganisationType>(
+  'Organisation',
+  OrganisationSchema
+);
+
+export { Organisation, OrganisationType };
 
 export function validateOrganisation(org: IOrganisation) {
   const schema = Joi.object({
@@ -29,6 +34,7 @@ export function validateOrganisation(org: IOrganisation) {
     email: Joi.string().min(5).max(255).email(),
     phone: Joi.string().min(10).max(14),
     address: Joi.string().min(4).max(50),
+    city: Joi.string().min(3).max(50),
     country: Joi.string().min(2).max(40).required(),
   });
 

@@ -14,6 +14,8 @@ const IncomeSchema = new Schema(
   }
 );
 
-type Income = InferSchemaType<typeof IncomeSchema>;
+type IncomeType = InferSchemaType<typeof IncomeSchema>;
 
-export default model<Income>('Income', IncomeSchema);
+const Income = model<IncomeType>('Income', IncomeSchema);
+
+export { IncomeType, Income };

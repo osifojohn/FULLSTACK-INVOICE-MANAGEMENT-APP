@@ -3,7 +3,11 @@ import mongoose from 'mongoose';
 
 const InvoiceSchema = new Schema(
   {
-    invoiceUrl: String,
+    orgId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Organisation',
+      required: true,
+    },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
@@ -14,6 +18,14 @@ const InvoiceSchema = new Schema(
       ref: 'Client',
       required: true,
     },
+    invoicePdf: {
+      public_id: {
+        type: String,
+      },
+      url: {
+        type: String,
+      },
+    },
     items: {
       type: [
         {
@@ -21,12 +33,17 @@ const InvoiceSchema = new Schema(
           quantity: Number,
           description: String,
           price: Number,
+          amountSum: Number,
         },
       ],
     },
     moreDetails: String,
     invoiceNumber: String,
-    dueDate: { type: Date, required: true },
+    paidToDate: {
+      type: Number,
+      required: true,
+    },
+    dueDate: { type: Date },
     totalPrice: Number,
     status: {
       type: String,
@@ -46,6 +63,8 @@ const InvoiceSchema = new Schema(
   }
 );
 
-type Invoice = InferSchemaType<typeof InvoiceSchema>;
+type InvoiceType = InferSchemaType<typeof InvoiceSchema>;
 
-export default model<Invoice>('Invoice', InvoiceSchema);
+const Invoice = model<InvoiceType>('Invoice', InvoiceSchema);
+
+export { InvoiceType, Invoice };
