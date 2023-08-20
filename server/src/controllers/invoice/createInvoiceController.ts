@@ -1,4 +1,3 @@
-import { UploadApiResponse, v2 as cloudinary } from 'cloudinary';
 import asyncHandler from 'express-async-handler';
 import { Request, Response } from 'express';
 import PDFDocument from 'pdfkit';
@@ -7,10 +6,17 @@ import fs from 'fs';
 
 import { generateInvoiceNumber } from '../../utils/invoice-generateNumber';
 import { Organisation, OrganisationType } from '../../models/organisation';
-import { InvoiceRequest, STATUSCODE, UserAuthHeader } from '../../types';
+import { cloudinaryUploadStreamFn } from '../../utils/cloudinaryAndDbFns';
 import { generateInvoicePdf } from '../../utils/pdf-generator';
 import { Invoice, InvoiceType } from '../../models/invoice';
 import { Client } from '../../models/client';
+
+import {
+  InvoiceRequest,
+  STATUSCODE,
+  UserAuthHeader,
+  invoiceDetailsType,
+} from '../../types';
 
 export const handleCreateInvoice = asyncHandler(
   async (req: Request, res: Response) => {
@@ -78,24 +84,17 @@ export const handleCreateInvoice = asyncHandler(
 
     generateInvoicePdf(doc, writeStream, invoiceDetails);
 
-    const addInvoiceToDB = (result: UploadApiResponse) => {
-      const invoice = new Invoice({
-        orgId,
-        invoicePdf: {
-          public_id: result?.public_id,
-          url: result?.secure_url,
-        },
-        createdBy: userId,
-        clientId,
-        invoiceNumber,
-        items,
-        totalPrice: subtotal,
-        moreDetails,
-        dueDate,
-        paidToDate,
-        organizationName: organisation?.name,
-      });
-      invoice.save();
+    const addInvoiceDetails = {
+      orgId,
+      userId,
+      clientId,
+      invoiceNumber,
+      items,
+      subtotal,
+      moreDetails,
+      dueDate,
+      paidToDate,
+      organizationName: organisation?.name,
     };
 
     writeStream.on('error', () => {
@@ -106,30 +105,19 @@ export const handleCreateInvoice = asyncHandler(
     writeStream.on('finish', () => {
       const readStream = fs.createReadStream(filePath);
 
-      const cloudinaryUploadStream = cloudinary.uploader.upload_stream(
-        {
-          access_mode: 'public',
-          resource_type: 'auto',
-          public_id: `${invoiceNumber}`,
-          folder: 'invoices',
-        },
-        (error, result) => {
-          if (error) {
-            res.status(STATUSCODE.SERVER_ERROR);
-            throw new Error('Internal or Server Error');
-          } else {
-            addInvoiceToDB(result as UploadApiResponse);
-          }
-        }
-      );
-
       res.setHeader('Content-Disposition', `inline; filename="${fileName}"`);
       res.setHeader('Content-Type', 'application/pdf');
 
       // Read the saved file and send it in the response and cloudinary
       readStream.on('open', () => {
         // Start piping the PDF data to the cloudinary
-        readStream.pipe(cloudinaryUploadStream);
+        readStream.pipe(
+          cloudinaryUploadStreamFn(
+            res,
+            invoiceNumber,
+            addInvoiceDetails as invoiceDetailsType
+          )
+        );
 
         // Start piping the PDF data to the response
         readStream.pipe(res);

@@ -14,7 +14,6 @@ export function generateInvoiceNumber(
   }
 
   const initials = organisation?.name.slice(0, 3)?.toUpperCase();
-  console.log(initials);
 
   const today = new Date();
 

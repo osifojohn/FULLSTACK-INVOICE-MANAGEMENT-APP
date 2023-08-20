@@ -8,6 +8,6 @@ const router = express.Router();
 router.use(validateToken);
 
 router.post('/create', handleCreateInvoice);
-router.post('/edit', handleEditInvoice);
+router.put('/edit', handleEditInvoice);
 
 export default router;

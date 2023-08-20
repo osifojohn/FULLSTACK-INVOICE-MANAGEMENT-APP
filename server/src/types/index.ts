@@ -1,5 +1,3 @@
-import { OrganisationType } from '../models/organisation';
-
 export enum STATUSCODE {
   SUCCESS = 200,
   CREATED = 201,
@@ -88,21 +86,15 @@ export type InvoiceRequest = {
   paidToDate: number;
 };
 
-type subtotal = number;
-type invoiceNumber = number;
-type moreDetails = string;
-
-export type invoiceDetailType = InvoiceRequest &
-  ClientTypes &
-  OrganisationType &
-  InvoiceItem &
-  subtotal &
-  invoiceNumber &
-  moreDetails;
-
-//  client,
-//   organisation,
-//   items,
-//   dueDate,
-//   moreDetails,
-//   invoiceNumber,
+export interface invoiceDetailsType {
+  orgId: string;
+  userId: string;
+  clientId: string;
+  items: InvoiceItem;
+  dueDate: Date;
+  moreDetails: string;
+  invoiceNumber: string;
+  subtotal: number;
+  paidToDate: number;
+  organizationName: string;
+}
