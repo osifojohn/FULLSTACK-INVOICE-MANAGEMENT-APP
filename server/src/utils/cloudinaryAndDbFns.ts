@@ -3,11 +3,12 @@ import { Invoice, InvoiceType } from '../models/invoice';
 import { STATUSCODE, invoiceDetailsType } from '../types';
 import { Response } from 'express';
 
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.CLOUD_KEY,
-  api_secret: process.env.CLOUD_KEY_SECRET,
-});
+const initializeCloudinaryConfigurations = () =>
+  cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.CLOUD_KEY,
+    api_secret: process.env.CLOUD_KEY_SECRET,
+  });
 
 const addInvoiceToDB = (
   result: UploadApiResponse,
@@ -140,8 +141,21 @@ const cloudinaryDestroyAndUpdateStreamFn = (
   );
 };
 
+const cloudinaryDeleteFn = (
+  res: Response<unknown, Record<string, unknown>>,
+  latestInvoice: InvoiceType
+) => {
+  try {
+    cloudinary.uploader.destroy(latestInvoice?.invoicePdf?.public_id as string);
+  } catch (error) {
+    res.status(STATUSCODE.SERVER_ERROR);
+    throw new Error('An error occured while deleting invoice');
+  }
+};
+
 export {
   cloudinaryUploadStreamFn,
   cloudinaryDestroyAndUpdateStreamFn,
-  addInvoiceToDB,
+  cloudinaryDeleteFn,
+  initializeCloudinaryConfigurations,
 };
