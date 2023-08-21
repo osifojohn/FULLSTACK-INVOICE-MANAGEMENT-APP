@@ -5,6 +5,8 @@ import dotenv from 'dotenv';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import cors from 'cors';
+import { Server } from 'socket.io';
+import { createServer } from 'http';
 
 import { initializeCloudinaryConfigurations } from './utils/cloudinaryAndDbFns';
 import { errorHandler } from './middlewares/errorHandler';
@@ -34,36 +36,25 @@ app.use('/invoice', invoice);
 
 app.use(errorHandler);
 
-/* MONGOOSE SETUP */
-const PORT = process.env.PORT || 9000;
+const PORT = process.env.PORT || 8000;
+const server = createServer(app);
 
+/* Socket.io SETUP */
+const io = new Server(server, {
+  cors: {
+    origin: ['http://localhost:3000'],
+  },
+});
+
+/* MONGOOSE SETUP */
 mongoose
   .connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
+    server.listen(PORT, () => console.log(`Server Port: ${PORT}`));
   })
   .catch((error) => console.log(`${error} did not connect`));
 
-// const createCollections = async (models) => {
-//   await Promise.all(models.map((model) => model.createCollection()));
-// };
-
-// const options: ConnectOptions = {
-//   readPreference: 'secondary',
-// };
-// (async () => {
-//   try {
-//     await mongoose.connect(process.env.MONGO_URL, options);
-
-//     await createCollections(models);
-
-//     app.listen(PORT, () => {
-//       console.log(`Server is running on port ${PORT}`);
-//     });
-//   } catch (error) {
-//     console.log(`${error} did not connect`);
-//   }
-// })();
+export { io };
