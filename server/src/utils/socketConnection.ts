@@ -1,21 +1,20 @@
-import * as socketio from 'socket.io';
+import { Server, Server as SocketIOServer } from 'socket.io';
+import http from 'http';
 
-//@ts-ignore
-export default class SocketConnection {
-  [x: string]: any;
-  constructor(server: any) {
-    //@ts-ignore
-    this.io = new socketio.Server(server, {
+export class SocketConnection {
+  private io: SocketIOServer;
+
+  constructor(server: http.Server) {
+    this.io = new Server(server, {
       cors: {
-        origin: ['http://localhost:3000'],
-        // allowedHeaders: ["my-custom-header"],
-        // credentials: true,
-        // methods:['get','post']
+        origin: '*',
+        methods: ['GET', 'POST'],
+        credentials: true,
       },
     });
   }
 
-  getIO() {
+  getIO(): SocketIOServer {
     if (!this.io) {
       throw new Error('Socket.io not initialized!');
     }

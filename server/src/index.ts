@@ -5,10 +5,11 @@ import dotenv from 'dotenv';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import cors from 'cors';
-import { Server } from 'socket.io';
 import { createServer } from 'http';
 
+import { updateOverdueInvoicesAndAddToNotification } from './utils/updateInvoiceStatus';
 import { initializeCloudinaryConfigurations } from './utils/cloudinaryAndDbFns';
+import { SocketConnection } from './utils/socketConnection';
 import { errorHandler } from './middlewares/errorHandler';
 import expense from './routes/expenseRoutes';
 import invoice from './routes/invoiceRoutes';
@@ -27,6 +28,7 @@ app.use(express.json());
 app.use(cors());
 
 initializeCloudinaryConfigurations();
+const server = createServer(app);
 
 /* ROUTES */
 app.use('/auth', register);
@@ -37,14 +39,12 @@ app.use('/invoice', invoice);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 8000;
-const server = createServer(app);
 
 /* Socket.io SETUP */
-const io = new Server(server, {
-  cors: {
-    origin: ['http://localhost:3000'],
-  },
-});
+const connectionInstance = new SocketConnection(server);
+const io = connectionInstance.getIO();
+
+updateOverdueInvoicesAndAddToNotification();
 
 /* MONGOOSE SETUP */
 mongoose

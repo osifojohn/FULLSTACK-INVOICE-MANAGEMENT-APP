@@ -48,14 +48,14 @@ const InvoiceSchema = new Schema(
     status: {
       type: String,
       enum: [
-        'draft',
-        'pending',
-        'not-paid',
-        'overdue',
-        'partially-paid',
-        'paid',
+        'Draft',
+        'Pending',
+        'Not-paid',
+        'Overdue',
+        'Partially-paid',
+        'Paid',
       ],
-      default: 'draft',
+      default: 'Draft',
     },
   },
   {
