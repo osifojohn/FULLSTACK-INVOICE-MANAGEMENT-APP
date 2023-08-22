@@ -15,6 +15,11 @@ const MessageSchema = new Schema(
       type: String,
       required: true,
     },
+    file: {
+      url: {
+        type: String,
+      },
+    },
   },
   {
     timestamps: true,

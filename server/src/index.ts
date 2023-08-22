@@ -5,8 +5,11 @@ import dotenv from 'dotenv';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import cors from 'cors';
+import { createServer } from 'http';
 
+import { updateOverdueInvoicesAndAddToNotification } from './utils/updateInvoiceStatus';
 import { initializeCloudinaryConfigurations } from './utils/cloudinaryAndDbFns';
+import { SocketConnection } from './utils/socketConnection';
 import { errorHandler } from './middlewares/errorHandler';
 import expense from './routes/expenseRoutes';
 import invoice from './routes/invoiceRoutes';
@@ -25,6 +28,7 @@ app.use(express.json());
 app.use(cors());
 
 initializeCloudinaryConfigurations();
+const server = createServer(app);
 
 /* ROUTES */
 app.use('/auth', register);
@@ -34,36 +38,23 @@ app.use('/invoice', invoice);
 
 app.use(errorHandler);
 
-/* MONGOOSE SETUP */
-const PORT = process.env.PORT || 9000;
+const PORT = process.env.PORT || 8000;
 
+/* Socket.io SETUP */
+const connectionInstance = new SocketConnection(server);
+const io = connectionInstance.getIO();
+
+updateOverdueInvoicesAndAddToNotification();
+
+/* MONGOOSE SETUP */
 mongoose
   .connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
+    server.listen(PORT, () => console.log(`Server Port: ${PORT}`));
   })
   .catch((error) => console.log(`${error} did not connect`));
 
-// const createCollections = async (models) => {
-//   await Promise.all(models.map((model) => model.createCollection()));
-// };
-
-// const options: ConnectOptions = {
-//   readPreference: 'secondary',
-// };
-// (async () => {
-//   try {
-//     await mongoose.connect(process.env.MONGO_URL, options);
-
-//     await createCollections(models);
-
-//     app.listen(PORT, () => {
-//       console.log(`Server is running on port ${PORT}`);
-//     });
-//   } catch (error) {
-//     console.log(`${error} did not connect`);
-//   }
-// })();
+export { io };

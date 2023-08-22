@@ -13,14 +13,22 @@ import { Organisation } from '../models/organisation';
 // @access public
 export const organisationRegister = asyncHandler(
   async (req: Request, res: Response) => {
-    const { name, logoUrl, phone, email, address, country }: IOrganisation =
-      req.body;
+    const {
+      name,
+      logoUrl,
+      phone,
+      email,
+      address,
+      country,
+      city,
+    }: IOrganisation = req.body;
 
     const { error } = validateOrganisation({
       name,
       logoUrl,
       phone,
       email,
+      city,
       address,
       country,
     });
@@ -43,6 +51,7 @@ export const organisationRegister = asyncHandler(
       email,
       address,
       country,
+      city,
     });
     if (org) {
       res.status(STATUSCODE.CREATED).json({
