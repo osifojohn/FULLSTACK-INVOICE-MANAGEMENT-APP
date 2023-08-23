@@ -26,7 +26,7 @@ export const updateOverdueInvoicesAndAddToNotification = async () => {
           message: `Invoice ${invoice?.invoiceNumber} is overdue `,
           status: NOTIFICATIONSTATUS.NOT_SEEN,
           type: NOTIFICATIONTYPE.INVOICE,
-          url: invoice?._id,
+          linkedTo: invoice?._id,
         });
 
         notification.save();
