@@ -14,7 +14,7 @@ const NotificationSchema = new Schema(
       type: String,
       required: true,
     },
-    url: String,
+    linkedTo: String,
     type: {
       type: String,
       enum: ['Invoice'],
