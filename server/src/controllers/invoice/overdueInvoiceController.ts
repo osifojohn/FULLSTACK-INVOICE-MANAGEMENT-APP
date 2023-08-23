@@ -1,8 +1,8 @@
 import asyncHandler from 'express-async-handler';
 import { Request, Response } from 'express';
 
+import { NOTIFICATIONTYPE, STATUSCODE, UserAuthHeader } from '../../types';
 import { Notification } from '../../models/notification';
-import { STATUSCODE, UserAuthHeader } from '../../types';
 
 //@route fetch /invoice/overdue
 //@access private
@@ -12,7 +12,7 @@ export const fetchOverdueInvoice = asyncHandler(
 
     const notification = await Notification.find({
       orgId,
-      type: 'invoice',
+      type: NOTIFICATIONTYPE.INVOICE,
     });
 
     if (!notification) {
@@ -37,7 +37,7 @@ export const deleteOverdueInvoice = asyncHandler(
 
     const deletedInvoiceNofication = await Notification.findOneAndDelete({
       _id: invoiceId,
-      type: 'invoice',
+      type: NOTIFICATIONTYPE.INVOICE,
     });
 
     res.json(deletedInvoiceNofication);
