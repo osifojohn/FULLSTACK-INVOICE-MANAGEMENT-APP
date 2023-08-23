@@ -43,7 +43,7 @@ const InvoiceSchema = new Schema(
       type: Number,
       required: true,
     },
-    dueDate: { type: Date },
+    dueDate: { type: Date, required: true },
     totalPrice: Number,
     status: {
       type: String,
