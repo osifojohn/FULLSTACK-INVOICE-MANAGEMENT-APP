@@ -1,5 +1,6 @@
 import cron from 'node-cron';
 
+import { INVOICESTATUS, NOTIFICATIONSTATUS, NOTIFICATIONTYPE } from '../types';
 import { Notification } from '../models/notification';
 import { Invoice } from '../models/invoice';
 
@@ -11,21 +12,21 @@ export const updateOverdueInvoicesAndAddToNotification = async () => {
 
       const overdueInvoices = await Invoice.find({
         dueDate: { $lt: currentDate },
-        status: { $ne: 'overdue' },
+        status: { $ne: INVOICESTATUS.OVERDUE },
       });
 
       for (const invoice of overdueInvoices) {
         await Invoice.findByIdAndUpdate(invoice?._id, {
-          status: 'overdue',
+          status: INVOICESTATUS.OVERDUE,
         });
 
         const notification = new Notification({
           orgId: invoice.orgId,
           title: 'Invoice Overdue',
           message: `Invoice ${invoice?.invoiceNumber} is overdue `,
-          status: 'not-seen',
-          type: 'Invoice',
-          linkedTo: invoice?._id,
+          status: NOTIFICATIONSTATUS.NOT_SEEN,
+          type: NOTIFICATIONTYPE.INVOICE,
+          url: invoice?._id,
         });
 
         notification.save();

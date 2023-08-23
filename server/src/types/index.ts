@@ -9,6 +9,23 @@ export enum STATUSCODE {
   SERVER_ERROR = 500,
 }
 
+export enum INVOICESTATUS {
+  DRAFT = 'Draft',
+  PENDING = 'Pending',
+  PAID = 'Paid',
+  NOT_PAID = 'Not-paid',
+  OVERDUE = 'Overdue',
+  PARTIALLY_PAID = 'Partially-paid',
+}
+
+export enum NOTIFICATIONTYPE {
+  INVOICE = 'Invoice',
+}
+export enum NOTIFICATIONSTATUS {
+  NOT_SEEN = 'not_seen',
+  SEEN = 'seen',
+}
+
 export interface IOrganisation {
   name: string;
   logoUrl?: string;

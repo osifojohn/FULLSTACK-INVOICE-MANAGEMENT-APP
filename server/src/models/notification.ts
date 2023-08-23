@@ -14,13 +14,10 @@ const NotificationSchema = new Schema(
       type: String,
       required: true,
     },
-    linkedTo: {
-      type: String,
-      required: true,
-    },
+    url: String,
     type: {
       type: String,
-      enum: ['invoice'],
+      enum: ['Invoice'],
     },
     status: {
       type: String,
