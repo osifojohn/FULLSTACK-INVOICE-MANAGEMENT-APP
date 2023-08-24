@@ -21,7 +21,5 @@ export function generateInvoiceNumber(
     today.getMonth() + 1
   }${today.getDate()}`;
 
-  console.log(`${initials}-${datePart}-${increment}`);
-
   return `${initials}-${datePart}-${increment}`;
 }

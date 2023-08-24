@@ -22,7 +22,7 @@ export enum NOTIFICATIONTYPE {
   INVOICE = 'Invoice',
 }
 export enum NOTIFICATIONSTATUS {
-  NOT_SEEN = 'not_seen',
+  NOT_SEEN = 'not-seen',
   SEEN = 'seen',
 }
 
@@ -114,4 +114,9 @@ export interface invoiceDetailsType {
   subtotal: number;
   paidToDate: number;
   organizationName: string;
+}
+
+export interface paymentRequest {
+  amount: number;
+  linkedTo: string;
 }
