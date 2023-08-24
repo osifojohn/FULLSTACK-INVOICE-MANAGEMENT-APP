@@ -11,10 +11,12 @@ import { updateOverdueInvoicesAndAddToNotification } from './utils/updateInvoice
 import { initializeCloudinaryConfigurations } from './utils/cloudinaryAndDbFns';
 import { SocketConnection } from './utils/socketConnection';
 import { errorHandler } from './middlewares/errorHandler';
+
 import expense from './routes/expenseRoutes';
 import invoice from './routes/invoiceRoutes';
 import register from './routes/authRoutes';
 import client from './routes/clientRoutes';
+import payment from './routes/paymentRoutes';
 
 /* CONFIGURATION */
 dotenv.config();
@@ -35,6 +37,7 @@ app.use('/auth', register);
 app.use('/client', client);
 app.use('/expense', expense);
 app.use('/invoice', invoice);
+app.use('/payment', payment);
 
 app.use(errorHandler);
 
