@@ -2,10 +2,15 @@ import Image from 'next/image';
 
 import logo from '../public/images/logo.png';
 
-const Logo = () => {
+interface LogoProps {
+  width: number;
+  height: number;
+}
+
+const Logo = ({ width, height }: LogoProps) => {
   return (
     <div className="h-nav-height mt-[20px] ">
-      <Image width={180} height={180} src={logo} alt="Logo" />
+      <Image width={width} height={height} src={logo} alt="Logo" />
     </div>
   );
 };

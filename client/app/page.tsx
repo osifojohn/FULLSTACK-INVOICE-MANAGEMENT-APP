@@ -9,7 +9,7 @@ export default function Landing() {
   return (
     <div className="max-w-[90vw] mx-auto">
       <nav className="h-nav-height">
-        <Logo />
+        <Logo width={180} height={180} />
       </nav>
       <main className="grid grid-cols-2 gap-10 tabPort:grid-cols-1 ">
         <section className="row-[50%] self-center tabPort:mt-10">
