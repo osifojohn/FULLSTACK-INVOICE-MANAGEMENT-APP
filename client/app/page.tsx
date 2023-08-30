@@ -26,7 +26,7 @@ export default function Landing() {
               insights will be as simple as a few taps and clicks.
             </p>
           </div>
-          <Link href={`/${routes.REGISTER}`} className="btn">
+          <Link href={`/admin${routes.ONBOARDINNG}`} className="btn">
             Get Started
           </Link>
         </section>
