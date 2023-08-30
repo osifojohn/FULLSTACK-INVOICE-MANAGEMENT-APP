@@ -1,5 +1,5 @@
 export const routes = {
-  REGISTER: '/register',
+  ONBOARDINNG: '/onboarding',
   DASHBOARD: '/dashboard',
   LANDING: '/landing',
   ROOT: '/',
