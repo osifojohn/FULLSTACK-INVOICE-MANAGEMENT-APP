@@ -8,7 +8,7 @@ import Logo from '@/components/Logo';
 export default function Landing() {
   return (
     <div className="max-w-[90vw] mx-auto">
-      <nav className="h-nav-height">
+      <nav className="h-[6rem] mt-[20px] ">
         <Logo width={180} height={180} />
       </nav>
       <main className="grid grid-cols-2 gap-10 tabPort:grid-cols-1 ">
@@ -26,7 +26,7 @@ export default function Landing() {
               insights will be as simple as a few taps and clicks.
             </p>
           </div>
-          <Link href={`/admin${routes.ONBOARDINNG}`} className="btn">
+          <Link href={`/auth`} className="btn">
             Get Started
           </Link>
         </section>

@@ -76,9 +76,9 @@ const Stepper = ({ steps, currentStep }: StepperProps) => {
     >
       <div className="relative flex flex-col items-center text-teal-600 ">
         <div
-          className={`rounded-full transition duration-500 ease-in-out border-2 border-gray-300 h-12 w-12 flex items-center justify-center py-3 ${
+          className={`rounded-full  transition duration-500 ease-in-out border-2 border-gray-300 h-8 w-8 flex items-center justify-center ${
             step.selected
-              ? 'bg-green-600 text-white font-bold border border-green-600 '
+              ? 'bg-[#3b82f6] text-white font-bold border border-[#3b82f6] '
               : ''
           }`}
         >
@@ -89,7 +89,7 @@ const Stepper = ({ steps, currentStep }: StepperProps) => {
           )}
         </div>
         <div
-          className={`absolute top-0 text-center mt-16 w-32 text-xs font-medium uppercase ${
+          className={`absolute top-0 text-center mt-9 min-w-max text-[11px] font-medium uppercase ${
             step.highlighted ? 'text-gray-900' : 'text-gray-400'
           }`}
         >
@@ -98,7 +98,7 @@ const Stepper = ({ steps, currentStep }: StepperProps) => {
       </div>
       <div
         className={`flex-auto border-t-2 transition duration-500 ease-in-out ${
-          step.completed ? 'border-green-600' : 'border-green-300'
+          step.completed ? 'border-[#3b82f6]' : 'border-[#3b82f6]'
         } `}
       ></div>
     </div>

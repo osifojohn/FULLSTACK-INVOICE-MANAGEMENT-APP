@@ -8,11 +8,7 @@ interface LogoProps {
 }
 
 const Logo = ({ width, height }: LogoProps) => {
-  return (
-    <div className="h-nav-height mt-[20px] ">
-      <Image width={width} height={height} src={logo} alt="Logo" />
-    </div>
-  );
+  return <Image width={width} height={height} src={logo} alt="Logo" />;
 };
 
 export default Logo;
