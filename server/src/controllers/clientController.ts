@@ -10,13 +10,14 @@ import { Client, validateClient } from '../models/client';
 export const getAllClients = asyncHandler(
   async (req: Request, res: Response) => {
     const { page = 1, limit = 20 }: PaginationOptions = req.body;
+    const { orgId } = req.user;
 
     if (typeof page !== 'number' || typeof limit !== 'number') {
       res.status(STATUSCODE.BAD_REQUEST);
       throw new Error('Invalid request');
     }
 
-    const clients = await Client.find()
+    const clients = await Client.find(orgId)
       .limit(limit * 1)
       .skip((page - 1) * limit)
       .exec();

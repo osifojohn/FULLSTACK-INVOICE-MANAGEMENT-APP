@@ -1,11 +1,11 @@
 import bodyParser from 'body-parser';
+import { createServer } from 'http';
 import mongoose from 'mongoose';
 import express from 'express';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import cors from 'cors';
-import { createServer } from 'http';
 
 import { updateOverdueInvoicesAndAddToNotification } from './utils/updateInvoiceStatus';
 import { initializeCloudinaryConfigurations } from './utils/cloudinaryAndDbFns';
@@ -14,9 +14,10 @@ import { errorHandler } from './middlewares/errorHandler';
 
 import expense from './routes/expenseRoutes';
 import invoice from './routes/invoiceRoutes';
+import payment from './routes/paymentRoutes';
+import message from './routes/messageRoute';
 import register from './routes/authRoutes';
 import client from './routes/clientRoutes';
-import payment from './routes/paymentRoutes';
 
 /* CONFIGURATION */
 dotenv.config();
@@ -38,6 +39,7 @@ app.use('/client', client);
 app.use('/expense', expense);
 app.use('/invoice', invoice);
 app.use('/payment', payment);
+app.use('/message', message);
 
 app.use(errorHandler);
 

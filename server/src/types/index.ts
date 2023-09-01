@@ -29,8 +29,8 @@ export enum NOTIFICATIONSTATUS {
 export interface IOrganisation {
   name: string;
   logoUrl?: string;
-  phone: string;
-  email: string;
+  orgPhone: string;
+  orgEmail: string;
   city: string;
   address: string;
   country: string;
@@ -45,7 +45,6 @@ export interface IUserRequestAdmin extends ILogin {
   firstName: string;
   lastName: string;
   phone: string;
-  organisation: string;
 }
 
 export interface IClient {
@@ -119,4 +118,10 @@ export interface invoiceDetailsType {
 export interface paymentRequest {
   amount: number;
   linkedTo: string;
+}
+
+export interface sendInvoiceRequest {
+  clientId: string;
+  message: string;
+  mailSubject: string;
 }

@@ -1,4 +1,4 @@
-import { Schema, InferSchemaType, model } from 'mongoose';
+import mongoose, { Schema, InferSchemaType, model } from 'mongoose';
 import Joi from 'joi';
 
 import { IClient } from '../types';
@@ -15,6 +15,11 @@ const ClientSchema = new Schema(
     invoice: {
       type: [String],
       default: undefined,
+    },
+    orgId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Organisation',
+      required: true,
     },
   },
   {
