@@ -6,13 +6,6 @@ module.exports = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    fontSize: {
-      'small-text': '0.875rem',
-      'extra-small-text': '0.7em',
-    },
-    height: {
-      'nav-height': '6rem',
-    },
     extend: {
       textColor: {
         grey: '#102a43',

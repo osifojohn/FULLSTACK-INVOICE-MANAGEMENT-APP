@@ -17,6 +17,7 @@
     "@types/jsonwebtoken": "^9.0.2",
     "@types/morgan": "^1.9.4",
     "@types/node-cron": "^3.0.8",
+    "@types/nodemailer": "^6.4.9",
     "@types/pdfkit": "^0.12.10",
     "@typescript-eslint/eslint-plugin": "^6.2.1",
     "@typescript-eslint/parser": "^6.2.1",
@@ -40,6 +41,7 @@
     "mongoose": "^7.4.1",
     "morgan": "^1.10.0",
     "node-cron": "^3.0.2",
+    "nodemailer": "^6.9.4",
     "pdfkit": "^0.13.0",
     "socket.io": "^4.7.2"
   },

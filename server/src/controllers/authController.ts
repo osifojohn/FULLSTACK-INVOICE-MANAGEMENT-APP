@@ -1,92 +1,55 @@
-import { Request, Response } from 'express';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
+import { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
-import { validateUser, User } from '../models/user';
 import { ILogin, IOrganisation, IUserRequestAdmin, STATUSCODE } from '../types';
 import { validateOrganisation } from '../models/organisation';
 import { Organisation } from '../models/organisation';
+import { validateUser, User } from '../models/user';
 
-// @desc Create new organisation
-// @route POST /organisation
-// @access public
-export const organisationRegister = asyncHandler(
-  async (req: Request, res: Response) => {
-    const {
-      name,
-      logoUrl,
-      phone,
-      email,
-      address,
-      country,
-      city,
-    }: IOrganisation = req.body;
+interface RequestBodySignUp {
+  organisation: IOrganisation;
+  adminUser: IUserRequestAdmin;
+}
 
-    const { error } = validateOrganisation({
-      name,
-      logoUrl,
-      phone,
-      email,
-      city,
-      address,
-      country,
-    });
-
-    if (error) {
-      res.status(400);
-      throw new Error(error.details[0].message);
-    }
-
-    const isNameTaken = await Organisation.findOne({ name });
-    if (isNameTaken) {
-      res.status(STATUSCODE.BAD_REQUEST);
-      throw new Error('Name already taken');
-    }
-
-    const org = await Organisation.create({
-      name,
-      logoUrl,
-      phone,
-      email,
-      address,
-      country,
-      city,
-    });
-    if (org) {
-      res.status(STATUSCODE.CREATED).json({
-        message: `New company ${name} created`,
-        id: org?._id.toString(),
-      });
-    }
-  }
-);
-
-// @desc Create new admin
+// @desc Create new organisation with admin
 // @route POST /admin
 // @access public
 export const adminSignup = asyncHandler(async (req: Request, res: Response) => {
   const {
-    firstName,
-    lastName,
-    email,
-    password,
-    phone,
-    organisation,
-  }: IUserRequestAdmin = req.body;
+    organisation: { name, logoUrl, orgPhone, orgEmail, address, country, city },
+    adminUser: { firstName, lastName, email, password, phone },
+  }: RequestBodySignUp = req.body;
 
-  const { error } = validateUser({
-    firstName,
-    lastName,
-    email,
-    password,
-    phone,
-    organisation,
+  const { error: errOrg } = validateOrganisation({
+    name,
+    logoUrl,
+    orgPhone,
+    orgEmail,
+    city,
+    address,
+    country,
   });
 
-  if (error) {
+  if (errOrg) {
+    const [errorMessage] = errOrg.details.map((detail) => detail.message);
     res.status(STATUSCODE.BAD_REQUEST);
-    throw new Error(error.details[0].message);
+    throw new Error(errorMessage);
+  }
+
+  const { error: errUser } = validateUser({
+    firstName,
+    lastName,
+    email,
+    password,
+    phone,
+  });
+
+  if (errUser) {
+    const [errorMessage] = errUser.details.map((detail) => detail.message);
+    res.status(STATUSCODE.BAD_REQUEST);
+    throw new Error(errorMessage);
   }
 
   const duplicateUser = await User.findOne({ email });
@@ -95,32 +58,32 @@ export const adminSignup = asyncHandler(async (req: Request, res: Response) => {
     throw new Error('Email already taken');
   }
 
+  const org = await Organisation.create({
+    name,
+    logoUrl,
+    phone: orgPhone,
+    email: orgEmail,
+    address,
+    country,
+    city,
+  });
+
   const hashedPwd = await bcrypt.hash(password, 10);
 
-  const retrivedOrganisation = await Organisation.findById(organisation).exec();
+  await User.create({
+    firstName,
+    lastName,
+    email,
+    password: hashedPwd,
+    phone,
+    organisation: org?._id.toString(),
+    role: 'admin',
+    active: true,
+  });
 
-  if (!retrivedOrganisation) {
-    res.status(STATUSCODE.BAD_REQUEST);
-    throw new Error('Invalid  details received');
-  }
-
-  if (retrivedOrganisation) {
-    const user = await User.create({
-      firstName,
-      lastName,
-      email,
-      password: hashedPwd,
-      phone,
-      organisation,
-      role: 'admin',
-      active: true,
-    });
-    if (user) {
-      res.status(STATUSCODE.CREATED).json({
-        message: `New admin ${firstName} created`,
-      });
-    }
-  }
+  res.status(STATUSCODE.CREATED).json({
+    message: `New Oganiation with admin '${firstName}' created`,
+  });
 });
 
 // @desc Login user

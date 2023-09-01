@@ -7,6 +7,10 @@ const MessageSchema = new Schema(
       ref: 'Organisation',
       required: true,
     },
+    clientId: {
+      type: String,
+      required: true,
+    },
     mailSubject: {
       type: String,
       required: true,
