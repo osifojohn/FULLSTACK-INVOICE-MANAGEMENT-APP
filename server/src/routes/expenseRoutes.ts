@@ -4,6 +4,7 @@ import {
   addExpense,
   deleteExpense,
   fetchExpenseByDateRange,
+  getAllExpense,
   searchExpense,
   updateExpense,
 } from '../controllers/expenseController';
@@ -16,6 +17,7 @@ router.use(validateToken);
 router.post('/add-new', addExpense);
 router.route('/:id').put(updateExpense).delete(deleteExpense);
 router.get('/search', searchExpense);
+router.get('/all-expense', getAllExpense);
 router.get('/date-range', fetchExpenseByDateRange);
 
 export default router;

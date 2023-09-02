@@ -92,6 +92,9 @@ export const adminSignup = asyncHandler(async (req: Request, res: Response) => {
 export const login = asyncHandler(async (req: Request, res: Response) => {
   const { email, password }: ILogin = req.body;
 
+  let org;
+  let orgName;
+
   if (!email || !password) {
     res.status(STATUSCODE.BAD_REQUEST);
     throw new Error('Please enter all field values');
@@ -104,6 +107,12 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
     throw new Error('Unauthorized');
   }
 
+  if (foundUser) {
+    const { organisation } = foundUser;
+    org = await Organisation.findOne({ _id: organisation.toString() }).exec();
+    orgName = org?.name;
+  }
+
   const match = await bcrypt.compare(password, foundUser.password);
 
   if (!match) {
@@ -111,20 +120,23 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
     throw new Error('Unauthorized');
   }
 
-  if (foundUser && match) {
+  if (foundUser && org) {
     const accessToken = jwt.sign(
       {
         user: {
           firstName: foundUser.firstName,
           email: foundUser.email,
-          userId: foundUser.id,
+          userId: foundUser?._id.toString(),
           role: foundUser.role,
-          orgId: foundUser.organisation,
+          orgId: org?._id.toString(),
         },
       },
+
       process.env.ACCESS_TOKEN_SECRET as string,
       { expiresIn: '24hr' }
     );
-    res.status(200).json({ accessToken });
+
+    const { firstName } = foundUser;
+    res.status(200).json({ firstName, orgName, accessToken });
   }
 });
