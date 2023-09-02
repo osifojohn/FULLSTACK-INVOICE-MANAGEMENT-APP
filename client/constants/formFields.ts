@@ -30,7 +30,7 @@ const persoanlDetailsFields = [
     type: 'text',
     autoComplete: 'firstname',
     isRequired: true,
-    placeholder: 'Firstname',
+    placeholder: 'First name',
   },
   {
     labelText: 'Lastname',
@@ -40,7 +40,7 @@ const persoanlDetailsFields = [
     type: 'text',
     autoComplete: 'lastname',
     isRequired: true,
-    placeholder: 'Lastname',
+    placeholder: 'Last name',
   },
   {
     labelText: 'Email address',
@@ -80,7 +80,7 @@ const persoanlDetailsFields = [
     type: 'password',
     autoComplete: 'confirm-password',
     isRequired: true,
-    placeholder: 'Confirm Password',
+    placeholder: 'Confirm password',
   },
 ];
 
@@ -103,7 +103,7 @@ const companyDetailsFields = [
     type: 'email',
     autoComplete: 'email',
     isRequired: true,
-    placeholder: 'Company Email',
+    placeholder: 'Company email',
   },
   {
     labelText: 'Phone',
@@ -113,7 +113,7 @@ const companyDetailsFields = [
     type: 'number',
     autoComplete: 'phone',
     isRequired: true,
-    placeholder: 'Company Phone',
+    placeholder: 'Company phone',
   },
   {
     labelText: 'County',
@@ -123,7 +123,7 @@ const companyDetailsFields = [
     type: 'text',
     autoComplete: 'country',
     isRequired: true,
-    placeholder: 'County',
+    placeholder: 'Country',
   },
   {
     labelText: 'City',

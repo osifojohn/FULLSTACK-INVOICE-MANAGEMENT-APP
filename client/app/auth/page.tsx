@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 
 import { StepperContext } from '../../context/stepperContext';
 import StepperControl from './components/stepperControl';
-import Company from './components/steps/company';
 import Details from './components/steps/Details';
+import Company from './components/steps/company';
 import Header from '@/components/forms/Header';
 import Stepper from './components/stepper';
 import Login from './components/login';
