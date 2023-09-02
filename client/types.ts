@@ -31,4 +31,6 @@ export type User = {
   firstName: string;
   orgName: string;
   accessToken: string;
+  userId: string;
+  orgId: string;
 };
