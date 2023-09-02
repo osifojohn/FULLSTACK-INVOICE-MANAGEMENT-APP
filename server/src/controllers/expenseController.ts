@@ -58,17 +58,22 @@ export const addExpense = asyncHandler(async (req: Request, res: Response) => {
 //@access private
 export const getAllExpense = asyncHandler(
   async (req: Request, res: Response) => {
+    console.log('hello');
     const { page = 1, limit = 20 }: PaginationOptions = req.body;
+
+    const { orgId } = req.user;
 
     if (typeof page !== 'number' || typeof limit !== 'number') {
       res.status(STATUSCODE.BAD_REQUEST);
       throw new Error('Invalid request');
     }
 
-    const expenses = await Expense.find()
+    const expenses = await Expense.findById(orgId)
       .limit(limit * 1)
       .skip((page - 1) * limit)
       .exec();
+
+    console.log(expenses);
 
     if (!expenses || expenses.length === 0) {
       res.status(STATUSCODE.NOT_FOUND);
