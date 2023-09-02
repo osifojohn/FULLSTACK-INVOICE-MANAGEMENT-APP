@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { HTTP_METHODS, ILogin, IUserAdmin } from '../../types';
+import { HTTP_METHODS, IUserAdmin, User } from '../../types';
 
 export const authApi = createApi({
   reducerPath: 'authApi',
@@ -7,8 +7,8 @@ export const authApi = createApi({
     baseUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/`,
   }),
   endpoints: (builder) => ({
-    loginUser: builder.mutation({
-      query: (body: ILogin) => {
+    loginUser: builder.mutation<User, { [key: string]: string }>({
+      query: (body: { [key: string]: string }) => {
         return {
           url: 'login',
           method: HTTP_METHODS.POST,

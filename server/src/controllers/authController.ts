@@ -94,6 +94,7 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
 
   let org;
   let orgName;
+  let orgId;
 
   if (!email || !password) {
     res.status(STATUSCODE.BAD_REQUEST);
@@ -111,6 +112,7 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
     const { organisation } = foundUser;
     org = await Organisation.findOne({ _id: organisation.toString() }).exec();
     orgName = org?.name;
+    orgId = org?._id;
   }
 
   const match = await bcrypt.compare(password, foundUser.password);
@@ -136,7 +138,9 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
       { expiresIn: '24hr' }
     );
 
-    const { firstName } = foundUser;
-    res.status(200).json({ firstName, orgName, accessToken });
+    const { firstName, _id: user_id } = foundUser;
+    const userId = user_id.toString();
+
+    res.status(200).json({ firstName, userId, orgName, orgId, accessToken });
   }
 });
