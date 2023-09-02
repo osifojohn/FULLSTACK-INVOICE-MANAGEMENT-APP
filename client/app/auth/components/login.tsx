@@ -26,8 +26,8 @@ export default function Login() {
   const authenticateUser = () => {};
 
   return (
-    <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-      <div className="-space-y-px">
+    <form className="mt-8 space-y-6 mb-5" onSubmit={handleSubmit}>
+      <div className="-space-y-px pb-6">
         {fields.map((field) => (
           <Input
             key={field.id}

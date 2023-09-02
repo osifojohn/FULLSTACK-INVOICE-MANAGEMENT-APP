@@ -26,7 +26,7 @@ export default function Landing() {
               insights will be as simple as a few taps and clicks.
             </p>
           </div>
-          <Link href={`/auth`} className="btn">
+          <Link href={`${routes.AUTH}`} className="btn">
             Get Started
           </Link>
         </section>
