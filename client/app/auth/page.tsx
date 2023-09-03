@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import { toast } from 'react-hot-toast';
 
 import { StepperContext } from '../../context/stepperContext';
 import StepperControl from './components/stepperControl';
@@ -12,11 +13,22 @@ import Login from './components/login';
 const Onboarding = () => {
   const [companyData, setCompanyData] = useState<{ [key: string]: string }>({});
   const [userData, setUserData] = useState<{ [key: string]: string }>({});
-  const [finalData, setFinalData] = useState<{ [key: string]: string }[]>([]);
+  const [finalData, setFinalData] = useState<{
+    organisation: { [key: string]: string };
+    userAdmin: { [key: string]: string };
+  }>({
+    organisation: {},
+    userAdmin: {},
+  });
 
   const [currentStep, setCurrentStep] = useState(1);
   const [isLogin, setIsLogin] = useState(true);
   const [isRegister, setIsRegister] = useState(false);
+
+  function toggleLogin() {
+    setIsRegister(false);
+    setIsLogin(true);
+  }
 
   function toggle() {
     setIsLogin(!isLogin);
@@ -36,7 +48,7 @@ const Onboarding = () => {
       case 2:
         return (
           <div className="px-10 pb-8">
-            <Details />
+            <Details toggleLogin={toggleLogin} />
           </div>
         );
       default:
@@ -44,7 +56,13 @@ const Onboarding = () => {
   };
 
   const handleClick = (direction: string) => {
+    const OBJECT_LENGTH = 6;
     let newStep = currentStep;
+
+    if (Object.values(finalData.organisation).length !== OBJECT_LENGTH) {
+      toast.error('Please fill all fields');
+      return;
+    }
     direction === 'next' ? newStep++ : newStep--;
     newStep > 0 && newStep <= steps.length && setCurrentStep(newStep);
   };

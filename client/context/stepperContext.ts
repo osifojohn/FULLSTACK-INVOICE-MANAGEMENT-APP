@@ -8,20 +8,28 @@ export const StepperContext = createContext<{
     React.SetStateAction<{ [key: string]: string }>
   >;
   finalData: {
-    [key: string]: string;
-  }[];
+    organisation: {
+      [key: string]: string;
+    };
+    userAdmin: {
+      [key: string]: string;
+    };
+  };
   setFinalData: React.Dispatch<
-    React.SetStateAction<
-      {
+    React.SetStateAction<{
+      organisation: {
         [key: string]: string;
-      }[]
-    >
+      };
+      userAdmin: {
+        [key: string]: string;
+      };
+    }>
   >;
 }>({
   userData: {},
   setUserData: () => {},
   companyData: {},
   setCompanyData: () => {},
-  finalData: [],
-  setFinalData: () => [],
+  finalData: { organisation: {}, userAdmin: {} },
+  setFinalData: () => {},
 });

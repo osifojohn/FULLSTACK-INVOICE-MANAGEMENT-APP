@@ -10,7 +10,7 @@ import { validateUser, User } from '../models/user';
 
 interface RequestBodySignUp {
   organisation: IOrganisation;
-  adminUser: IUserRequestAdmin;
+  userAdmin: IUserRequestAdmin;
 }
 
 // @desc Create new organisation with admin
@@ -18,13 +18,12 @@ interface RequestBodySignUp {
 // @access public
 export const adminSignup = asyncHandler(async (req: Request, res: Response) => {
   const {
-    organisation: { name, logoUrl, orgPhone, orgEmail, address, country, city },
-    adminUser: { firstName, lastName, email, password, phone },
+    organisation: { name, orgPhone, orgEmail, address, country, city },
+    userAdmin: { firstName, lastName, email, password, phone },
   }: RequestBodySignUp = req.body;
 
   const { error: errOrg } = validateOrganisation({
     name,
-    logoUrl,
     orgPhone,
     orgEmail,
     city,
@@ -60,7 +59,6 @@ export const adminSignup = asyncHandler(async (req: Request, res: Response) => {
 
   const org = await Organisation.create({
     name,
-    logoUrl,
     phone: orgPhone,
     email: orgEmail,
     address,

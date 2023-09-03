@@ -17,7 +17,7 @@ export const authApi = createApi({
       },
     }),
     registerUser: builder.mutation({
-      query: (body: IUserAdmin) => {
+      query: (body) => {
         return {
           url: 'admin',
           method: HTTP_METHODS.POST,
