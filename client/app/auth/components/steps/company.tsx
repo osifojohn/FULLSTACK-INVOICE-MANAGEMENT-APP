@@ -20,7 +20,10 @@ export default function Company() {
   };
 
   useEffect(() => {
-    setFinalData([{ ...companyData }, { ...userData }]);
+    setFinalData({
+      organisation: { ...companyData },
+      userAdmin: { ...userData },
+    });
   }, [userData, companyData, setFinalData]);
 
   return (

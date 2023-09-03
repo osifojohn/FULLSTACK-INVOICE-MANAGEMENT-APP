@@ -1,5 +1,7 @@
 'use client';
-import React from 'react';
+import { StepperContext } from '@/context/stepperContext';
+import { useRegisterUserMutation } from '@/redux/services/authApi';
+import React, { useContext } from 'react';
 
 interface StepperControlProps {
   handleClick: (val: string) => void;
@@ -38,8 +40,9 @@ const StepperControl = ({
           </button>
         ) : (
           <button
-            type="submit"
-            className="bg-[#3b82f6] cursor-not-allowed text-white uppercase py-2 px-4 rounded-xl font-semibold   hover:bg-slate-700 hover:text-white duration-200 ease-in-out"
+            type="button"
+            disabled
+            className="bg-[#606369df] cursor-not-allowed text-white uppercase py-2 px-4 rounded-xl font-semibold   hover:bg-slate-700 hover:text-white duration-200 ease-in-out"
           >
             Next
           </button>

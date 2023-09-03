@@ -5,31 +5,71 @@ import { persoanlDetailsFields } from '../../../../constants/formFields';
 import FormAction from '../../../../components/forms/formAction';
 import { StepperContext } from '@/context/stepperContext';
 import Input from '../../../../components/forms/input';
+import { useRegisterUserMutation } from '@/redux/services/authApi';
+import { toast } from 'react-hot-toast';
+
+interface DetailsProps {
+  toggleLogin(): void;
+}
 
 const fields = persoanlDetailsFields;
 let fieldsState: { [key: string]: string } = {};
 
 fields.forEach((field) => (fieldsState[field.id] = ''));
 
-export default function Details() {
+export default function Details({ toggleLogin }: DetailsProps) {
   const { userData, setUserData } = useContext(StepperContext);
   const { companyData } = useContext(StepperContext);
   const { finalData, setFinalData } = useContext(StepperContext);
+
+  const [registerUser, { data, isLoading, isError, error }] =
+    useRegisterUserMutation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setUserData({ ...userData, [e.target.id]: e.target.value });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(finalData);
+    if (isLoading) return;
     createAccount();
   };
 
-  useEffect(() => {
-    setFinalData([{ ...userData }, { ...companyData }]);
-  }, [userData, companyData, setFinalData]);
+  // useEffect(() => {
+  //   setFinalData({
+  //     organisation: { ...companyData },
+  //     userAdmin: { ...userData },
+  //   });
+  // }, [userData, companyData, setFinalData]);
 
-  const createAccount = () => {};
+  const createAccount = async () => {
+    await registerUser(finalData);
+  };
+
+  useEffect(() => {
+    if (userData || companyData) {
+      setFinalData({
+        organisation: { ...companyData },
+        userAdmin: { ...userData },
+      });
+    }
+    if (isError || error) {
+      const err = error as any;
+      toast.error(err.data.message);
+    }
+    if (data) {
+      toast.success(data?.message);
+      toggleLogin();
+    }
+  }, [
+    userData,
+    companyData,
+    setFinalData,
+    isLoading,
+    isError,
+    data,
+    error,
+    toggleLogin,
+  ]);
 
   return (
     <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -50,7 +90,11 @@ export default function Details() {
         ))}
       </div>
 
-      <FormAction handleSubmit={handleSubmit} text="Signup" />
+      <FormAction
+        handleSubmit={handleSubmit}
+        text="Signup"
+        isLoading={isLoading}
+      />
     </form>
   );
 }
