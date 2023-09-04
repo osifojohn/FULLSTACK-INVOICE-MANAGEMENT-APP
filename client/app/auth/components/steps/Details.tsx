@@ -34,27 +34,21 @@ export default function Details({ toggleLogin }: DetailsProps) {
     createAccount();
   };
 
-  // useEffect(() => {
-  //   setFinalData({
-  //     organisation: { ...companyData },
-  //     userAdmin: { ...userData },
-  //   });
-  // }, [userData, companyData, setFinalData]);
-
   const createAccount = async () => {
     await registerUser(finalData);
   };
 
   useEffect(() => {
+    if (isError || error) {
+      const err = error as any;
+      toast.error(err.data.message);
+      return;
+    }
     if (userData || companyData) {
       setFinalData({
         organisation: { ...companyData },
         userAdmin: { ...userData },
       });
-    }
-    if (isError || error) {
-      const err = error as any;
-      toast.error(err.data.message);
     }
     if (data) {
       toast.success(data?.message);
@@ -63,11 +57,11 @@ export default function Details({ toggleLogin }: DetailsProps) {
   }, [
     userData,
     companyData,
+    isError,
+    error,
     setFinalData,
     isLoading,
-    isError,
     data,
-    error,
     toggleLogin,
   ]);
 

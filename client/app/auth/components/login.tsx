@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 import { useLoginUserMutation } from '@/redux/services/authApi';
 import FormAction from '../../../components/forms/formAction';
@@ -9,12 +10,14 @@ import { loginFields } from '../../../constants/formFields';
 import { setUser } from '@/redux/features/auth.slice';
 import Input from '../../../components/forms/input';
 import { useAppDispatch } from '@/redux/hooks';
+import { routes } from '@/constants/links';
 
 const fields = loginFields;
 let fieldsState: { [key: string]: string } = {};
 fields.forEach((field) => (fieldsState[field.id] = ''));
 
 export default function Login() {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const [loginUser, { data, isSuccess, isLoading, isError, error, status }] =
     useLoginUserMutation();
@@ -35,8 +38,8 @@ export default function Login() {
   };
 
   const authenticateUser = async () => {
-    await loginUser(loginState);
     if (isLoading) return;
+    await loginUser(loginState);
   };
 
   useEffect(() => {
@@ -50,8 +53,9 @@ export default function Login() {
       dispatch(setUser(data));
 
       //push user to dashboard
+      router.push(`${routes.DASHBOARD}`);
     }
-  }, [isError, isSuccess, err, data, dispatch]);
+  }, [isError, isSuccess, err, data, router, dispatch]);
 
   return (
     <form className="mt-8 space-y-6 mb-5" onSubmit={handleSubmit}>
