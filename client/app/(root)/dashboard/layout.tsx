@@ -1,11 +1,13 @@
+'use client';
 import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
 
+import { selectDashboardToggle } from '@/redux/features/dashboardToggle.slice';
 import { RightSidebar } from '@/components/shared/RightSidebar';
 import { LeftSidebar } from '@/components/shared/LeftSidebar';
 import { Buttombar } from '@/components/shared/Buttombar ';
 import { Topbar } from '@/components/shared/Topbar';
-
+import { useAppSelector } from '@/redux/hooks';
 import '../../../app/globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -21,18 +23,19 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const { notification, leftSidebar } = useAppSelector(selectDashboardToggle);
   return (
     <html lang="en">
       <body
         className={`${inter.className} tabPort:min-h-[100vh] tabPort:flex tabPort:flex-col`}
       >
         <Topbar />
-        <main>
-          <LeftSidebar />
-          <section className="flex-1 bg-cyan-600">
+        <main className="flex">
+          {leftSidebar && <LeftSidebar />}
+          <section className="mx-3 flex-1 bg-cyan-600">
             <div>{children}</div>
           </section>
-          <RightSidebar />
+          {notification && <RightSidebar />}
         </main>
         <Buttombar />
       </body>
