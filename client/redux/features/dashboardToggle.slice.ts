@@ -9,7 +9,7 @@ interface DashboardToggle {
 
 const initialState: DashboardToggle = {
   leftSidebar: true,
-  notification: false,
+  notification: true,
 };
 
 export const dashboardToggle = createSlice({

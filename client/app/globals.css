@@ -39,10 +39,14 @@
     left: 0;
     width: 100%;
   }
-  .showNotification {
+  .rightSidebar {
     display: flex;
     flex-direction: column;
-    background-color: blue;
+    background-color: #fff;
     width: 25%;
+  }
+
+  .leftSidebar {
+    background-color: #fff;
   }
 }

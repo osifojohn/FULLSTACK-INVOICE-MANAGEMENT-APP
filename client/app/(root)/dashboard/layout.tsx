@@ -24,6 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const { notification, leftSidebar } = useAppSelector(selectDashboardToggle);
+
   return (
     <html lang="en">
       <body
@@ -32,11 +33,12 @@ export default function RootLayout({
         <Topbar />
         <main className="flex">
           {leftSidebar && <LeftSidebar />}
-          <section className="mx-3 flex-1 bg-cyan-600">
+          <section className="mx-3 flex-1 ">
             <div>{children}</div>
           </section>
           {notification && <RightSidebar />}
         </main>
+
         <Buttombar />
       </body>
     </html>
