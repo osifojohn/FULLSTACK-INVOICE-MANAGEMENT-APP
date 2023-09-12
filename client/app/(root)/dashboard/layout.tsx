@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} tabPort:min-h-[100vh] tabPort:flex tabPort:flex-col`}
+        className={`${inter.className} tabPort:min-h-[100vh] tabPort:flex tabPort:flex-col `}
       >
         <Topbar />
         <main className="flex">
@@ -38,7 +38,6 @@ export default function RootLayout({
           </section>
           {notification && <RightSidebar />}
         </main>
-
         <Buttombar />
       </body>
     </html>
