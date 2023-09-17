@@ -43,7 +43,9 @@
     display: flex;
     flex-direction: column;
     background-color: #fff;
-    width: 25%;
+    width: 20%;
+    position: sticky;
+    top: 100px;
   }
 
   .leftSidebar {
@@ -53,21 +55,29 @@
     align-items: center;
     justify-content: space-between;
     margin: 0 auto;
-    width: 20%;
     height: calc(100vh - 100px);
+    position: sticky;
+    top: 100px;
+    width: 15%;
+  }
+  .centerContainer {
+    /* flex: 1 1; */
   }
 
   .leftSidebarBtn {
     display: flex;
     height: 50px;
-    padding: 15px 30px 15px 30px;
+    padding-left: 20px;
+    width: 150px;
     align-items: center;
     gap: 10px;
     border-radius: 0px 8px 8px 0px;
-    background: #f1f1f1;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
   }
   .leftSidebarBtnActive {
     border-left-width: 7px;
+    background: #f1f1f1;
     border-left-color: #305c45;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
@@ -79,5 +89,38 @@
     font-style: normal;
     font-weight: 500;
     line-height: normal;
+  }
+
+  .chartFirstContainer {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 0;
+  }
+  .chartFirstContainer > div {
+    background-color: #fff;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    border-radius: 8px;
+    height: min-content;
+  }
+
+  .invoiceColumnBtn {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    background-color: #fff;
+    padding: 25px 0;
+    /* border-bottom-color: #939393; */
+  }
+  .invoiceColumnBtn > button {
+    font-family: 'Cabin', 'Sans-Serif';
+    color: #939393;
+    font-weight: 400;
+    font-size: 18px;
+  }
+  .invoiceColumnBtn > h5 {
+    font-family: 'Cabin', 'Sans-Serif';
+    color: #939393;
+    font-weight: 400;
+    font-size: 15px;
   }
 }
