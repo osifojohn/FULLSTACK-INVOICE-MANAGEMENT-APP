@@ -37,24 +37,35 @@ const InvoiceItems = () => {
                 <td>{item.last_name}</td>
                 <td>{item.email}</td>
                 <td>{item.phone}</td>
-                <td>View</td>
+                <td>{showInvoice()}</td>
               </tr>
             );
           })}
         </tbody>
       </table>
-      <div className="flex justify-between items-center">
-        <div>select number</div>
-        <Pagination
-          className="pagination-bar"
-          currentPage={currentPage}
-          totalCount={data.length}
-          pageSize={PageSize}
-          onPageChange={(page: number) => setCurrentPage(page)}
-        />
+      <div className="flex justify-between bg-white items-center py-5 border-solid border-b-[#939393] border-b-[1px]">
+        <div className="flex items-center gap-2 ml-4">
+          <button className="font-bodyFont text-[15px]">Back</button>
+          <p className="font-bodyFont text-[15px]">1 of 40</p>
+          <button className="font-bodyFont text-[15px]">Next</button>
+        </div>
+        <div>
+          {' '}
+          <Pagination
+            className="pagination-bar"
+            currentPage={currentPage}
+            totalCount={data.length}
+            pageSize={PageSize}
+            onPageChange={(page: number) => setCurrentPage(page)}
+          />
+        </div>
       </div>
     </>
   );
 };
+
+function showInvoice() {
+  return <button>Action</button>;
+}
 
 export default InvoiceItems;
