@@ -18,6 +18,7 @@ const InvoiceSchema = new Schema(
       ref: 'Client',
       required: true,
     },
+    clientName: String,
     invoicePdf: {
       public_id: {
         type: String,

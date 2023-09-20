@@ -113,6 +113,7 @@ export interface invoiceDetailsType {
   subtotal: number;
   paidToDate: number;
   organizationName: string;
+  clientName?: string;
 }
 
 export interface paymentRequest {

@@ -107,6 +107,7 @@ export const addClient = asyncHandler(async (req: Request, res: Response) => {
     telephone,
     address,
   }: IClient = req.body;
+  const { orgId } = req.user;
 
   const { error } = validateClient({
     name,
@@ -146,13 +147,13 @@ export const addClient = asyncHandler(async (req: Request, res: Response) => {
     postalCode,
     telephone,
     address,
+    orgId,
   });
-  if (client) {
-    res.status(STATUSCODE.CREATED).json({
-      message: `${name} added to clients list`,
-      id: client?._id.toString(),
-    });
-  }
+
+  res.status(STATUSCODE.CREATED).json({
+    message: `${name} added to clients list`,
+    id: client?.id.toString(),
+  });
 });
 
 //@desc Update contact

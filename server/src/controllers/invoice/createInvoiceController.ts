@@ -95,6 +95,7 @@ export const handleCreateInvoice = asyncHandler(
       dueDate,
       paidToDate,
       organizationName: organisation?.name,
+      clientName: client?.name,
     };
 
     writeStream.on('error', () => {

@@ -90,6 +90,7 @@ export const handleEditInvoice = asyncHandler(
       dueDate,
       paidToDate,
       organizationName: organisation?.name,
+      clientName: client?.name,
     };
 
     writeStream.on('error', () => {

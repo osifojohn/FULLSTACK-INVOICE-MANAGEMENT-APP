@@ -34,3 +34,51 @@ export type User = {
   userId: string;
   orgId: string;
 };
+
+export type PaginationOptions = {
+  page: number;
+  limit: number;
+};
+
+type InvoiceItem = {
+  item: string;
+  quantity: number;
+  description: string;
+  price: number;
+  amountSum: number;
+  _id: string;
+};
+
+export type Invoice = {
+  invoicePdf: {
+    public_id: string;
+    url: string;
+  };
+  _id: string;
+  orgId: string;
+  createdBy: string;
+  clientId: string;
+  clientName: string;
+  items: InvoiceItem[];
+  moreDetails: string;
+  invoiceNumber: string;
+  paidToDate: number;
+  dueDate: string;
+  totalPrice: number;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+};
+
+export interface InvoiceData {
+  totalPages: number;
+  currentPage: number;
+  invoices: Invoice[];
+}
+
+export interface InvoiceByDateRange {
+  page?: number;
+  limit?: number;
+  queryStartDate?: string;
+}
