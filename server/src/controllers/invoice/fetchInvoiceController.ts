@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
+import { format } from 'date-fns';
 // import { startOfDay, endOfDay, format, parseISO } from 'date-fns';
 
 import { Invoice } from '../../models/invoice';
@@ -42,7 +43,7 @@ export const getAllInvoice = asyncHandler(
 //@desc Search invoices by name
 //@route GET /expense/search
 //@access private
-export const searchExpense = asyncHandler(
+export const searchInvoice = asyncHandler(
   async (req: Request, res: Response) => {
     const {
       keyword,
@@ -82,90 +83,75 @@ export const searchExpense = asyncHandler(
   }
 );
 
-//@desc Update expense
-//@route PUT /expense/:id
-
 //@desc get invoices byDateRange
-//@route GET /expense/date-range
+//@route POST /nnvoice/date-range
 //@access private
-export const fetchInvoiceByDateRange = asyncHandler(
-  async (req: Request, res: Response) => {
-    const {
-      queryStartDate,
-      queryEndDate,
-      page = 1,
-      limit = 10,
-    }: {
-      queryStartDate: string;
-      queryEndDate: string;
-      page: number;
-      limit: number;
-    } = req.body;
+export const fetchInvoiceByDateRange = asyncHandler(async (req, res) => {
+  const {
+    queryStartDate,
+    page = 1,
+    limit = 10,
+  }: {
+    queryStartDate?: string;
+    page?: number;
+    limit?: number;
+  } = req.query;
 
-    const THIRTY_DAYS = 30;
+  let invoices;
+  let count;
 
-    const currentDate = new Date();
-    const defaultStartDate = new Date();
-    defaultStartDate.setDate(currentDate.getDate() - THIRTY_DAYS);
-    const defaultEndDate = currentDate;
+  const THIRTY_DAYS = 30;
+  const defaultStartDate = format(new Date(), 'yyyy-MM-dd');
+  const initialDate = new Date(queryStartDate as string);
 
-    const count = await Invoice.count();
+  const queryEndDate = new Date(
+    initialDate.getFullYear(),
+    initialDate.getMonth() + 1,
+    0
+  );
 
-    if (!queryStartDate || !queryEndDate) {
-      const invoices = await Invoice.find({
-        updatedAt: {
-          $gte: defaultStartDate,
-          $lt: defaultEndDate,
-        },
-      });
+  if (queryStartDate === 'undefined') {
+    const defaultEndDate = format(
+      new Date().setDate(new Date().getDate() - THIRTY_DAYS),
+      'yyyy-MM-dd'
+    );
 
-      if (invoices && invoices?.length !== 0) {
-        res.status(STATUSCODE.SUCCESS).json({
-          totalPages: Math.ceil(count / limit),
-          currentPage: page,
-          invoices,
-        });
-      }
-      if (invoices?.length === 0) {
-        res.status(STATUSCODE.SERVER_ERROR);
-        throw new Error('An error occured');
-      }
-    }
+    console.log(defaultEndDate, defaultStartDate);
 
-    const invoices = await Invoice.find({
-      updatedAt: {
-        $gte: defaultStartDate,
+    invoices = await Invoice.find({
+      createdAt: {
+        $gte: defaultEndDate,
         $lt: defaultStartDate,
       },
+    })
+      .limit(limit * 1)
+      .skip((page - 1) * limit)
+      .exec();
+
+    count = await Invoice.count();
+
+    res.status(STATUSCODE.SUCCESS).json({
+      totalPages: Math.ceil(count / limit),
+      currentPage: page,
+      invoices,
     });
-
-    if (invoices && invoices.length !== 0) {
-      res.status(STATUSCODE.SUCCESS).json({
-        totalPages: Math.ceil(count / limit),
-        currentPage: page,
-        invoices,
-      });
-    }
-
-    if (invoices.length === 0) {
-      const invoices = await Invoice.find({
-        createdAt: {
-          $gte: defaultStartDate,
-          $lt: defaultEndDate,
-        },
-      });
-
-      if (invoices && invoices?.length !== 0) {
-        res.status(STATUSCODE.SUCCESS).json({
-          totalPages: Math.ceil(count / limit),
-          currentPage: page,
-          invoices,
-        });
-      }
-      if (invoices?.length === 0) {
-        res.status(STATUSCODE.SERVER_ERROR);
-        throw new Error('An error occured');
-      }
-    }
   }
-);
+
+  invoices = await Invoice.find({
+    createdAt: {
+      $gte: queryStartDate,
+      $lt: queryEndDate,
+    },
+  })
+    .limit(limit * 1)
+    .skip((page - 1) * limit)
+    .exec();
+
+  count = await Invoice.count();
+
+  res.status(STATUSCODE.SUCCESS).json({
+    totalPages: Math.ceil(count / limit),
+    currentPage: page,
+    invoices,
+  });
+});

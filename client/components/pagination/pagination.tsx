@@ -1,89 +1,39 @@
 'use client';
-import React from 'react';
-import classnames from 'classnames';
+import React, { Dispatch, SetStateAction } from 'react';
 
 import './pagination.css';
-import { usePagination, DOTS } from '@/hooks/usePagination';
+import ReactPaginate from 'react-paginate';
+import { AiFillLeftCircle, AiFillRightCircle } from 'react-icons/ai';
+import { IconContext } from 'react-icons';
+import { InvoiceData } from '@/types';
 
 interface PaginationProps {
-  className: string;
-  currentPage: number;
-  totalCount: number;
-  pageSize: number;
-  siblingCount?: number;
-  onPageChange: (page: number) => void;
+  setPage: Dispatch<SetStateAction<number>>;
+  totalPages: number;
 }
 
-const Pagination = ({
-  onPageChange,
-  totalCount,
-  siblingCount = 1,
-  currentPage,
-  pageSize,
-  className,
-}: PaginationProps) => {
-  const paginationRange = usePagination({
-    currentPage,
-    totalCount,
-    siblingCount,
-    pageSize,
-  }) as (string | number)[];
-
-  if (currentPage === 0 || paginationRange.length < 2) {
-    return null;
-  }
-
-  const onNext = () => {
-    onPageChange(currentPage + 1);
-  };
-
-  const onPrevious = () => {
-    onPageChange(currentPage - 1);
-  };
-
-  let lastPage = paginationRange[paginationRange.length - 1];
+const Pagination = ({ setPage, totalPages }: PaginationProps) => {
   return (
-    <ul
-      className={classnames('pagination-container', { [className]: className })}
-    >
-      <li
-        className={classnames('pagination-item', {
-          disabled: currentPage === 1,
-        })}
-        onClick={onPrevious}
-      >
-        <div className="arrow left" />
-      </li>
-      {paginationRange.map((pageNumber) => {
-        if (pageNumber === DOTS) {
-          return (
-            <li className="pagination-item dots" key={pageNumber}>
-              &#8230;
-            </li>
-          );
+    <>
+      <ReactPaginate
+        containerClassName={'pagination'}
+        pageClassName={'page-item'}
+        activeClassName={'active'}
+        onPageChange={(event) => setPage(event.selected)}
+        pageCount={Math.ceil(totalPages)}
+        breakLabel="..."
+        previousLabel={
+          <IconContext.Provider value={{ color: '#B8C1CC', size: '36px' }}>
+            <AiFillLeftCircle />
+          </IconContext.Provider>
         }
-
-        return (
-          <li
-            className={classnames('pagination-item', {
-              selected: pageNumber === currentPage,
-            })}
-            onClick={() => onPageChange(pageNumber as number)}
-            key={pageNumber}
-          >
-            {pageNumber}
-          </li>
-        );
-      })}
-      <li
-        className={classnames('pagination-item', {
-          disabled: currentPage === lastPage,
-        })}
-        onClick={onNext}
-      >
-        <div className="arrow right" />
-      </li>
-    </ul>
+        nextLabel={
+          <IconContext.Provider value={{ color: '#B8C1CC', size: '36px' }}>
+            <AiFillRightCircle />
+          </IconContext.Provider>
+        }
+      />
+    </>
   );
 };
 
