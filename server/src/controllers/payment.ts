@@ -67,6 +67,7 @@ export const headleAddPayment = async (req: Request, res: Response) => {
             clientId: invoice?.clientId.toString(),
             linkedTo: invoice?._id,
             invoiceNumber: invoice?.invoiceNumber,
+            clientName: invoice?.clientName,
           },
         ],
         { session: session }
