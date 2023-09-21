@@ -8,7 +8,10 @@ import {
   deleteOverdueInvoice,
   fetchOverdueInvoice,
 } from '../controllers/invoice/overdueInvoiceController';
-import { fetchInvoiceByDateRange } from '../controllers/invoice/fetchInvoiceController';
+import {
+  fetchInvoiceByDateRange,
+  searchInvoice,
+} from '../controllers/invoice/fetchInvoiceController';
 
 const router = express.Router();
 
@@ -19,6 +22,7 @@ router.put('/edit', handleEditInvoice);
 router.delete('/delete', handleDeleteInvoice);
 router.get('/overdue', fetchOverdueInvoice);
 router.get('/date-range', fetchInvoiceByDateRange);
+router.get('/search', searchInvoice);
 router.delete('/overdue', deleteOverdueInvoice);
 
 export default router;

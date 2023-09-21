@@ -1,6 +1,4 @@
 'use client';
-import React, { Dispatch, SetStateAction } from 'react';
-
 import './pagination.css';
 import ReactPaginate from 'react-paginate';
 import { AiFillLeftCircle, AiFillRightCircle } from 'react-icons/ai';
@@ -8,7 +6,7 @@ import { IconContext } from 'react-icons';
 import { InvoiceData } from '@/types';
 
 interface PaginationProps {
-  setPage: Dispatch<SetStateAction<number>>;
+  setPage: (val: number) => void;
   totalPages: number;
 }
 
@@ -22,6 +20,7 @@ const Pagination = ({ setPage, totalPages }: PaginationProps) => {
         onPageChange={(event) => setPage(event.selected)}
         pageCount={Math.ceil(totalPages)}
         breakLabel="..."
+        className="flex  [&>*:first-child]:mr-[1.75rem] [&>*:last-child]:ml-[1.75rem]"
         previousLabel={
           <IconContext.Provider value={{ color: '#B8C1CC', size: '36px' }}>
             <AiFillLeftCircle />
