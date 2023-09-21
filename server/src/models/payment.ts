@@ -18,6 +18,7 @@ const PaymentSchema = new Schema(
     linkedTo: { type: String, required: true },
     invoiceNumber: { type: String, required: true },
     amount: { type: Number, required: true },
+    clientName: String,
   },
   {
     timestamps: true,

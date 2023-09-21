@@ -11,6 +11,12 @@
   }
 }
 
+@layer components {
+  .activeBtn {
+    @apply border-solid border-b-blue-500  border-b-[5px] rounded-[3px];
+  }
+}
+
 @layer utilities {
   .btn {
     cursor: pointer;

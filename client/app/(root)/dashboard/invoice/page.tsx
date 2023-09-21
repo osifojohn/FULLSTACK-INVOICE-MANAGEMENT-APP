@@ -17,6 +17,8 @@ export default function Invoice() {
   const [page, setPage] = useState<number>(0);
   const [data, setData] = useState<InvoiceData | undefined>(undefined);
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
+  const [filterInput, setFilterInput] = useState<string>('all');
+
   const { data: invoiceData, isLoading } = useGetInvoiceByDateRangeQuery({
     queryStartDate: startDate
       ? format(startDate as Date, 'yyyy-MM-dd')
@@ -25,8 +27,13 @@ export default function Invoice() {
   });
 
   useEffect(() => {
-    setData(invoiceData);
-  }, [page, invoiceData]);
+    if (filterInput === 'all') {
+      setData(invoiceData);
+    }
+    if (filterInput !== 'all') {
+      setData(data);
+    }
+  }, [page, invoiceData, data, filterInput]);
 
   return (
     <div className=" mx-3">
@@ -39,7 +46,14 @@ export default function Invoice() {
       <div className="">
         <div className="flex flex-col  ">
           <InvoiceColumns startDate={startDate} setStartDate={setStartDate} />
-          {!isLoading && data?.invoices.length !== 0 && <InvoiceFilter />}
+          {invoiceData && (
+            <InvoiceFilter
+              setData={setData}
+              data={invoiceData}
+              setFilterInput={setFilterInput}
+              filterInput={filterInput}
+            />
+          )}
         </div>
         {isLoading && (
           <div className="font-bodyFont text-center text-xl text-gray-500 ">
@@ -54,7 +68,7 @@ export default function Invoice() {
             <div className="bg-white shadow-shadow-1">
               <InvoiceItems data={data} />
             </div>
-            <div className="flex  mt-5 justify-between bg-white items-center w-[100%] py-5 pl-10 pr-16 border-solid border-b-[#939393] border-b-[1px]">
+            <div className="flex  justify-between bg-white items-center w-[100%] py-5 pl-10 pr-16 border-solid border-t-gray-300 border-t-[1px]">
               <p className="font-bodyFont text-[17px]">{`${data?.currentPage} of ${data?.totalPages} `}</p>
               <div>
                 <Pagination totalPages={data?.totalPages} setPage={setPage} />

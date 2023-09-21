@@ -82,3 +82,11 @@ export interface InvoiceByDateRange {
   limit?: number;
   queryStartDate?: string;
 }
+
+export enum INVOICESTATUS {
+  DRAFT = 'Draft',
+  PENDING = 'Pending',
+  PAID = 'Paid',
+  OVERDUE = 'Overdue',
+  PARTIALLY_PAID = 'Partially-paid',
+}
