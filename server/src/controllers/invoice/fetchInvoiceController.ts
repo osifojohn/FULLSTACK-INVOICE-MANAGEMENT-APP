@@ -40,16 +40,12 @@ export const getAllInvoice = asyncHandler(
   }
 );
 
-//@desc Search invoices by name
-//@route GET /expense/search
+//@desc Search invoices by clientName
+//@route GET /invoice/search
 //@access private
 export const searchInvoice = asyncHandler(
   async (req: Request, res: Response) => {
-    const {
-      keyword,
-      page = 1,
-      limit = 10,
-    }: { keyword: string } & PaginationOptions = req.body;
+    const { keyword, page = 1, limit = 10 } = req.query;
 
     if (!keyword || typeof keyword !== 'string') {
       res.status(STATUSCODE.BAD_REQUEST);
@@ -62,18 +58,13 @@ export const searchInvoice = asyncHandler(
     }
 
     const invoices = await Invoice.find({
-      name: { $regex: keyword, $options: 'i' },
+      clientName: { $regex: keyword, $options: 'i' },
     })
       .limit(limit * 1)
       .skip((page - 1) * limit)
       .exec();
 
     const count = await Invoice.count();
-
-    if (!invoices || invoices.length === 0) {
-      res.status(STATUSCODE.NOT_FOUND);
-      throw new Error('No search result found');
-    }
 
     res.status(STATUSCODE.SUCCESS).json({
       invoices,
@@ -115,8 +106,6 @@ export const fetchInvoiceByDateRange = asyncHandler(async (req, res) => {
       new Date().setDate(new Date().getDate() - THIRTY_DAYS),
       'yyyy-MM-dd'
     );
-
-    console.log(defaultEndDate, defaultStartDate);
 
     invoices = await Invoice.find({
       createdAt: {
