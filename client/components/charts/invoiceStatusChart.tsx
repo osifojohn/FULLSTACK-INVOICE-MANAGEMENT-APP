@@ -14,7 +14,7 @@ export const options = {
   is3D: true,
 };
 
-const incomeStatusChart = () => {
+const IncomeStatusChart = () => {
   return (
     <Chart
       chartType="PieChart"
@@ -26,4 +26,4 @@ const incomeStatusChart = () => {
   );
 };
 
-export default incomeStatusChart;
+export default IncomeStatusChart;

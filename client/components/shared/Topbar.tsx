@@ -9,7 +9,7 @@ import {
 } from '@/redux/features/dashboardToggle.slice';
 import { useAppDispatch } from '@/redux/hooks';
 import userContainer from '../userContainer';
-import searchBar from '../searchBar';
+import SearchBar from '../searchBar';
 
 export const Topbar = () => {
   const dispatch = useAppDispatch();
@@ -32,7 +32,7 @@ export const Topbar = () => {
               Dashboard
             </h1>
             <div className="flex items-center relative">
-              {searchBar()}
+              <SearchBar />
               <div className="flex justify-between items-center">
                 <button
                   className="mr-5"

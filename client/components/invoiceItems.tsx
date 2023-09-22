@@ -9,7 +9,16 @@ const InvoiceItems = ({ data }: InvoiceItemsProps) => {
   return (
     <>
       <table>
-        {invoiceHead()}
+        <thead>
+          <tr>
+            <th>Number </th>
+            <th>Date </th>
+            <th>Customer</th>
+            <th>Paid-to-date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
         <tbody>
           {data?.invoices.map((item) => {
             return (

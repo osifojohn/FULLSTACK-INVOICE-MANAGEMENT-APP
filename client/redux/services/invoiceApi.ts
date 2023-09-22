@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import { HTTP_METHODS, InvoiceByDateRange, InvoiceData } from '../../types';
+import { HTTP_METHODS, GetInvoice, InvoiceData } from '../../types';
 import { RootState } from '../store';
 
 export const invoiceApi = createApi({
@@ -14,9 +14,12 @@ export const invoiceApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['Invoices'],
+  tagTypes: ['Invoices', 'SeachedInvoice'],
   endpoints: (builder) => ({
-    getInvoiceByDateRange: builder.query<InvoiceData, InvoiceByDateRange>({
+    getInvoiceByDateRange: builder.query<
+      InvoiceData,
+      GetInvoice & { queryStartDate?: string }
+    >({
       query: ({ page = 1, limit = 10, queryStartDate }) =>
         `date-range?page=${page}&limit=${limit}&queryStartDate=${queryStartDate}`,
       providesTags: (result, error, page) =>
@@ -30,7 +33,18 @@ export const invoiceApi = createApi({
             ]
           : [{ type: 'Invoices', _id: 'PARTIAL-LIST' }],
     }),
+
+    getSearchInvoiceByClientName: builder.query<
+      InvoiceData,
+      GetInvoice & { keyword?: string }
+    >({
+      query: ({ page = 1, limit = 10, keyword }) =>
+        `search?page=${page}&limit=${limit}&keyword=${keyword}`,
+    }),
   }),
 });
 
-export const { useGetInvoiceByDateRangeQuery } = invoiceApi;
+export const {
+  useGetInvoiceByDateRangeQuery,
+  useGetSearchInvoiceByClientNameQuery,
+} = invoiceApi;

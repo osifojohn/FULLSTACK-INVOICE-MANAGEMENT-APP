@@ -25,13 +25,13 @@ export const options = {
   bar: { groupWidth: '90%' },
 };
 
-const clientRevenueChart = () => {
+const ClientRevenueChart = () => {
   return (
     <div className="bg-blue-800">
       {/* <h2 className="font-headingFont text-[28px]  mt-3 ml-3 bg-black">
         Clients Contributions
       </h2> */}
-      <div className="bg-red-500">
+      <div className="">
         <Chart
           chartType="BarChart"
           data={data}
@@ -44,4 +44,4 @@ const clientRevenueChart = () => {
   );
 };
 
-export default clientRevenueChart;
+export default ClientRevenueChart;
