@@ -18,7 +18,7 @@ export const options = {
   curveType: 'function',
 };
 
-const paymentLineChart = () => {
+const PaymentLineChart = () => {
   return (
     <div>
       <div>
@@ -34,4 +34,4 @@ const paymentLineChart = () => {
   );
 };
 
-export default paymentLineChart;
+export default PaymentLineChart;

@@ -1,3 +1,5 @@
+import { type } from 'os';
+
 export enum HTTP_METHODS {
   GET = 'GET',
   POST = 'POST',
@@ -77,11 +79,10 @@ export interface InvoiceData {
   invoices: Invoice[];
 }
 
-export interface InvoiceByDateRange {
+export type GetInvoice = {
   page?: number;
   limit?: number;
-  queryStartDate?: string;
-}
+};
 
 export enum INVOICESTATUS {
   DRAFT = 'Draft',

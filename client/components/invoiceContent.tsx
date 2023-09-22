@@ -1,20 +1,31 @@
-import React from 'react';
+'use client';
+import Pagination from './pagination/pagination';
 import InvoiceItems from './invoiceItems';
+import { InvoiceData } from '@/types';
 
-const InvoiceContent = () => {
+interface InvoiceContentProps {
+  invoice: InvoiceData;
+  setPage: (val: number) => void;
+  isLoading: boolean;
+}
+
+const InvoiceContent = ({
+  invoice,
+  setPage,
+  isLoading,
+}: InvoiceContentProps) => {
   return (
-    <div className="bg-white shadow-shadow-1">
-      {/* <div className="invoiceColumnBtn ">
-        <h5>Invoice number</h5>
-        <h5>Date</h5>
-        <h5>Customer</h5>
-        <h5>Amount</h5>
-        <h5>Paid</h5>
-        <h5>Status</h5>
-        <h5>Action</h5>
-      </div> */}
-      {/* {InvoiceItems()} */}
-    </div>
+    <>
+      <div className="bg-white shadow-shadow-1">
+        <InvoiceItems data={invoice} isLoading={isLoading} />
+      </div>
+      <div className="flex  justify-between bg-white items-center w-[100%] py-5 pl-10 pr-16 border-solid border-t-gray-300 border-t-[1px]">
+        <p className="font-bodyFont text-[17px]">{`${invoice?.currentPage} of ${invoice?.totalPages} `}</p>
+        <div>
+          <Pagination totalPages={invoice?.totalPages} setPage={setPage} />
+        </div>
+      </div>
+    </>
   );
 };
 

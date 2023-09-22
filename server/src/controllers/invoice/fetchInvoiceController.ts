@@ -41,34 +41,27 @@ export const getAllInvoice = asyncHandler(
 );
 
 //@desc Search invoices by clientName
-//@route GET /invoice/search
+//@route GET /expense/search
 //@access private
 export const searchInvoice = asyncHandler(
   async (req: Request, res: Response) => {
     const { keyword, page = 1, limit = 10 } = req.query;
 
-    if (!keyword || typeof keyword !== 'string') {
-      res.status(STATUSCODE.BAD_REQUEST);
-      throw new Error('Invalid keyword');
-    }
-
-    if (typeof page !== 'number' || typeof limit !== 'number') {
-      res.status(STATUSCODE.BAD_REQUEST);
-      throw new Error('Invalid  request');
-    }
+    const pageNum = Number(page);
+    const limitNum = Number(limit);
 
     const invoices = await Invoice.find({
       clientName: { $regex: keyword, $options: 'i' },
     })
-      .limit(limit * 1)
-      .skip((page - 1) * limit)
+      .limit(limitNum * 1)
+      .skip((pageNum - 1) * limitNum)
       .exec();
 
     const count = await Invoice.count();
 
     res.status(STATUSCODE.SUCCESS).json({
       invoices,
-      totalPages: Math.ceil(count / limit),
+      totalPages: Math.ceil(count / limitNum),
       currentPage: page,
     });
   }
