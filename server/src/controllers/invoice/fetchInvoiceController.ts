@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import { format } from 'date-fns';
-// import { startOfDay, endOfDay, format, parseISO } from 'date-fns';
 
 import { Invoice } from '../../models/invoice';
 import { PaginationOptions, STATUSCODE } from '../../types';
@@ -47,10 +46,13 @@ export const searchInvoice = asyncHandler(
   async (req: Request, res: Response) => {
     const { keyword, page = 1, limit = 10 } = req.query;
 
+    const { orgId } = req.user;
+
     const pageNum = Number(page);
     const limitNum = Number(limit);
 
     const invoices = await Invoice.find({
+      orgId,
       clientName: { $regex: keyword, $options: 'i' },
     })
       .limit(limitNum * 1)
@@ -81,6 +83,8 @@ export const fetchInvoiceByDateRange = asyncHandler(async (req, res) => {
     limit?: number;
   } = req.query;
 
+  const { orgId } = req.user;
+
   let invoices;
   let count;
 
@@ -99,8 +103,8 @@ export const fetchInvoiceByDateRange = asyncHandler(async (req, res) => {
       new Date().setDate(new Date().getDate() - THIRTY_DAYS),
       'yyyy-MM-dd'
     );
-
     invoices = await Invoice.find({
+      orgId,
       createdAt: {
         $gte: defaultEndDate,
         $lt: defaultStartDate,
@@ -120,6 +124,7 @@ export const fetchInvoiceByDateRange = asyncHandler(async (req, res) => {
   }
 
   invoices = await Invoice.find({
+    orgId,
     createdAt: {
       $gte: queryStartDate,
       $lt: queryEndDate,

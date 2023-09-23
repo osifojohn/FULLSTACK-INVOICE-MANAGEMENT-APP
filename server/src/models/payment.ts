@@ -5,6 +5,11 @@ import { paymentRequest } from '../types';
 
 const PaymentSchema = new Schema(
   {
+    clientName: String,
+    clientEmail: String,
+    clientTelephone: String,
+    clientAddress: String,
+    clientCountry: String,
     clientId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Client',
@@ -18,7 +23,6 @@ const PaymentSchema = new Schema(
     linkedTo: { type: String, required: true },
     invoiceNumber: { type: String, required: true },
     amount: { type: Number, required: true },
-    clientName: String,
   },
   {
     timestamps: true,

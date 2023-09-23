@@ -1,8 +1,15 @@
 import { Schema, InferSchemaType, model } from 'mongoose';
 import mongoose from 'mongoose';
 
+import { INVOICESTATUS } from '../types';
+
 const InvoiceSchema = new Schema(
   {
+    clientName: String,
+    clientEmail: String,
+    clientTelephone: String,
+    clientAddress: String,
+    clientCountry: String,
     orgId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Organisation',
@@ -18,7 +25,6 @@ const InvoiceSchema = new Schema(
       ref: 'Client',
       required: true,
     },
-    clientName: String,
     invoicePdf: {
       public_id: {
         type: String,
@@ -49,14 +55,13 @@ const InvoiceSchema = new Schema(
     status: {
       type: String,
       enum: [
-        'Draft',
-        'Pending',
-        'Not-paid',
-        'Overdue',
-        'Partially-paid',
-        'Paid',
+        INVOICESTATUS.DRAFT,
+        INVOICESTATUS.PENDING,
+        INVOICESTATUS.OVERDUE,
+        INVOICESTATUS.PARTIALLY_PAID,
+        INVOICESTATUS.PAID,
       ],
-      default: 'Draft',
+      default: INVOICESTATUS.DRAFT,
     },
   },
   {

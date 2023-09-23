@@ -1,4 +1,5 @@
 import mongoose, { Schema, InferSchemaType, model } from 'mongoose';
+import { NOTIFICATIONTYPE } from '../types';
 
 const NotificationSchema = new Schema(
   {
@@ -17,7 +18,7 @@ const NotificationSchema = new Schema(
     linkedTo: String,
     type: {
       type: String,
-      enum: ['Invoice'],
+      enum: [NOTIFICATIONTYPE.INVOICE],
     },
     status: {
       type: String,
