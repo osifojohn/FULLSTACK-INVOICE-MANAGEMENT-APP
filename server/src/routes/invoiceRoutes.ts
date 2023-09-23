@@ -15,7 +15,7 @@ import {
 
 const router = express.Router();
 
-// router.use(validateToken);
+router.use(validateToken);
 
 router.post('/create', handleCreateInvoice);
 router.put('/edit', handleEditInvoice);

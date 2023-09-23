@@ -9,6 +9,7 @@ import {
 import { Payment, validatePayment } from '../models/payment';
 import { Invoice } from '../models/invoice';
 import { ClientSession } from 'mongoose';
+import { Client } from '../models/client';
 
 // @desc add new Payment
 // @route POST /payment/add-new
@@ -68,6 +69,10 @@ export const headleAddPayment = async (req: Request, res: Response) => {
             linkedTo: invoice?._id,
             invoiceNumber: invoice?.invoiceNumber,
             clientName: invoice?.clientName,
+            clientEmail: invoice?.clientEmail,
+            clientTelephone: invoice?.clientTelephone,
+            clientAddress: invoice?.clientAddress,
+            clientCountry: invoice?.clientCountry,
           },
         ],
         { session: session }

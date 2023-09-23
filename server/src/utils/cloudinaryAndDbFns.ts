@@ -26,6 +26,10 @@ const addInvoiceToDB = (
     paidToDate,
     organizationName,
     clientName,
+    clientEmail,
+    clientTelephone,
+    clientAddress,
+    clientCountry,
   } = addInvoiceDetails;
 
   const invoice = new Invoice({
@@ -44,6 +48,10 @@ const addInvoiceToDB = (
     paidToDate,
     organizationName,
     clientName,
+    clientEmail,
+    clientTelephone,
+    clientAddress,
+    clientCountry,
   });
   invoice.save();
 };
@@ -65,6 +73,10 @@ const updateInvoiceToDB = async (
     paidToDate,
     organizationName,
     clientName,
+    clientEmail,
+    clientTelephone,
+    clientAddress,
+    clientCountry,
   } = editInvoiceDetails;
 
   const newInvoice = {
@@ -83,6 +95,10 @@ const updateInvoiceToDB = async (
     paidToDate,
     organizationName,
     clientName,
+    clientEmail,
+    clientTelephone,
+    clientAddress,
+    clientCountry,
   };
 
   await Invoice.findOneAndUpdate(

@@ -114,6 +114,10 @@ export interface invoiceDetailsType {
   paidToDate: number;
   organizationName: string;
   clientName?: string;
+  clientEmail?: string;
+  clientTelephone?: string;
+  clientAddress?: string;
+  clientCountry?: string;
 }
 
 export interface paymentRequest {
