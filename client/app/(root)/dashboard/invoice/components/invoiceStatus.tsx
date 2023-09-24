@@ -1,19 +1,18 @@
 import useInvoiceChartData from '@/hooks/useInvoiceChartData';
 import ChartComponent from '@/components/charts/chart';
 import { Invoice } from '@/types';
-import React from 'react';
 
 export const options = {
-  title: 'Payments',
+  title: 'Invoice status',
   is3D: true,
-  curveType: 'function',
 };
 
-const Payment = ({ invoices }: { invoices: Invoice[] }) => {
+const InvoiceStatus = ({ invoices }: { invoices: Invoice[] }) => {
   const data = useInvoiceChartData({
     invoices,
-    row: 'Client Name',
-    col: 'Paid to date',
+    row: 'Status',
+    col: 'Count',
+    isPieChart: true,
   });
 
   return (
@@ -21,7 +20,7 @@ const Payment = ({ invoices }: { invoices: Invoice[] }) => {
       <ChartComponent
         data={data}
         options={options}
-        chartType={'LineChart'}
+        chartType={'PieChart'}
         width={'100%'}
         height={'400px'}
       />
@@ -29,4 +28,4 @@ const Payment = ({ invoices }: { invoices: Invoice[] }) => {
   );
 };
 
-export default Payment;
+export default InvoiceStatus;

@@ -4,11 +4,12 @@ import { format } from 'date-fns';
 
 import { useSearchKeywordContext } from '@/context/searchKeywordContext';
 import InvoiceColumns from '@/components/invoiceColumns';
+import InvoiceContent from '@/components/invoiceContent';
 import InvoiceFilter from '@/components/invoiceFilter';
 import NoResultFound from '@/components/noResultFound';
-import InvoiceContent from '@/components/invoiceContent';
+import { useDateContext } from '@/context/dateContext';
 import ClientRevenue from './components/clientRevenue';
-import IncomeStatus from './components/incomeStatus';
+import IncomeStatus from './components/invoiceStatus';
 import Payment from './components/payment';
 import Loader from '@/components/Loader';
 import { InvoiceData } from '@/types';
@@ -16,12 +17,14 @@ import {
   useGetSearchInvoiceByClientNameQuery,
   useGetInvoiceByDateRangeQuery,
 } from '@/redux/services/invoiceApi';
+import InvoiceStatus from './components/invoiceStatus';
 
 export default function Invoice() {
   const [page, setPage] = useState<number>(0);
   const [data, setData] = useState<InvoiceData | undefined>(undefined);
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
   const [filterInput, setFilterInput] = useState<string>('all');
+  // const { startDate, setStartDate } = useDateContext();
 
   const { keyword: searchInvoiceKeyword } = useSearchKeywordContext();
   const [searchPage, setSearchPage] = useState<number>(0);
@@ -88,14 +91,69 @@ export default function Invoice() {
     <div className=" mx-3">
       <div className="chartFirstContainer">
         <div className="w-[65%] h-[10px]">
-          <ClientRevenue />
+          {/* <ClientRevenue /> */}
+          {(invoiceDataLoading || invoiceDataFetching) && (
+            <div className="flex justify-center  mt-7 mb-7">
+              <Loader />
+            </div>
+          )}
+          {!searchInvoiceKeyword &&
+            !invoiceDataFetching &&
+            !invoiceDataLoading &&
+            invoiceData?.invoices.length === 0 && (
+              <div className="flex justify-center  mt-7 mb-40">
+                <NoResultFound text="Can't load payment chart!" />
+              </div>
+            )}
+          {invoiceData &&
+            !invoiceDataFetching &&
+            !invoiceDataLoading &&
+            invoiceData.invoices.length !== 0 && (
+              <ClientRevenue invoices={invoiceData?.invoices} />
+            )}
         </div>
         <div className="w-[30%] h-[10px]">
-          <IncomeStatus />
+          {(invoiceDataLoading || invoiceDataFetching) && (
+            <div className="flex justify-center  mt-7 mb-7">
+              <Loader />
+            </div>
+          )}
+          {!searchInvoiceKeyword &&
+            !invoiceDataFetching &&
+            !invoiceDataLoading &&
+            invoiceData?.invoices.length === 0 && (
+              <div className="flex justify-center  mt-7 mb-40">
+                <NoResultFound text="Can't load payment chart!" />
+              </div>
+            )}
+          {invoiceData &&
+            !invoiceDataFetching &&
+            !invoiceDataLoading &&
+            invoiceData.invoices.length !== 0 && (
+              <InvoiceStatus invoices={invoiceData?.invoices} />
+            )}
         </div>
       </div>
       <div className=" chartSecondContainer m-3">
-        <Payment />
+        {(invoiceDataLoading || invoiceDataFetching) && (
+          <div className="flex justify-center  mt-7 mb-7">
+            <Loader />
+          </div>
+        )}
+        {!searchInvoiceKeyword &&
+          !invoiceDataFetching &&
+          !invoiceDataLoading &&
+          invoiceData?.invoices.length === 0 && (
+            <div className="flex justify-center  mt-7 mb-40">
+              <NoResultFound text="Can't load payment chart!" />
+            </div>
+          )}
+        {invoiceData &&
+          !invoiceDataFetching &&
+          !invoiceDataLoading &&
+          invoiceData.invoices.length !== 0 && (
+            <Payment invoices={invoiceData?.invoices} />
+          )}
       </div>
 
       <div className="">
@@ -153,6 +211,7 @@ export default function Invoice() {
           )}
         {!searchInvoiceKeyword &&
           !searchInvoiceDataIsFetching &&
+          !invoiceDataFetching &&
           !invoiceDataLoading &&
           data &&
           data.invoices.length !== 0 && (
