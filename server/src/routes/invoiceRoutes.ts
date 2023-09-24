@@ -9,7 +9,8 @@ import {
   fetchOverdueInvoice,
 } from '../controllers/invoice/overdueInvoiceController';
 import {
-  fetchInvoiceByDateRange,
+  getInvoiceByDateRange,
+  getInvoiceByDateRangeChart,
   searchInvoice,
 } from '../controllers/invoice/fetchInvoiceController';
 
@@ -21,7 +22,8 @@ router.post('/create', handleCreateInvoice);
 router.put('/edit', handleEditInvoice);
 router.delete('/delete', handleDeleteInvoice);
 router.get('/overdue', fetchOverdueInvoice);
-router.get('/date-range', fetchInvoiceByDateRange);
+router.get('/date-range', getInvoiceByDateRange);
+router.get('/chart-date-range', getInvoiceByDateRangeChart);
 router.get('/search', searchInvoice);
 router.delete('/overdue', deleteOverdueInvoice);
 

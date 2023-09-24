@@ -14,7 +14,7 @@ export const invoiceApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['Invoices', 'SeachedInvoice'],
+  tagTypes: ['InvoicesDateRange', 'InvoicesDateRangeChart', 'SeachedInvoice'],
   endpoints: (builder) => ({
     getInvoiceByDateRange: builder.query<
       InvoiceData,
@@ -26,12 +26,30 @@ export const invoiceApi = createApi({
         result
           ? [
               ...result?.invoices.map(({ _id }) => ({
-                type: 'Invoices' as const,
+                type: 'InvoicesDateRange' as const,
                 _id,
               })),
-              { type: 'Invoices', _id: 'PARTIAL-LIST' },
+              { type: 'InvoicesDateRange', _id: 'PARTIAL-LIST' },
             ]
-          : [{ type: 'Invoices', _id: 'PARTIAL-LIST' }],
+          : [{ type: 'InvoicesDateRange', _id: 'PARTIAL-LIST' }],
+    }),
+
+    getInvoiceByDateRangeChart: builder.query<
+      InvoiceData,
+      { queryStartDate?: string | undefined }
+    >({
+      query: ({ queryStartDate }) =>
+        `chart-date-range?queryStartDate=${queryStartDate}`,
+      providesTags: (result, error, page) =>
+        result
+          ? [
+              ...result?.invoices.map(({ _id }) => ({
+                type: 'InvoicesDateRangeChart' as const,
+                _id,
+              })),
+              { type: 'InvoicesDateRangeChart', _id: 'PARTIAL-LIST' },
+            ]
+          : [{ type: 'InvoicesDateRangeChart', _id: 'PARTIAL-LIST' }],
     }),
 
     getSearchInvoiceByClientName: builder.query<
@@ -47,4 +65,5 @@ export const invoiceApi = createApi({
 export const {
   useGetInvoiceByDateRangeQuery,
   useGetSearchInvoiceByClientNameQuery,
+  useGetInvoiceByDateRangeChartQuery,
 } = invoiceApi;

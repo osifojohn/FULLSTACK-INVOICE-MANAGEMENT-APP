@@ -1,9 +1,9 @@
+'use client';
 import useInvoiceChartData from '@/hooks/useInvoiceChartData';
-import ChartComponent from '@/components/charts/chart';
+import InvoiceChart from '@/components/charts/chart';
 import { Invoice } from '@/types';
-import React from 'react';
 
-export const options = {
+const options = {
   title: 'Payments',
   is3D: true,
   curveType: 'function',
@@ -18,7 +18,7 @@ const Payment = ({ invoices }: { invoices: Invoice[] }) => {
 
   return (
     <div>
-      <ChartComponent
+      <InvoiceChart
         data={data}
         options={options}
         chartType={'LineChart'}

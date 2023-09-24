@@ -14,8 +14,8 @@ export const options = {
   bar: { groupWidth: '90%' },
 };
 
-import ChartComponent from '@/components/charts/chart';
 import useInvoiceChartData from '@/hooks/useInvoiceChartData';
+import InvoiceChart from '@/components/charts/chart';
 import { Invoice } from '@/types';
 
 const ClientRevenue = ({ invoices }: { invoices: Invoice[] }) => {
@@ -27,7 +27,7 @@ const ClientRevenue = ({ invoices }: { invoices: Invoice[] }) => {
 
   return (
     <div>
-      <ChartComponent
+      <InvoiceChart
         data={data}
         options={options}
         chartType={'BarChart'}

@@ -72,7 +72,7 @@ export const searchInvoice = asyncHandler(
 //@desc get invoices byDateRange
 //@route POST /nnvoice/date-range
 //@access private
-export const fetchInvoiceByDateRange = asyncHandler(async (req, res) => {
+export const getInvoiceByDateRange = asyncHandler(async (req, res) => {
   const {
     queryStartDate,
     page = 1,
@@ -139,6 +139,61 @@ export const fetchInvoiceByDateRange = asyncHandler(async (req, res) => {
   res.status(STATUSCODE.SUCCESS).json({
     totalPages: Math.ceil(count / limit),
     currentPage: page,
+    invoices,
+  });
+});
+
+//@desc get invoices byChartDateRange
+//@route POST /nnvoice/chart-date-range
+//@access private
+export const getInvoiceByDateRangeChart = asyncHandler(async (req, res) => {
+  const {
+    queryStartDate,
+  }: {
+    queryStartDate?: string;
+  } = req.query;
+
+  const { orgId } = req.user;
+
+  let invoices;
+
+  const THIRTY_DAYS = 30;
+  const defaultStartDate = format(new Date(), 'yyyy-MM-dd');
+  const initialDate = new Date(queryStartDate as string);
+
+  const queryEndDate = new Date(
+    initialDate.getFullYear(),
+    initialDate.getMonth() + 1,
+    0
+  );
+
+  if (queryStartDate === 'undefined') {
+    const defaultEndDate = format(
+      new Date().setDate(new Date().getDate() - THIRTY_DAYS),
+      'yyyy-MM-dd'
+    );
+    invoices = await Invoice.find({
+      orgId,
+      createdAt: {
+        $gte: defaultEndDate,
+        $lt: defaultStartDate,
+      },
+    }).exec();
+
+    res.status(STATUSCODE.SUCCESS).json({
+      invoices,
+    });
+  }
+
+  invoices = await Invoice.find({
+    orgId,
+    createdAt: {
+      $gte: queryStartDate,
+      $lt: queryEndDate,
+    },
+  }).exec();
+
+  res.status(STATUSCODE.SUCCESS).json({
     invoices,
   });
 });

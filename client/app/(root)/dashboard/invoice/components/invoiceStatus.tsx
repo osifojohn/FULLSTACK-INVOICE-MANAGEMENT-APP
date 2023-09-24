@@ -1,13 +1,18 @@
 import useInvoiceChartData from '@/hooks/useInvoiceChartData';
-import ChartComponent from '@/components/charts/chart';
+import InvoiceChart from '@/components/charts/chart';
 import { Invoice } from '@/types';
 
-export const options = {
+const options = {
   title: 'Invoice status',
   is3D: true,
 };
 
-const InvoiceStatus = ({ invoices }: { invoices: Invoice[] }) => {
+const InvoiceStatus = ({
+  invoices,
+}: {
+  invoices: Invoice[];
+  setStartChartDate: (val: Date | undefined) => void;
+}) => {
   const data = useInvoiceChartData({
     invoices,
     row: 'Status',
@@ -17,7 +22,7 @@ const InvoiceStatus = ({ invoices }: { invoices: Invoice[] }) => {
 
   return (
     <div>
-      <ChartComponent
+      <InvoiceChart
         data={data}
         options={options}
         chartType={'PieChart'}
