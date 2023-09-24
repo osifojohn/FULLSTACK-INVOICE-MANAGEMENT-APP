@@ -11,6 +11,7 @@ import { Buttombar } from '@/components/shared/Buttombar ';
 import { Topbar } from '@/components/shared/Topbar';
 import { useAppSelector } from '@/redux/hooks';
 import '../../app/globals.css';
+import { DateContext } from '@/context/dateContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -26,6 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const [keyword, setKeyword] = useState('');
+  const [startDate, setStartDate] = useState<any>(undefined);
   const { notification, leftSidebar } = useAppSelector(selectDashboardToggle);
 
   return (
@@ -33,19 +35,19 @@ export default function RootLayout({
       <body
         className={`${inter.className} tabPort:min-h-[100vh]  tabPort:flex tabPort:flex-col items-center `}
       >
-        {/* <SkeletonTheme baseColor="#313131" highlightColor="#444"> */}
-        <SearchKeywordContext.Provider value={{ keyword, setKeyword }}>
-          <Topbar />
-          <main className="flex  pt-[100px]">
-            {leftSidebar && <LeftSidebar />}
-            <section className={`mx-3 centerContainer flex-1`}>
-              <div className="">{children}</div>
-            </section>
-            {notification && <RightSidebar />}
-          </main>
-          <Buttombar />
-        </SearchKeywordContext.Provider>
-        {/* </SkeletonTheme> */}
+        <DateContext.Provider value={{ startDate, setStartDate }}>
+          <SearchKeywordContext.Provider value={{ keyword, setKeyword }}>
+            <Topbar />
+            <main className="flex  pt-[100px]">
+              {leftSidebar && <LeftSidebar />}
+              <section className={`mx-3 centerContainer flex-1`}>
+                <div className="">{children}</div>
+              </section>
+              {notification && <RightSidebar />}
+            </main>
+            <Buttombar />
+          </SearchKeywordContext.Provider>
+        </DateContext.Provider>
       </body>
     </html>
   );
