@@ -1,4 +1,5 @@
-import React from 'react';
+'use client';
+import SelectDate from '@/components/datePicker';
 
 export const options = {
   title: 'Clients Contributions',
@@ -13,27 +14,57 @@ export const options = {
   },
   bar: { groupWidth: '90%' },
 };
-
+import { useInvoiceChartDateContext } from '@/context/dateContext';
 import useInvoiceChartData from '@/hooks/useInvoiceChartData';
 import InvoiceChart from '@/components/charts/chart';
-import { Invoice } from '@/types';
+import { Invoice, InvoiceChartProps } from '@/types';
 
-const ClientRevenue = ({ invoices }: { invoices: Invoice[] }) => {
+const ClientRevenue = ({
+  invoices,
+  chartDataIsLoading,
+  chartDataIsFetching,
+  chartError,
+  chartLoading,
+}: InvoiceChartProps) => {
+  const { invoiceStartChartDate, setInvoiceStartChartDate } =
+    useInvoiceChartDateContext();
+
   const data = useInvoiceChartData({
     invoices,
     row: 'Paid to date',
     col: 'Client Name',
   });
 
+  if (chartDataIsLoading || chartDataIsFetching) {
+    return chartLoading();
+  }
+
+  if (
+    !chartDataIsFetching &&
+    !chartDataIsLoading &&
+    invoices &&
+    invoices.length === 0
+  ) {
+    return chartError();
+  }
+
   return (
-    <div>
-      <InvoiceChart
-        data={data}
-        options={options}
-        chartType={'BarChart'}
-        width={'100%'}
-        height={'400px'}
-      />
+    <div className="flex flex-col">
+      <div className="ml-auto">
+        <SelectDate
+          startDate={invoiceStartChartDate}
+          setStartDate={setInvoiceStartChartDate}
+        />
+      </div>
+      <div className="">
+        <InvoiceChart
+          data={data}
+          options={options}
+          chartType={'BarChart'}
+          width={'100%'}
+          height={'400px'}
+        />
+      </div>
     </div>
   );
 };

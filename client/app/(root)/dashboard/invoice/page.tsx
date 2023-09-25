@@ -2,35 +2,49 @@
 import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 
+import { selectInvoicePdf, setNumPages } from '@/redux/features/invoice.slice';
 import { useSearchKeywordContext } from '@/context/searchKeywordContext';
+import { useInvoiceChartDateContext } from '@/context/dateContext';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import InvoiceColumns from '@/components/invoiceColumns';
 import InvoiceContent from '@/components/invoiceContent';
 import InvoiceFilter from '@/components/invoiceFilter';
 import NoResultFound from '@/components/noResultFound';
 import ClientRevenue from './components/clientRevenue';
+import InvoiceStatus from './components/invoiceStatus';
+import SelectDate from '@/components/datePicker';
 import Payment from './components/payment';
 import Loader from '@/components/Loader';
 import { InvoiceData } from '@/types';
 import {
   useGetSearchInvoiceByClientNameQuery,
-  useGetInvoiceByDateRangeQuery,
   useGetInvoiceByDateRangeChartQuery,
+  useGetInvoiceByDateRangeQuery,
 } from '@/redux/services/invoiceApi';
-import InvoiceStatus from './components/invoiceStatus';
+import PdfViewer from '@/components/pdfViewer';
 
 export default function Invoice() {
   const [page, setPage] = useState<number>(0);
   const [data, setData] = useState<InvoiceData | undefined>(undefined);
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
-  const [startChartDate, setStartChartDate] = useState<any>(undefined);
   const [filterInput, setFilterInput] = useState<string>('all');
-  // const { startDate, setStartDate } = useDateContext();
-
   const { keyword: searchInvoiceKeyword } = useSearchKeywordContext();
   const [searchPage, setSearchPage] = useState<number>(0);
   const [searchInvoiceData, setSearchInvoiceData] = useState<
     InvoiceData | undefined
   >(undefined);
+
+  const { invoiceStartChartDate, setInvoiceStartChartDate } =
+    useInvoiceChartDateContext();
+
+  const { showPdf, numPages, pageNumber, pdfUrl } =
+    useAppSelector(selectInvoicePdf);
+
+  const dispatch = useAppDispatch();
+
+  function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
+    dispatch(setNumPages(numPages));
+  }
 
   const {
     data: invoiceData,
@@ -42,6 +56,7 @@ export default function Invoice() {
       : undefined,
     page: page + 1,
   });
+
   const {
     data: searchedInvoiceData,
     isLoading: searchInvoiceDataIsLoading,
@@ -56,12 +71,18 @@ export default function Invoice() {
     isLoading: chartDataIsLoading,
     isFetching: chartDataIsFetching,
   } = useGetInvoiceByDateRangeChartQuery({
-    queryStartDate: startChartDate ? startChartDate : undefined,
+    queryStartDate: invoiceStartChartDate
+      ? format(invoiceStartChartDate as Date, 'yyyy-MM-dd')
+      : undefined,
   });
 
   const filterInputEqualsAll = filterInput === 'all';
 
   useEffect(() => {
+    const targetElement = document.getElementById('invoiceTableSection');
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth' });
+    }
     if (searchInvoiceDataIsLoading || searchInvoiceDataIsFetching) {
       setFilterInput('all');
     }
@@ -95,84 +116,96 @@ export default function Invoice() {
     searchInvoiceData,
   ]);
 
+  const chartLoading = () => (
+    <div className="flex justify-center py-4 mt-7 mb-7">
+      <Loader />
+    </div>
+  );
+
+  const chartError = () => (
+    <div className="flex flex-col py-4 mt-7 mb-7 ">
+      <div className="ml-auto">
+        <SelectDate
+          startDate={invoiceStartChartDate}
+          setStartDate={setInvoiceStartChartDate}
+        />
+      </div>
+      <NoResultFound text="Error loading chart or data does not exist!" />
+    </div>
+  );
+
+  const invoiceTableLoading = () => (
+    <div className="flex justify-center mt-7 mb-40">
+      <Loader />
+    </div>
+  );
+
+  const invoiceTableError = () => (
+    <div className="flex justify-center  mt-7 mb-40">
+      <NoResultFound text="No invoice found!" />
+    </div>
+  );
+
+  if (showPdf) {
+    return (
+      <PdfViewer
+        file={pdfUrl}
+        onDocumentLoadSuccess={onDocumentLoadSuccess}
+        pageNumber={pageNumber}
+        numPages={numPages}
+      />
+    );
+  }
+
   return (
     <div className=" mx-3">
       <div className="chartFirstContainer">
-        <div className="w-[65%] h-[10px]">
-          {/* <ClientRevenue /> */}
-          {(chartDataIsLoading || chartDataIsFetching) && (
-            <div className="flex justify-center py-4 mt-7 mb-7">
-              <Loader />
-            </div>
-          )}
-          {!chartDataIsFetching &&
-            !chartDataIsLoading &&
-            chartData?.invoices.length === 0 && (
-              <div className="flex justify-center py-4 mt-7 mb-7">
-                <NoResultFound text="Can't load payment chart!" />
-              </div>
-            )}
-          {chartData &&
-            !chartDataIsFetching &&
-            !chartDataIsLoading &&
-            chartData.invoices.length !== 0 && (
-              <ClientRevenue invoices={chartData?.invoices} />
-            )}
+        <div className="w-[53%] h-[10px]">
+          {
+            <ClientRevenue
+              invoices={chartData?.invoices}
+              chartDataIsFetching={chartDataIsFetching}
+              chartDataIsLoading={chartDataIsLoading}
+              chartLoading={chartLoading}
+              chartError={chartError}
+            />
+          }
         </div>
-        <div className="w-[30%] h-[10px]">
-          {(chartDataIsLoading || chartDataIsFetching) && (
-            <div className="flex justify-center py-4 mt-7 mb-7">
-              <Loader />
-            </div>
-          )}
-          {!chartDataIsFetching &&
-            !chartDataIsLoading &&
-            chartData?.invoices.length === 0 && (
-              <div className="flex justify-center py-4 mt-7 mb-40">
-                <NoResultFound text="Can't load payment chart!" />
-              </div>
-            )}
-          {chartData &&
-            !chartDataIsFetching &&
-            !chartDataIsLoading &&
-            chartData.invoices.length !== 0 && (
-              <InvoiceStatus
-                invoices={chartData?.invoices}
-                setStartChartDate={setStartChartDate}
-              />
-            )}
+        <div className="w-[45%] h-[10px]">
+          {
+            <InvoiceStatus
+              invoices={chartData?.invoices}
+              chartDataIsFetching={chartDataIsFetching}
+              chartDataIsLoading={chartDataIsLoading}
+              chartLoading={chartLoading}
+              chartError={chartError}
+            />
+          }
         </div>
       </div>
       <div className="chartSecondContainer  mx-3 my-8">
-        {(invoiceDataLoading || invoiceDataFetching) && (
-          <div className="flex justify-center py-12 mt-7 mb-7">
-            <Loader />
-          </div>
-        )}
-        {!chartDataIsFetching &&
-          !chartDataIsLoading &&
-          chartData?.invoices.length === 0 && (
-            <div className="flex justify-center py-4 mt-7 mb-40">
-              <NoResultFound text="Can't load payment chart!" />
-            </div>
-          )}
-        {chartData &&
-          !chartDataIsFetching &&
-          !chartDataIsLoading &&
-          chartData.invoices.length !== 0 && (
-            <Payment invoices={chartData?.invoices} />
-          )}
+        {
+          <Payment
+            invoices={chartData?.invoices}
+            chartDataIsFetching={chartDataIsFetching}
+            chartDataIsLoading={chartDataIsLoading}
+            chartLoading={chartLoading}
+            chartError={chartError}
+          />
+        }
       </div>
 
       <div className="">
-        <div className="flex flex-col">
-          {data && (
+        <div className="flex flex-col" id="invoiceTableSection">
+          {
             <InvoiceColumns
               startDate={startDate}
               setStartDate={setStartDate}
               searchInvoiceKeyword={searchInvoiceKeyword}
+              data={data}
             />
-          )}
+          }
+
           {!searchInvoiceKeyword && (
             <InvoiceFilter
               setData={setData}
@@ -181,6 +214,7 @@ export default function Invoice() {
               filterInput={filterInput}
             />
           )}
+
           {searchInvoiceKeyword && (
             <InvoiceFilter
               setData={setSearchInvoiceData}
@@ -190,33 +224,25 @@ export default function Invoice() {
             />
           )}
         </div>
+
         {searchInvoiceKeyword &&
-          (searchInvoiceDataIsFetching || searchInvoiceDataIsLoading) && (
-            <div className="flex justify-center mt-7 mb-40">
-              <Loader />
-            </div>
-          )}
-        {(invoiceDataLoading || invoiceDataFetching) && (
-          <div className="flex justify-center  mt-7 mb-40">
-            <Loader />
-          </div>
-        )}
+          (searchInvoiceDataIsFetching || searchInvoiceDataIsLoading) &&
+          invoiceTableLoading()}
+
+        {(invoiceDataLoading || invoiceDataFetching) && invoiceTableLoading()}
+
         {searchInvoiceKeyword &&
           !searchInvoiceDataIsFetching &&
           !searchInvoiceDataIsLoading &&
-          searchInvoiceData?.invoices.length === 0 && (
-            <div className="flex justify-center  mt-7 mb-40">
-              <NoResultFound text="No invoice found!" />
-            </div>
-          )}
+          searchInvoiceData?.invoices.length === 0 &&
+          invoiceTableError()}
+
         {!searchInvoiceKeyword &&
           !invoiceDataFetching &&
           !invoiceDataLoading &&
-          data?.invoices.length === 0 && (
-            <div className="flex justify-center  mt-7 mb-40">
-              <NoResultFound text="No invoice found!" />
-            </div>
-          )}
+          data?.invoices.length === 0 &&
+          invoiceTableError()}
+
         {!searchInvoiceKeyword &&
           !searchInvoiceDataIsFetching &&
           !invoiceDataFetching &&

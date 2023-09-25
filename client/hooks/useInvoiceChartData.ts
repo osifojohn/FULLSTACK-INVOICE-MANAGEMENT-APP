@@ -1,7 +1,7 @@
 import { Invoice } from '@/types';
 
 interface InvoiceChartDataProps {
-  invoices: Invoice[];
+  invoices: Invoice[] | undefined;
   row: string;
   col: string;
   isPieChart?: boolean;
@@ -19,7 +19,7 @@ const useInvoiceChartData = ({
   const statusCounts: { [status: string]: number } = {};
 
   if (isPieChart) {
-    invoices.forEach((invoice) => {
+    invoices?.forEach((invoice) => {
       const status = invoice.status;
       if (statusCounts[status]) {
         statusCounts[status]++;
@@ -28,7 +28,7 @@ const useInvoiceChartData = ({
       }
     });
   } else {
-    invoices.forEach((invoice) => {
+    invoices?.forEach((invoice) => {
       const clientName = invoice.clientName;
       const paidToDate = invoice.paidToDate;
 

@@ -11,7 +11,7 @@ import { Buttombar } from '@/components/shared/Buttombar ';
 import { Topbar } from '@/components/shared/Topbar';
 import { useAppSelector } from '@/redux/hooks';
 import '../../app/globals.css';
-import { DateContext } from '@/context/dateContext';
+import { InvoiceChartDateContext } from '@/context/dateContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,6 +20,12 @@ export const metadata: Metadata = {
   description:
     'Generating, sending, managing invoices, and gaining financial insights with just one click and tab',
 };
+import { pdfjs } from 'react-pdf';
+
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.js',
+  import.meta.url
+).toString();
 
 export default function RootLayout({
   children,
@@ -27,7 +33,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const [keyword, setKeyword] = useState('');
-  const [startDate, setStartDate] = useState<any>(undefined);
+  const [invoiceStartChartDate, setInvoiceStartChartDate] =
+    useState<any>(undefined);
   const { notification, leftSidebar } = useAppSelector(selectDashboardToggle);
 
   return (
@@ -35,7 +42,9 @@ export default function RootLayout({
       <body
         className={`${inter.className} tabPort:min-h-[100vh]  tabPort:flex tabPort:flex-col items-center `}
       >
-        <DateContext.Provider value={{ startDate, setStartDate }}>
+        <InvoiceChartDateContext.Provider
+          value={{ invoiceStartChartDate, setInvoiceStartChartDate }}
+        >
           <SearchKeywordContext.Provider value={{ keyword, setKeyword }}>
             <Topbar />
             <main className="flex  pt-[100px]">
@@ -47,7 +56,7 @@ export default function RootLayout({
             </main>
             <Buttombar />
           </SearchKeywordContext.Provider>
-        </DateContext.Provider>
+        </InvoiceChartDateContext.Provider>
       </body>
     </html>
   );

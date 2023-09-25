@@ -1,9 +1,12 @@
+'use client';
 import { Inter } from 'next/font/google';
 import { Toaster } from 'react-hot-toast';
 import type { Metadata } from 'next';
 
 import StoreProvider from '@/providers/store.provider';
 import './globals.css';
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+import 'react-pdf/dist/esm/Page/TextLayer.css';
 
 const inter = Inter({ subsets: ['latin'] });
 

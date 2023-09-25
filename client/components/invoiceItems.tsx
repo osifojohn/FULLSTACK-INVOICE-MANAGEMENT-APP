@@ -1,11 +1,19 @@
 'use client';
 import { InvoiceData } from '@/types';
-
+import { useAppDispatch } from '@/redux/hooks';
+import { toggleInvoice, updatePdfUrl } from '@/redux/features/invoice.slice';
 interface InvoiceItemsProps {
   data: InvoiceData;
 }
 
 const InvoiceItems = ({ data }: InvoiceItemsProps) => {
+  const dispatch = useAppDispatch();
+
+  const handleClick = (url: string) => {
+    dispatch(updatePdfUrl(url));
+    dispatch(toggleInvoice());
+  };
+
   return (
     <>
       <table>
@@ -28,7 +36,12 @@ const InvoiceItems = ({ data }: InvoiceItemsProps) => {
                 <td>{item?.clientName}</td>
                 <td>${item?.paidToDate}</td>
                 <td>{item?.status}</td>
-                <td>{showInvoice()}</td>
+                <td
+                  onClick={() => handleClick(item.invoicePdf.url)}
+                  className="cursor-pointer"
+                >
+                  View
+                </td>
               </tr>
             );
           })}
@@ -37,22 +50,5 @@ const InvoiceItems = ({ data }: InvoiceItemsProps) => {
     </>
   );
 };
-
-function showInvoice() {
-  return <button>View</button>;
-}
-
-const invoiceHead = () => (
-  <thead>
-    <tr>
-      <th>Number</th>
-      <th>Date</th>
-      <th>Customer</th>
-      <th>Paid-to-date</th>
-      <th>Status</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-);
 
 export default InvoiceItems;
