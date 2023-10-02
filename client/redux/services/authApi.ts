@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { HTTP_METHODS, IUserAdmin, User } from '../../types';
+import { HTTP_METHODS, User } from '../../types';
 
 export const authApi = createApi({
   reducerPath: 'authApi',

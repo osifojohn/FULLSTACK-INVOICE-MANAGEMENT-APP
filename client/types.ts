@@ -99,3 +99,19 @@ export interface InvoiceChartProps {
   chartLoading: () => JSX.Element;
   chartError: () => JSX.Element;
 }
+
+export interface Notification {
+  _id: string;
+  orgId: string;
+  title: string;
+  message: string;
+  linkedTo?: string;
+  type: string;
+  status: 'seen' | 'not-seen';
+}
+
+export interface NotificationData {
+  totalPages: number;
+  currentPage: string;
+  notifications: Notification[];
+}

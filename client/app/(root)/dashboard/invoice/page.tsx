@@ -2,18 +2,20 @@
 import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 
+import { selectDashboardToggle } from '@/redux/features/dashboardToggle.slice';
 import { selectInvoicePdf, setNumPages } from '@/redux/features/invoice.slice';
 import { useSearchKeywordContext } from '@/context/searchKeywordContext';
 import { useInvoiceChartDateContext } from '@/context/dateContext';
+import ClientRevenueChart from './components/ClientRevenueChart';
+import InvoiceStatusChart from './components/InvoiceStatusChart';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import InvoiceColumns from '@/components/invoiceColumns';
-import InvoiceContent from '@/components/invoiceContent';
-import InvoiceFilter from '@/components/invoiceFilter';
+import InvoiceContent from '@/components/InvoiceContents';
+import InvoiceColumns from '@/components/InvoiceColumn';
+import InvoiceFilter from '@/components/InvoiceFilters';
 import NoResultFound from '@/components/noResultFound';
-import ClientRevenue from './components/clientRevenue';
-import InvoiceStatus from './components/invoiceStatus';
-import SelectDate from '@/components/datePicker';
-import Payment from './components/payment';
+import PaymentChart from './components/PaymentChart';
+import SelectDate from '@/components/DatePickers';
+import PdfViewer from '@/components/pdfViewer';
 import Loader from '@/components/Loader';
 import { InvoiceData } from '@/types';
 import {
@@ -21,7 +23,6 @@ import {
   useGetInvoiceByDateRangeChartQuery,
   useGetInvoiceByDateRangeQuery,
 } from '@/redux/services/invoiceApi';
-import PdfViewer from '@/components/pdfViewer';
 
 export default function Invoice() {
   const [page, setPage] = useState<number>(0);
@@ -34,13 +35,14 @@ export default function Invoice() {
     InvoiceData | undefined
   >(undefined);
 
+  const dispatch = useAppDispatch();
+
   const { invoiceStartChartDate, setInvoiceStartChartDate } =
     useInvoiceChartDateContext();
 
+  const { notification, leftSidebar } = useAppSelector(selectDashboardToggle);
   const { showPdf, numPages, pageNumber, pdfUrl } =
     useAppSelector(selectInvoicePdf);
-
-  const dispatch = useAppDispatch();
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
     dispatch(setNumPages(numPages));
@@ -80,7 +82,7 @@ export default function Invoice() {
 
   useEffect(() => {
     const targetElement = document.getElementById('invoiceTableSection');
-    if (targetElement) {
+    if (targetElement && searchInvoiceKeyword) {
       targetElement.scrollIntoView({ behavior: 'smooth' });
     }
     if (searchInvoiceDataIsLoading || searchInvoiceDataIsFetching) {
@@ -158,11 +160,43 @@ export default function Invoice() {
   }
 
   return (
-    <div className=" mx-3">
-      <div className="chartFirstContainer">
-        <div className="w-[53%] h-[10px]">
+    <>
+      <h1 className="text-[28px] my-5 ml-5 hideDashboardTitle phone:text-[23px]  font-headingFont font-medium leading-[44px]">
+        Dashboard
+      </h1>
+
+      <div className="flex flex-col justify-between    min-h-min">
+        <div
+          className={`chartFirstContainer mx-3 ${
+            notification && leftSidebar ? 'h-[330px]' : ''
+          }`}
+        >
+          <div className="w-[53%] tabPort1:w-[100%] tabPort1:mb-8">
+            {
+              <ClientRevenueChart
+                invoices={chartData?.invoices}
+                chartDataIsFetching={chartDataIsFetching}
+                chartDataIsLoading={chartDataIsLoading}
+                chartLoading={chartLoading}
+                chartError={chartError}
+              />
+            }
+          </div>
+          <div className="w-[45%] tabPort1:w-[100%]  ">
+            {
+              <InvoiceStatusChart
+                invoices={chartData?.invoices}
+                chartDataIsFetching={chartDataIsFetching}
+                chartDataIsLoading={chartDataIsLoading}
+                chartLoading={chartLoading}
+                chartError={chartError}
+              />
+            }
+          </div>
+        </div>
+        <div className="chartSecondContainer mt-16  tabPort1:mt-6 mb-7 ">
           {
-            <ClientRevenue
+            <PaymentChart
               invoices={chartData?.invoices}
               chartDataIsFetching={chartDataIsFetching}
               chartDataIsLoading={chartDataIsLoading}
@@ -171,97 +205,75 @@ export default function Invoice() {
             />
           }
         </div>
-        <div className="w-[45%] h-[10px]">
-          {
-            <InvoiceStatus
-              invoices={chartData?.invoices}
-              chartDataIsFetching={chartDataIsFetching}
-              chartDataIsLoading={chartDataIsLoading}
-              chartLoading={chartLoading}
-              chartError={chartError}
-            />
-          }
+
+        <div className="">
+          <div className="flex flex-col" id="invoiceTableSection">
+            {
+              <InvoiceColumns
+                startDate={startDate}
+                setStartDate={setStartDate}
+                searchInvoiceKeyword={searchInvoiceKeyword}
+                data={data}
+              />
+            }
+
+            {!searchInvoiceKeyword && (
+              <InvoiceFilter
+                setData={setData}
+                data={invoiceData}
+                setFilterInput={setFilterInput}
+                filterInput={filterInput}
+              />
+            )}
+
+            {searchInvoiceKeyword && (
+              <InvoiceFilter
+                setData={setSearchInvoiceData}
+                data={searchedInvoiceData}
+                setFilterInput={setFilterInput}
+                filterInput={filterInput}
+              />
+            )}
+          </div>
+
+          {searchInvoiceKeyword &&
+            (searchInvoiceDataIsFetching || searchInvoiceDataIsLoading) &&
+            invoiceTableLoading()}
+
+          {(invoiceDataLoading || invoiceDataFetching) && invoiceTableLoading()}
+
+          {searchInvoiceKeyword &&
+            !searchInvoiceDataIsFetching &&
+            !searchInvoiceDataIsLoading &&
+            searchInvoiceData?.invoices.length === 0 &&
+            invoiceTableError()}
+
+          {!searchInvoiceKeyword &&
+            !invoiceDataFetching &&
+            !invoiceDataLoading &&
+            data?.invoices.length === 0 &&
+            invoiceTableError()}
+
+          {!searchInvoiceKeyword &&
+            !searchInvoiceDataIsFetching &&
+            !invoiceDataFetching &&
+            !invoiceDataLoading &&
+            data &&
+            data.invoices.length !== 0 && (
+              <InvoiceContent invoice={data} setPage={setPage} />
+            )}
+
+          {searchInvoiceKeyword &&
+            !searchInvoiceDataIsFetching &&
+            searchInvoiceData &&
+            searchInvoiceData.invoices.length !== 0 && (
+              <InvoiceContent
+                invoice={searchInvoiceData}
+                setPage={setSearchPage}
+              />
+            )}
         </div>
       </div>
-      <div className="chartSecondContainer  mx-3 my-8">
-        {
-          <Payment
-            invoices={chartData?.invoices}
-            chartDataIsFetching={chartDataIsFetching}
-            chartDataIsLoading={chartDataIsLoading}
-            chartLoading={chartLoading}
-            chartError={chartError}
-          />
-        }
-      </div>
-
-      <div className="">
-        <div className="flex flex-col" id="invoiceTableSection">
-          {
-            <InvoiceColumns
-              startDate={startDate}
-              setStartDate={setStartDate}
-              searchInvoiceKeyword={searchInvoiceKeyword}
-              data={data}
-            />
-          }
-
-          {!searchInvoiceKeyword && (
-            <InvoiceFilter
-              setData={setData}
-              data={invoiceData}
-              setFilterInput={setFilterInput}
-              filterInput={filterInput}
-            />
-          )}
-
-          {searchInvoiceKeyword && (
-            <InvoiceFilter
-              setData={setSearchInvoiceData}
-              data={searchedInvoiceData}
-              setFilterInput={setFilterInput}
-              filterInput={filterInput}
-            />
-          )}
-        </div>
-
-        {searchInvoiceKeyword &&
-          (searchInvoiceDataIsFetching || searchInvoiceDataIsLoading) &&
-          invoiceTableLoading()}
-
-        {(invoiceDataLoading || invoiceDataFetching) && invoiceTableLoading()}
-
-        {searchInvoiceKeyword &&
-          !searchInvoiceDataIsFetching &&
-          !searchInvoiceDataIsLoading &&
-          searchInvoiceData?.invoices.length === 0 &&
-          invoiceTableError()}
-
-        {!searchInvoiceKeyword &&
-          !invoiceDataFetching &&
-          !invoiceDataLoading &&
-          data?.invoices.length === 0 &&
-          invoiceTableError()}
-
-        {!searchInvoiceKeyword &&
-          !searchInvoiceDataIsFetching &&
-          !invoiceDataFetching &&
-          !invoiceDataLoading &&
-          data &&
-          data.invoices.length !== 0 && (
-            <InvoiceContent invoice={data} setPage={setPage} />
-          )}
-
-        {searchInvoiceKeyword &&
-          !searchInvoiceDataIsFetching &&
-          searchInvoiceData &&
-          searchInvoiceData.invoices.length !== 0 && (
-            <InvoiceContent
-              invoice={searchInvoiceData}
-              setPage={setSearchPage}
-            />
-          )}
-      </div>
-    </div>
+    </>
   );
 }

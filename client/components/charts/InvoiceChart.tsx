@@ -3,7 +3,7 @@ import { Chart, GoogleChartWrapperChartType } from 'react-google-charts';
 interface ChartsProps {
   chartType: GoogleChartWrapperChartType | undefined;
   width: string;
-  height: string;
+  height?: string;
   data: (string | number)[][];
   options: {
     title?: string;

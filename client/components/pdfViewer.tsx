@@ -1,8 +1,9 @@
 'use client';
-import { toggleInvoice } from '@/redux/features/invoice.slice';
-import { useAppDispatch } from '@/redux/hooks';
 import { AiOutlineClose } from 'react-icons/ai';
 import { Document, Page } from 'react-pdf';
+
+import { toggleInvoice, updatePdfUrl } from '@/redux/features/invoice.slice';
+import { useAppDispatch } from '@/redux/hooks';
 
 interface PdfViewerProps {
   file: string;
@@ -20,6 +21,7 @@ const PdfViewer = ({
   const dispatch = useAppDispatch();
 
   const handleClick = () => {
+    dispatch(updatePdfUrl(''));
     dispatch(toggleInvoice());
   };
 

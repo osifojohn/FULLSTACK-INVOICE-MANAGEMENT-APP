@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import SelectDate from './datePicker';
+import SelectDate from './DatePickers';
 import { InvoiceData } from '@/types';
 
 interface InvoiceColumnsProps {
@@ -20,7 +20,7 @@ const InvoiceColumns = ({
   }
   return (
     <div className="flex justify-between items-center my-5">
-      <h2 className="font-headingFont text-[28px] text-[#313638]">Invoices</h2>
+      <h2 className="font-headingFont  text-[#313638] ">Invoices</h2>
       <div>
         {!searchInvoiceKeyword && (
           <SelectDate startDate={startDate} setStartDate={setStartDate} />

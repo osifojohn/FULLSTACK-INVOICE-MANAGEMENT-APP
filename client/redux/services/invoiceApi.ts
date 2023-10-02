@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import { HTTP_METHODS, GetInvoice, InvoiceData } from '../../types';
+import { GetInvoice, InvoiceData } from '../../types';
 import { RootState } from '../store';
 
 export const invoiceApi = createApi({

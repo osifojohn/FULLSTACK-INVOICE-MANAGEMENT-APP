@@ -1,15 +1,14 @@
 import { Request, Response } from 'express';
 
+import { Payment, validatePayment } from '../models/payment';
+import { Invoice } from '../models/invoice';
+import { ClientSession } from 'mongoose';
 import {
   INVOICESTATUS,
   STATUSCODE,
   UserAuthHeader,
   paymentRequest,
 } from '../types';
-import { Payment, validatePayment } from '../models/payment';
-import { Invoice } from '../models/invoice';
-import { ClientSession } from 'mongoose';
-import { Client } from '../models/client';
 
 // @desc add new Payment
 // @route POST /payment/add-new

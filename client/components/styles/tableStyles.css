@@ -1,0 +1,65 @@
+h1,
+p {
+  font-family: Sans-Serif;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  position: relative;
+}
+
+thead tr th {
+  font-weight: 400;
+  text-align: left;
+  background-color: #fafafa;
+  font-family: 'Cabin', 'Sans-Serif';
+  font-size: 16px;
+}
+@media only screen and (max-width: 900px) {
+  thead tr th {
+    font-size: 14px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  thead tr th {
+    font-size: 12px;
+  }
+}
+
+tbody tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+th,
+td {
+  padding: 8px;
+  overflow-wrap: break-word;
+}
+@media only screen and (max-width: 900px) {
+  th,
+  td {
+    padding: 5px;
+  }
+}
+
+tbody tr td {
+  font-size: 14.5px;
+}
+@media only screen and (max-width: 900px) {
+  tbody tr td {
+    font-size: 12px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  tbody tr td {
+    font-size: 10px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  tbody tr td {
+    font-size: 10px;
+  }
+}
