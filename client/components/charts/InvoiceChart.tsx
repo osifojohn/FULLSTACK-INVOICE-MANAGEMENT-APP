@@ -3,7 +3,7 @@ import { Chart, GoogleChartWrapperChartType } from 'react-google-charts';
 interface ChartsProps {
   chartType: GoogleChartWrapperChartType | undefined;
   width: string;
-  height: string;
+  height?: string;
   data: (string | number)[][];
   options: {
     title?: string;
@@ -23,7 +23,7 @@ interface ChartsProps {
   };
 }
 
-const ChartComponent = ({
+const InvoiceChart = ({
   data,
   options,
   chartType,
@@ -41,4 +41,4 @@ const ChartComponent = ({
   );
 };
 
-export default ChartComponent;
+export default InvoiceChart;

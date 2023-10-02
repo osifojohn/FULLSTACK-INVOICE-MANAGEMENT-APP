@@ -4,7 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 interface ISelect {
   startDate?: Date;
-  setStartDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
+  setStartDate: (val: Date | undefined) => void;
 }
 
 const SelectMonthYear = ({ startDate, setStartDate }: ISelect) => {

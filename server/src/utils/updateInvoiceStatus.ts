@@ -6,7 +6,7 @@ import { Invoice } from '../models/invoice';
 
 export const updateOverdueInvoicesAndAddToNotification = async () => {
   //cron job scheduled  to run everyday at midnight (0:00)
-  cron.schedule('0 0 * * *', async () => {
+  cron.schedule('* * * * *', async () => {
     try {
       const currentDate = new Date();
 
@@ -23,10 +23,10 @@ export const updateOverdueInvoicesAndAddToNotification = async () => {
         const notification = new Notification({
           orgId: invoice.orgId,
           title: 'Invoice Overdue',
-          message: `Invoice ${invoice?.invoiceNumber} is overdue `,
+          message: `Invoice ${invoice?.invoiceNumber} is overdue`,
           status: NOTIFICATIONSTATUS.NOT_SEEN,
           type: NOTIFICATIONTYPE.INVOICE,
-          linkedTo: invoice?._id,
+          linkedTo: invoice?.invoicePdf?.url,
         });
 
         notification.save();

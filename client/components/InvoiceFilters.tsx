@@ -60,7 +60,7 @@ const InvoiceFilter = ({
         }`}
         disabled={!isInvoiceNotEmpty}
       >
-        Partially Paid
+        Partially-paid
       </button>
       <button
         onClick={() => handleClick(INVOICESTATUS.PENDING)}

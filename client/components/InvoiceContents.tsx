@@ -1,6 +1,6 @@
 'use client';
-import Pagination from './pagination/pagination';
-import InvoiceItems from './invoiceItems';
+import Pagination from './pagination';
+import InvoiceItemsTable from './InvoiceItemsTable';
 import { InvoiceData } from '@/types';
 
 interface InvoiceContentProps {
@@ -12,9 +12,9 @@ const InvoiceContent = ({ invoice, setPage }: InvoiceContentProps) => {
   return (
     <>
       <div className="bg-white shadow-shadow-1">
-        <InvoiceItems data={invoice} />
+        <InvoiceItemsTable data={invoice} />
       </div>
-      <div className="flex  justify-between bg-white items-center w-[100%] py-5 pl-10 pr-16 border-solid border-t-gray-300 border-t-[1px]">
+      <div className="flex  justify-between bg-white items-center w-[100%] py-5 pl-10 pr-16 phone:pl-3 phone:pr-5 phone:py-3 border-solid border-t-gray-300 border-t-[1px]">
         <p className="font-bodyFont text-[17px]">{`${invoice?.currentPage} of ${invoice?.totalPages} `}</p>
         <div>
           <Pagination totalPages={invoice?.totalPages} setPage={setPage} />

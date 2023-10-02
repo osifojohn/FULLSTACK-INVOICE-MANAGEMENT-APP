@@ -1,11 +1,11 @@
 import { createContext, useContext } from 'react';
 
-export const DateContext = createContext({
-  startDate: undefined,
-  setStartDate: (val: any) => {},
+export const InvoiceChartDateContext = createContext({
+  invoiceStartChartDate: undefined,
+  setInvoiceStartChartDate: (val: any) => {},
 });
 
-export function useDateContext() {
-  const value = useContext(DateContext);
+export function useInvoiceChartDateContext() {
+  const value = useContext(InvoiceChartDateContext);
   return value;
 }

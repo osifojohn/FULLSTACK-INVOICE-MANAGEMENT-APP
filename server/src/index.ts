@@ -12,6 +12,7 @@ import { initializeCloudinaryConfigurations } from './utils/cloudinaryAndDbFns';
 import { SocketConnection } from './utils/socketConnection';
 import { errorHandler } from './middlewares/errorHandler';
 
+import notification from './routes/notificationRoutes';
 import expense from './routes/expenseRoutes';
 import invoice from './routes/invoiceRoutes';
 import payment from './routes/paymentRoutes';
@@ -40,6 +41,7 @@ app.use('/expense', expense);
 app.use('/invoice', invoice);
 app.use('/payment', payment);
 app.use('/message', message);
+app.use('/notification', notification);
 
 app.use(errorHandler);
 

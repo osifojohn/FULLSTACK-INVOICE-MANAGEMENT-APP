@@ -69,7 +69,7 @@ const Onboarding = () => {
 
   if (isRegister) {
     return (
-      <div className="tabPort:w-[85vw]  sm:w-[37%]  mx-auto  mt-7 rounded-[2px] pb-2 bg-white shadow-shadow-2  border-t-[5px] border-t-[#3b82f6]">
+      <div className="tabPort1:w-[85vw]  sm:w-[37%]  mx-auto  mt-7 rounded-[2px] pb-2 bg-white shadow-shadow-2  border-t-[5px] border-t-[#3b82f6]">
         <div className="flex justify-center mt-4 ">
           {' '}
           <Header
@@ -109,7 +109,7 @@ const Onboarding = () => {
 
   return (
     <>
-      <div className="tabPort:w-[85vw]  sm:w-[37%]  mx-auto  pt-5    mt-10 rounded-[2px] bg-white shadow-shadow-2  border-t-[5px] border-t-[#3b82f6]">
+      <div className="tabPort1:w-[85vw]  sm:w-[37%]  mx-auto  pt-5    mt-10 rounded-[2px] bg-white shadow-shadow-2  border-t-[5px] border-t-[#3b82f6]">
         <div className="flex justify-center mt-8 ">
           {' '}
           <Header

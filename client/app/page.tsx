@@ -11,8 +11,8 @@ export default function Landing() {
       <nav className="h-[6rem] mt-[20px] ">
         <Logo width={180} height={180} />
       </nav>
-      <main className="grid grid-cols-2 gap-10 tabPort:grid-cols-1 ">
-        <section className="row-[50%] self-center tabPort:mt-10">
+      <main className="grid grid-cols-2 gap-10 tabPort1:grid-cols-1 ">
+        <section className="row-[50%] self-center tabPort1:mt-10">
           <div className="mb-[1.38rem]">
             <h1 className="font-headingFont mb-[1.38rem] text-[3.052rem]  font-semibold capitalize tracking-[1px] phone:text-[2.052rem]  ">
               Invoice <span className="text-[#3b82f6]">Management</span> App
@@ -30,7 +30,7 @@ export default function Landing() {
             Get Started
           </Link>
         </section>
-        <section className="tabPort:hidden">
+        <section className="tabPort1:hidden">
           <Image
             priority
             src={invoiceLanding}

@@ -15,6 +15,12 @@
   .activeBtn {
     @apply border-solid border-b-blue-500  border-b-[5px] rounded-[3px];
   }
+  .searchInput {
+    @apply w-96 h-14 tabPort2:h-12  smallPhone:h-9  phone:w-[220px] text-lg font-normal leading-10 pl-[40px] pr-14 tabPort2:pr-2 pt-3.5 pb-4 rounded-lg border border-zinc-400 hover:border-zinc-400 focus:border-none;
+  }
+  .buttomBarContainer {
+    @apply hidden tabPort1:block buttomBar shadow-shadow-1 w-[100%] border-solid border-t-gray-300 border-t-[1px];
+  }
 }
 
 @layer utilities {
@@ -39,19 +45,78 @@
   }
 
   .buttomBar {
-    background-color: red;
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
+    background: #fff;
+    text-align: center;
+    padding: 10px 0;
+    z-index: 5;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
+
   .rightSidebar {
     display: flex;
     flex-direction: column;
     background-color: #fff;
-    width: 20%;
     position: sticky;
+    height: calc(100vh - 100px);
     top: 100px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .rightSidebarWithLeftSidebar {
+    width: 20%;
+  }
+  .rightSidebarWithNoLeftSidebar {
+    width: 16.5%;
+  }
+
+  @media only screen and (max-width: 900px) {
+    .rightSidebarWithLeftSidebar {
+      width: 100%;
+    }
+    .rightSidebarWithNoLeftSidebar {
+      width: 100%;
+    }
+    .rightSidebarMobile {
+      width: 100%;
+    }
+  }
+
+  @media only screen and (max-width: 600px) {
+    .topbar {
+      height: 40px;
+    }
+  }
+
+  @media only screen and (max-width: 900px) {
+    .rightSidebarMobile {
+      width: 100%;
+    }
+  }
+
+  .rightSidebar::-webkit-scrollbar {
+    width: 4.5px;
+  }
+  .rightSidebar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  .rightSidebar::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 6px;
+  }
+  .rightSidebar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  @media only screen and (min-width: 900px) {
+    .hideDashboardTitle {
+      display: none;
+    }
   }
 
   .leftSidebar {
@@ -66,8 +131,43 @@
     top: 100px;
     width: 15%;
   }
+
+  @media only screen and (max-width: 1100px) {
+    .leftSidebar {
+      width: 12%;
+    }
+  }
+
+  @media only screen and (max-width: 900px) {
+    .leftSidebar {
+      display: none;
+    }
+  }
+
   .centerContainer {
-    /* flex: 1 1; */
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin: 0 0.75rem;
+    width: 69%;
+  }
+
+  @media only screen and (max-width: 1100px) {
+    .centerContainer {
+      margin: 0 0.4rem;
+    }
+  }
+  .hideCenterContainer {
+    display: none;
+  }
+
+  @media only screen and (max-width: 900px) {
+    .centerContainerNotificationActive {
+      display: none;
+    }
+    .centerContainerNotificationMobile {
+      width: 100%;
+    }
   }
 
   .leftSidebarBtn {
@@ -81,6 +181,12 @@
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
   }
+  @media only screen and (max-width: 1100px) {
+    .leftSidebarBtn {
+      padding-left: 0;
+    }
+  }
+
   .leftSidebarBtnActive {
     border-left-width: 7px;
     background: #f1f1f1;
@@ -88,6 +194,7 @@
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
   }
+
   .leftSidebarBtnText {
     color: #313638;
     font-family: DM Sans;
@@ -102,11 +209,26 @@
     justify-content: space-between;
     margin: 1rem 0;
   }
+
+  @media only screen and (max-width: 900px) {
+    .chartFirstContainer {
+      flex-direction: column;
+    }
+  }
+
   .chartFirstContainer > div {
     background-color: #fff;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
     border-radius: 8px;
-    height: min-content;
+    /* height: min-content; */
+  }
+
+  .chartSecondContainer > div {
+    background-color: #fff;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    border-radius: 8px;
+    width: 100%;
+    /* height: min-content; */
   }
 
   .invoiceColumnBtn {
@@ -117,16 +239,38 @@
     padding: 25px 0;
     /* border-bottom-color: #939393; */
   }
+
+  @media only screen and (max-width: 600px) {
+    .invoiceColumnBtn {
+      padding: 15px 0;
+    }
+  }
   .invoiceColumnBtn > button {
     font-family: 'Cabin', 'Sans-Serif';
     color: #939393;
     font-weight: 400;
     font-size: 18px;
   }
+
   .invoiceColumnBtn > h5 {
     font-family: 'Cabin', 'Sans-Serif';
     color: #939393;
     font-weight: 400;
-    font-size: 15px;
+    font-size: 28px;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .invoiceColumnBtn > button {
+      font-size: 14px;
+    }
+  }
+  @media only screen and (max-width: 400px) {
+    .invoiceColumnBtn > button {
+      font-size: 12px;
+    }
+  }
+
+  .infinite-scroll-container {
+    width: 100% !important;
   }
 }

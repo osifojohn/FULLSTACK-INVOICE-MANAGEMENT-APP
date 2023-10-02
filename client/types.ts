@@ -91,3 +91,27 @@ export enum INVOICESTATUS {
   OVERDUE = 'Overdue',
   PARTIALLY_PAID = 'Partially-paid',
 }
+
+export interface InvoiceChartProps {
+  invoices: Invoice[] | undefined;
+  chartDataIsFetching: boolean;
+  chartDataIsLoading: boolean;
+  chartLoading: () => JSX.Element;
+  chartError: () => JSX.Element;
+}
+
+export interface Notification {
+  _id: string;
+  orgId: string;
+  title: string;
+  message: string;
+  linkedTo?: string;
+  type: string;
+  status: 'seen' | 'not-seen';
+}
+
+export interface NotificationData {
+  totalPages: number;
+  currentPage: string;
+  notifications: Notification[];
+}

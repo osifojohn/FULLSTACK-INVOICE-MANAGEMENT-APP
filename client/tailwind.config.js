@@ -57,8 +57,10 @@ module.exports = {
           '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
       },
       screens: {
+        smallPhone: { max: '450px' },
         phone: { max: '600px' },
-        tabPort: { max: '900px' },
+        tabPort1: { max: '900px' },
+        tabPort2: { max: '1100px' },
         tabLand: { max: '1200px' },
       },
     },
