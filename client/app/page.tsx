@@ -14,7 +14,7 @@ export default function Landing() {
       <main className="grid grid-cols-2 gap-10 tabPort1:grid-cols-1 ">
         <section className="row-[50%] self-center tabPort1:mt-10">
           <div className="mb-[1.38rem]">
-            <h1 className="font-headingFont mb-[1.38rem] text-[3.052rem]  font-semibold capitalize tracking-[1px] phone:text-[2.052rem]  ">
+            <h1 className="font-headingFont mb-[1.38rem] text-[3.052rem]  font-semibold capitalize tracking-[1px] phone:text-[2.052rem]">
               Invoice <span className="text-[#3b82f6]">Management</span> App
             </h1>
             <p className="font-bodyFont tracking-[1px] leading-[1.73] text-grey-600">
