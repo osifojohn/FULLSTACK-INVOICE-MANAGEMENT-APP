@@ -7,14 +7,14 @@ interface UserContainerProps {
 
 const UserContainer = ({ isTopbar = false }: UserContainerProps) => {
   return (
-    <div className={`flex items-center  ${!isTopbar && 'pb-3'}`}>
-      <div className="mr-2 tabPort1:mr-1">
+    <div className={`flex items-center   ${!isTopbar && 'pb-3'}`}>
+      <div className="mr-2  tabPort1:mr-1">
         <Image
           src={myImg}
           alt="me"
           width={30}
           height={30}
-          className="rounded-full"
+          className="rounded-full block"
         />
       </div>
       <div className="flex flex-col justify-center phone:hidden">

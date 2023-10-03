@@ -3,10 +3,14 @@ import { BsSearch } from 'react-icons/bs';
 import { useSearchKeywordContext } from '@/context/searchKeywordContext';
 import { useAppSelector } from '@/redux/hooks';
 import { selectInvoicePdf } from '@/redux/features/invoice.slice';
+import { selectDashboardToggle } from '@/redux/features/dashboardToggle.slice';
 
 const SearchBar = () => {
   const { keyword, setKeyword } = useSearchKeywordContext();
   const { showPdf } = useAppSelector(selectInvoicePdf);
+  const { mobileNotification, notification } = useAppSelector(
+    selectDashboardToggle
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -24,7 +28,7 @@ const SearchBar = () => {
         className="searchInput"
         value={keyword}
         onChange={handleChange}
-        disabled={showPdf}
+        disabled={showPdf || mobileNotification || notification}
       />
     </div>
   );
