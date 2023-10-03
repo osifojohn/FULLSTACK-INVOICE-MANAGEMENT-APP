@@ -1,9 +1,10 @@
 'use client';
 import { AiOutlineClose } from 'react-icons/ai';
-import { Notification } from '@/types';
-import { useAppDispatch } from '@/redux/hooks';
-import { toggleInvoice, updatePdfUrl } from '@/redux/features/invoice.slice';
+
 import { toggleNotificationMobile } from '@/redux/features/dashboardToggle.slice';
+import { toggleInvoice, updatePdfUrl } from '@/redux/features/invoice.slice';
+import { useAppDispatch } from '@/redux/hooks';
+import { Notification } from '@/types';
 
 interface NotificationItemsProps {
   data: Notification;

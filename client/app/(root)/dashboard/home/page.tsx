@@ -3,18 +3,18 @@ import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 
 import { selectDashboardToggle } from '@/redux/features/dashboardToggle.slice';
-import { selectInvoicePdf, setNumPages } from '@/redux/features/invoice.slice';
+import { selectInvoicePdf } from '@/redux/features/invoice.slice';
 import { useSearchKeywordContext } from '@/context/searchKeywordContext';
 import { useInvoiceChartDateContext } from '@/context/dateContext';
 import ClientRevenueChart from './components/ClientRevenueChart';
 import InvoiceStatusChart from './components/InvoiceStatusChart';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import InvoiceContent from '@/components/InvoiceContents';
 import InvoiceColumns from '@/components/InvoiceColumn';
 import InvoiceFilter from '@/components/InvoiceFilters';
 import NoResultFound from '@/components/noResultFound';
 import PaymentChart from './components/PaymentChart';
 import SelectDate from '@/components/DatePickers';
+import { useAppSelector } from '@/redux/hooks';
 import PdfViewer from '@/components/pdfViewer';
 import Loader from '@/components/Loader';
 import { InvoiceData } from '@/types';
@@ -35,18 +35,11 @@ export default function Invoice() {
     InvoiceData | undefined
   >(undefined);
 
-  const dispatch = useAppDispatch();
-
   const { invoiceStartChartDate, setInvoiceStartChartDate } =
     useInvoiceChartDateContext();
 
   const { notification, leftSidebar } = useAppSelector(selectDashboardToggle);
-  const { showPdf, numPages, pageNumber, pdfUrl } =
-    useAppSelector(selectInvoicePdf);
-
-  function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
-    dispatch(setNumPages(numPages));
-  }
+  const { showPdf } = useAppSelector(selectInvoicePdf);
 
   const {
     data: invoiceData,
@@ -149,14 +142,7 @@ export default function Invoice() {
   );
 
   if (showPdf) {
-    return (
-      <PdfViewer
-        file={pdfUrl}
-        onDocumentLoadSuccess={onDocumentLoadSuccess}
-        pageNumber={pageNumber}
-        numPages={numPages}
-      />
-    );
+    return <PdfViewer />;
   }
 
   return (
