@@ -29,11 +29,23 @@ export const invoiceSlice = createSlice({
     setNumPages: (state, action) => {
       state.numPages = action.payload;
     },
+    goToPrevPage: (state) => {
+      state.numPages = state.numPages - 1;
+    },
+    goToNextPage: (state) => {
+      state.numPages = state.numPages + 1;
+    },
   },
 });
 
 export const selectInvoicePdf = (state: RootState) => state.invoicePdf;
 
-export const { toggleInvoice, updatePdfUrl, setNumPages } =
-  invoiceSlice.actions;
+export const {
+  toggleInvoice,
+  updatePdfUrl,
+  setNumPages,
+  goToPrevPage,
+  goToNextPage,
+} = invoiceSlice.actions;
+
 export default invoiceSlice.reducer;
