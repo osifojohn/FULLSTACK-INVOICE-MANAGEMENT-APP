@@ -177,6 +177,7 @@
     width: 150px;
     align-items: center;
     gap: 10px;
+    cursor: pointer;
     border-radius: 0px 8px 8px 0px;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
@@ -184,6 +185,7 @@
   @media only screen and (max-width: 1100px) {
     .leftSidebarBtn {
       padding-left: 0;
+      width: 103px;
     }
   }
 
@@ -193,6 +195,14 @@
     border-left-color: #305c45;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
+  }
+
+  .buttombarBtnActive {
+    border-top-width: 1.2px;
+    /* background: #f1f1f1; */
+    border-top-color: #305c45;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
   }
 
   .leftSidebarBtnText {

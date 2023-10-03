@@ -53,7 +53,7 @@ export default function Login() {
       dispatch(setUser(data));
 
       //push user to dashboard
-      router.push(`${routes.DASHBOARD}/invoice`);
+      router.push(`${routes.DASHBOARD}/home`);
     }
   }, [isError, isSuccess, err, data, router, dispatch]);
 
