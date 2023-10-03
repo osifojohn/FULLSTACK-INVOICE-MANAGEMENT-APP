@@ -11,8 +11,12 @@ export const routes = {
 };
 
 export const leftSidebarLinks = [
-  { url: '/dashboard', Icon: BsHouseDoor, name: 'Dashboard' },
-  { url: '/invoice', Icon: LiaFileInvoiceDollarSolid, name: 'Invoice' },
-  { url: '/customers', Icon: MdPeopleOutline, name: 'Customers' },
-  { url: '/payments', Icon: TbMoneybag, name: 'Payments' },
+  { url: '/dashboard/home', Icon: BsHouseDoor, name: 'Dashboard' },
+  {
+    url: '/dashboard/invoice',
+    Icon: LiaFileInvoiceDollarSolid,
+    name: 'Invoice',
+  },
+  { url: '/dashboard/customers', Icon: MdPeopleOutline, name: 'Customers' },
+  { url: '/dashboard/payments', Icon: TbMoneybag, name: 'Payments' },
 ];

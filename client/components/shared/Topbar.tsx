@@ -25,7 +25,7 @@ export const Topbar = () => {
     }
     if (val === '<900px') {
       setNotificationSkip(false);
-      dispatch(toggleLeftSidebar());
+      // dispatch(toggleLeftSidebar());
       dispatch(toggleNotification());
       dispatch(toggleNotificationMobile());
     }
