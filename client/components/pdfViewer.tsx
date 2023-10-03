@@ -24,29 +24,43 @@ const PdfViewer = () => {
     dispatch(toggleInvoice());
   };
 
+  const button =
+    'bg-gray-300 border-none text-black p-4 list-none text-lg my-2 rounded-full cursor-pointer';
+
   return (
-    <div className="w-[100%] max-w-[300px] mt-5 pl-10">
+    <div className="w-[100%]   mt-2 flex flex-col items-center justify-center">
       {numPages > 1 ? (
-        <div>
-          <button onClick={() => dispatch(goToPrevPage)}>Prev</button>
-          <button onClick={() => dispatch(goToNextPage)}>Next</button>
-          <p>
+        <div className="flex items-center justify-between mx-auto mt-4">
+          <button
+            onClick={() => dispatch(goToPrevPage)}
+            className={`${button} bg-gray-300 text-black`}
+          >
+            Prev
+          </button>
+          <button
+            onClick={() => dispatch(goToNextPage)}
+            className={`${button} bg-blue-500 text-white`}
+          >
+            Next
+          </button>
+          <p className="text-lg bg-gray-300 p-4">
             Page {pageNumber} of {numPages}
           </p>
         </div>
       ) : (
-        <p>
+        <p className="text-lg text-center font-headingFont ">
           Page {pageNumber} of {numPages}
         </p>
       )}
 
-      <div className="flex flex-col ">
+      <div className="flex flex-col  phone:w-[100%] ">
         <div
-          className="ml-auto text-[30px] z-[1]  cursor-pointer"
+          className="ml-auto   text-[30px] z-[1]  cursor-pointer"
           onClick={handleClick}
         >
           <AiOutlineClose />
         </div>
+
         <Document file={pdfUrl} onLoadSuccess={onDocumentLoadSuccess}>
           <Page pageNumber={pageNumber} />
         </Document>
@@ -54,4 +68,5 @@ const PdfViewer = () => {
     </div>
   );
 };
+
 export default PdfViewer;

@@ -105,7 +105,11 @@ export default function RootLayout({
           >
             <SearchKeywordContext.Provider value={{ keyword, setKeyword }}>
               <Topbar />
-              <main className="flex pt-[100px] tabPort1:pb-[79px] w-[100%]">
+              <main
+                className={`flex ${
+                  mobileNotification ? 'phone:pt-[75px]' : 'pt-[100px]'
+                } tabPort1:pb-[79px] w-[100%]`}
+              >
                 {leftSidebar && <LeftSidebar />}
                 <section
                   className={`centerContainer ${

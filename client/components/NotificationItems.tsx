@@ -24,7 +24,7 @@ const NotificationItems: React.FC<NotificationItemsProps> = ({
   return (
     <button
       onClick={() => handleClick(linkedTo as string)}
-      className="bg-blue-50 mb-[3px] flex items-center w-[100%] hover:bg-grey-50  rounded-md "
+      className="bg-gray-50 hover:bg-blue-50  mb-[3px] flex items-center w-[100%]   rounded-md "
     >
       <div className="text-[0.72rem] w-[20%]  ml-1 mr-[6px] tabPort1:w-[10%]  my-3">
         <div className="font-bodyFont  tabPort2:text-[0.55rem] rounded-full bg-slate-200 flex justify-center items-center tabPort2:w-9 tabPort2:h-9 w-[40px] h-[40px]">
