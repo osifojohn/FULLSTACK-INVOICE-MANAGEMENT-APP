@@ -159,9 +159,15 @@ export default function Invoice() {
 
       <div className="flex flex-col justify-between    min-h-min">
         <div
-          className={`chartFirstContainer mx-3 ${
+          className={`chartFirstContainer  mx-3 ${
             notification && leftSidebar ? 'h-[330px]' : ''
-          }`}
+          } ${
+            !chartDataIsFetching &&
+            !chartDataIsLoading &&
+            chartData?.invoices &&
+            chartData?.invoices.length !== 0 &&
+            ' [&>*]:bg-[#fff] [&>*]:shadow-shadow-1 [&>*]:rounded-lg'
+          }  `}
         >
           <div className="w-[53%] tabPort1:w-[100%] tabPort1:mb-8">
             {
@@ -186,7 +192,15 @@ export default function Invoice() {
             }
           </div>
         </div>
-        <div className="chartSecondContainer mt-16  tabPort1:mt-6 mb-7 ">
+        <div
+          className={`${
+            !chartDataIsFetching &&
+            !chartDataIsLoading &&
+            chartData?.invoices &&
+            chartData?.invoices.length !== 0 &&
+            'chartSecondContainer'
+          }    mt-16  tabPort1:mt-6 mb-7 `}
+        >
           {
             <PaymentChart
               invoices={chartData?.invoices}
