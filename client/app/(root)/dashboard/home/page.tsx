@@ -38,7 +38,9 @@ export default function Invoice() {
   const { invoiceStartChartDate, setInvoiceStartChartDate } =
     useInvoiceChartDateContext();
 
-  const { notification, leftSidebar } = useAppSelector(selectDashboardToggle);
+  const { notification, leftSidebar, mobileNotification } = useAppSelector(
+    selectDashboardToggle
+  );
   const { showPdf } = useAppSelector(selectInvoicePdf);
 
   const {
@@ -147,7 +149,11 @@ export default function Invoice() {
 
   return (
     <>
-      <h1 className="text-[28px] my-5 ml-5 hideDashboardTitle phone:text-[23px]  font-headingFont font-medium leading-[44px]">
+      <h1
+        className={`text-[28px]  ${
+          mobileNotification ? 'my-0' : 'my-5'
+        } ml-5 hideDashboardTitle phone:text-[23px]  font-headingFont font-medium leading-[44px]`}
+      >
         Dashboard
       </h1>
 
