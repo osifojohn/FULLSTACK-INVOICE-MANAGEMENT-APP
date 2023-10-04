@@ -166,7 +166,7 @@ export default function Invoice() {
             !chartDataIsLoading &&
             chartData?.invoices &&
             chartData?.invoices.length !== 0 &&
-            ' [&>*]:bg-[#fff] [&>*]:shadow-shadow-1 [&>*]:rounded-lg'
+            ' [&>*]:bg-[#fff] [&>*]:shadow-shadow-1 [&>*]:rounded-lg h-min'
           }  `}
         >
           <div className="w-[53%] tabPort1:w-[100%] tabPort1:mb-8">

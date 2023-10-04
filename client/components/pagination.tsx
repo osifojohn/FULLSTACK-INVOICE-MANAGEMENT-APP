@@ -7,6 +7,8 @@ import { IconContext } from 'react-icons';
 interface PaginationProps {
   setPage: (val: number) => void;
   totalPages: number;
+  isLoading: boolean;
+  isFetching: boolean;
 }
 
 const Pagination = ({ setPage, totalPages }: PaginationProps) => {
