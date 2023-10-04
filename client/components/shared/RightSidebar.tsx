@@ -1,6 +1,7 @@
 'use client';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useEffect, useState } from 'react';
+import { BeatLoader } from 'react-spinners';
 
 import { selectDashboardToggle } from '@/redux/features/dashboardToggle.slice';
 import { useNotificationSkipContext } from '@/context/notificationSkipContext';
@@ -8,7 +9,6 @@ import { useGetAllNotificationsQuery } from '@/redux/services/notificationApi';
 import NotificationItems from '../NotificationItems';
 import { useAppSelector } from '@/redux/hooks';
 import { Notification } from '@/types';
-import Loader from '../Loader';
 
 export const RightSidebar = () => {
   const [notificationPage, setNotificationPage] = useState<number>(1);
@@ -66,15 +66,15 @@ export const RightSidebar = () => {
         notification && leftSidebar && 'rightSidebarWithLeftSidebar'
       } ${notification && !leftSidebar && 'rightSidebarWithNoLeftSidebar '}  ${
         mobileNotification && 'rightSidebarMobile'
-      } h-[min-content]`}
+      } `}
     >
       <InfiniteScroll
-        dataLength={notificationData.length}
+        dataLength={notificationData?.length}
         next={fetchMoreNotificationData}
         hasMore={notificationHasMore}
         loader={
           <div className="text-center">
-            <Loader />
+            <BeatLoader color="#36d7b7" loading speedMultiplier={1} />
           </div>
         }
         endMessage={
