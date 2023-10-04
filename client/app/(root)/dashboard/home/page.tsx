@@ -54,8 +54,6 @@ export default function Invoice() {
     page: page === 0 ? 1 : page + 1,
   });
 
-  console.log(page);
-
   const {
     data: searchedInvoiceData,
     isLoading: searchInvoiceDataIsLoading,
@@ -274,6 +272,7 @@ export default function Invoice() {
                 setPage={setPage}
                 isLoading={invoiceDataLoading}
                 isFetching={invoiceDataFetching}
+                page={searchPage}
               />
             )}
 
@@ -286,6 +285,7 @@ export default function Invoice() {
                 setPage={setSearchPage}
                 isLoading={searchInvoiceDataIsLoading}
                 isFetching={searchInvoiceDataIsFetching}
+                page={page}
               />
             )}
         </div>

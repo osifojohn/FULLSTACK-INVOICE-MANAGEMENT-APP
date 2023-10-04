@@ -3,13 +3,13 @@ import './styles/pagination.css';
 import ReactPaginate from 'react-paginate';
 import { AiFillLeftCircle, AiFillRightCircle } from 'react-icons/ai';
 import { IconContext } from 'react-icons';
-import { useState } from 'react';
 
 interface PaginationProps {
   setPage: (val: number) => void;
   totalPages: number;
   isLoading: boolean;
   isFetching: boolean;
+  page: number;
 }
 
 const Pagination = ({
@@ -17,6 +17,7 @@ const Pagination = ({
   totalPages,
   isLoading,
   isFetching,
+  page,
 }: PaginationProps) => {
   const disabledIconStyle = {
     color: '#B8C1CC',
@@ -54,7 +55,7 @@ const Pagination = ({
                 : { color: '#B8C1CC', size: '36px' }
             }
           >
-            <AiFillRightCircle />
+            {page <= totalPages && <AiFillRightCircle />}
           </IconContext.Provider>
         }
       />

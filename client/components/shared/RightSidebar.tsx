@@ -9,6 +9,7 @@ import { useGetAllNotificationsQuery } from '@/redux/services/notificationApi';
 import NotificationItems from '../NotificationItems';
 import { useAppSelector } from '@/redux/hooks';
 import { Notification } from '@/types';
+import { selectInvoicePdf } from '@/redux/features/invoice.slice';
 
 export const RightSidebar = () => {
   const [notificationPage, setNotificationPage] = useState<number>(1);
@@ -18,6 +19,7 @@ export const RightSidebar = () => {
   const { leftSidebar, mobileNotification, notification } = useAppSelector(
     selectDashboardToggle
   );
+  const { showPdf } = useAppSelector(selectInvoicePdf);
 
   const { notificationSkip } = useNotificationSkipContext();
 
@@ -59,14 +61,14 @@ export const RightSidebar = () => {
       });
     }
   }, [notifications, notificationPage]);
-
+  console.log(mobileNotification);
   return (
     <div
       className={` shadow-shadow-1 py-1  rightSidebar ${
         notification && leftSidebar && 'rightSidebarWithLeftSidebar'
       } ${notification && !leftSidebar && 'rightSidebarWithNoLeftSidebar '}  ${
         mobileNotification && 'rightSidebarMobile'
-      } `}
+      }  `}
     >
       <InfiniteScroll
         dataLength={notificationData?.length}

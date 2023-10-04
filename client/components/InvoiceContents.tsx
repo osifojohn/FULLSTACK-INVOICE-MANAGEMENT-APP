@@ -8,6 +8,7 @@ interface InvoiceContentProps {
   setPage: (val: number) => void;
   isLoading: boolean;
   isFetching: boolean;
+  page: number;
 }
 
 const InvoiceContent = ({
@@ -15,6 +16,7 @@ const InvoiceContent = ({
   setPage,
   isLoading,
   isFetching,
+  page,
 }: InvoiceContentProps) => {
   return (
     <>
@@ -30,6 +32,7 @@ const InvoiceContent = ({
               setPage={setPage}
               isFetching={isFetching}
               isLoading={isLoading}
+              page={page}
             />
           )}
         </div>

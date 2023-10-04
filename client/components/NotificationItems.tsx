@@ -1,7 +1,10 @@
 'use client';
 import { AiOutlineClose } from 'react-icons/ai';
 
-import { toggleNotificationMobile } from '@/redux/features/dashboardToggle.slice';
+import {
+  toggleNotification,
+  toggleNotificationMobile,
+} from '@/redux/features/dashboardToggle.slice';
 import { toggleInvoice, updatePdfUrl } from '@/redux/features/invoice.slice';
 import { useAppDispatch } from '@/redux/hooks';
 import { Notification } from '@/types';
@@ -16,8 +19,9 @@ const NotificationItems: React.FC<NotificationItemsProps> = ({
   const dispatch = useAppDispatch();
 
   const handleClick = (url: string) => {
-    dispatch(updatePdfUrl(url));
+    dispatch(toggleNotification());
     dispatch(toggleNotificationMobile());
+    dispatch(updatePdfUrl(url));
     dispatch(toggleInvoice());
   };
 
