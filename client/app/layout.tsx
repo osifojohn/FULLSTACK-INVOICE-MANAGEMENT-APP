@@ -1,12 +1,13 @@
 'use client';
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+import 'react-pdf/dist/esm/Page/TextLayer.css';
 import { Inter } from 'next/font/google';
 import { Toaster } from 'react-hot-toast';
 import type { Metadata } from 'next';
 
 import StoreProvider from '@/providers/store.provider';
+import AuthProvider from '@/providers/auth.provider';
 import './globals.css';
-import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
-import 'react-pdf/dist/esm/Page/TextLayer.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -24,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <StoreProvider>
-        {/* <ToasterProvider /> */}
+        {/* <AuthProvider> */}
         <body className={inter.className}>{children}</body>
         <Toaster
           position="top-right"
@@ -38,6 +39,7 @@ export default function RootLayout({
             },
           }}
         />
+        {/* </AuthProvider> */}
       </StoreProvider>
     </html>
   );

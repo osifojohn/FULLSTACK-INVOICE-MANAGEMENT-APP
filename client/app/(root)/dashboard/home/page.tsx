@@ -51,7 +51,7 @@ export default function Invoice() {
     queryStartDate: startDate
       ? format(startDate as Date, 'yyyy-MM-dd')
       : undefined,
-    page: page + 1,
+    page: page === 0 ? 1 : page + 1,
   });
 
   const {
@@ -86,6 +86,7 @@ export default function Invoice() {
     if (invoiceDataLoading || invoiceDataFetching) {
       setFilterInput('all');
     }
+
     if (filterInputEqualsAll) {
       setData(invoiceData);
     }
@@ -266,7 +267,13 @@ export default function Invoice() {
             !invoiceDataLoading &&
             data &&
             data.invoices.length !== 0 && (
-              <InvoiceContent invoice={data} setPage={setPage} />
+              <InvoiceContent
+                invoice={data}
+                setPage={setPage}
+                isLoading={invoiceDataLoading}
+                isFetching={invoiceDataFetching}
+                page={searchPage}
+              />
             )}
 
           {searchInvoiceKeyword &&
@@ -276,6 +283,9 @@ export default function Invoice() {
               <InvoiceContent
                 invoice={searchInvoiceData}
                 setPage={setSearchPage}
+                isLoading={searchInvoiceDataIsLoading}
+                isFetching={searchInvoiceDataIsFetching}
+                page={page}
               />
             )}
         </div>
