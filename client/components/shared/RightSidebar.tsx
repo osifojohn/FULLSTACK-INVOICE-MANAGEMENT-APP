@@ -66,9 +66,7 @@ export const RightSidebar = () => {
     <div
       className={` shadow-shadow-1 py-1  rightSidebar ${
         notification && leftSidebar && 'rightSidebarWithLeftSidebar'
-      } ${notification && !leftSidebar && 'rightSidebarWithNoLeftSidebar '}  ${
-        mobileNotification && 'rightSidebarMobile'
-      } `}
+      } ${notification && !leftSidebar && 'rightSidebarWithNoLeftSidebar '} `}
     >
       <InfiniteScroll
         dataLength={notificationData?.length}
