@@ -61,14 +61,14 @@ export const RightSidebar = () => {
       });
     }
   }, [notifications, notificationPage]);
-  console.log(mobileNotification);
+
   return (
     <div
       className={` shadow-shadow-1 py-1  rightSidebar ${
         notification && leftSidebar && 'rightSidebarWithLeftSidebar'
       } ${notification && !leftSidebar && 'rightSidebarWithNoLeftSidebar '}  ${
         mobileNotification && 'rightSidebarMobile'
-      }  `}
+      } `}
     >
       <InfiniteScroll
         dataLength={notificationData?.length}

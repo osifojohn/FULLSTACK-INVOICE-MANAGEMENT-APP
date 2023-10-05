@@ -1,11 +1,16 @@
+'use client';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import invoiceLanding from '../../public/images/invoice-landing.svg';
+import { selectAuth } from '@/redux/features/auth.slice';
+import { useAppSelector } from '@/redux/hooks';
 import { routes } from '../../constants/links';
 import Logo from '@/components/Logo';
 
 export default function Landing() {
+  const { user } = useAppSelector(selectAuth);
+
   return (
     <div className="max-w-[90vw] mx-auto">
       <nav className="h-[6rem] mt-[20px] ">
@@ -26,7 +31,10 @@ export default function Landing() {
               insights will be as simple as a few taps and clicks.
             </p>
           </div>
-          <Link href={`${routes.AUTH}`} className="btn">
+          <Link
+            href={!user ? `${routes.AUTH}` : `${routes.DASHBOARD}/home`}
+            className="btn"
+          >
             Get Started
           </Link>
         </section>

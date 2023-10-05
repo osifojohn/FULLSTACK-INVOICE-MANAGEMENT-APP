@@ -81,6 +81,13 @@ export default function Login() {
         text="Login"
         isLoading={isLoading}
       />
+
+      <FormAction
+        handleSubmit={handleSubmit}
+        text="Login"
+        isLoading={isLoading}
+        isDemo={true}
+      />
     </form>
   );
 }

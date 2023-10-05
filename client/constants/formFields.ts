@@ -6,7 +6,7 @@ const loginFields = [
     name: 'email',
     type: 'email',
     autoComplete: 'email',
-    isRequired: true,
+    isRequired: false,
     placeholder: 'Email address',
   },
   {
@@ -16,7 +16,7 @@ const loginFields = [
     name: 'password',
     type: 'password',
     autoComplete: 'current-password',
-    isRequired: true,
+    isRequired: false,
     placeholder: 'Password',
   },
 ];

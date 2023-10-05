@@ -9,7 +9,7 @@ export const LeftSidebar = () => {
   const pathname = usePathname();
 
   return (
-    <div className={`tabPort:hidden  shadow-shadow-1 leftSidebar`}>
+    <div className={`tabPort1:hidden  shadow-shadow-1 leftSidebar`}>
       <div>
         {leftSidebarLinks.map(({ url, Icon, name }) => {
           const isActive =
