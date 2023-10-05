@@ -53,41 +53,8 @@ export const notificationApi = createApi({
         }
       },
     }),
-
-    deleteNotification: builder.mutation<Notification[], any>({
-      query: (noticationId) => {
-        return {
-          url: `delete-notification`,
-          method: HTTP_METHODS.POST,
-          body: noticationId,
-        };
-      },
-      async onQueryStarted(args, { queryFulfilled, dispatch }) {
-        try {
-          await queryFulfilled;
-
-          dispatch(
-            notificationApi.util.updateQueryData(
-              'getAllNotifications',
-              undefined,
-              (draft) => {
-                // delete
-                return draft.notifications?.filter(
-                  (notication) => notication?._id !== args
-                );
-              }
-            )
-          );
-        } catch (error) {
-          console.log(error);
-        }
-      },
-    }),
   }),
 });
 
-export const {
-  useGetAllNotificationsQuery,
-  useDeleteNotificationMutation,
-  useSetNotificationToSeenMutation,
-} = notificationApi;
+export const { useGetAllNotificationsQuery, useSetNotificationToSeenMutation } =
+  notificationApi;

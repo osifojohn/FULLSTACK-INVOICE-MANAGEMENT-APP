@@ -1,6 +1,7 @@
 'use client';
 interface FormActionProps {
-  handleSubmit: (val: any) => any;
+  handleSubmit?: (val: any) => any;
+  handleSubmitDemo?: (val: any) => any;
   type?: any;
   action?: any;
   text: string;
@@ -10,6 +11,7 @@ interface FormActionProps {
 
 export default function FormAction({
   handleSubmit,
+  handleSubmitDemo,
   type = 'Button',
   action = 'submit',
   text,
@@ -26,7 +28,7 @@ export default function FormAction({
               ? 'bg-red-600 hover:bg-red-700 focus:ring-red-500'
               : 'bg-purple-600 hover:bg-purple-700 focus:ring-purple-500'
           } focus:outline-none focus:ring-2 focus:ring-offset-2  mt-10`}
-          onSubmit={handleSubmit}
+          onSubmit={isDemo ? handleSubmitDemo : handleSubmit}
           disabled={isLoading}
         >
           {isLoading ? 'Loading' : text}
