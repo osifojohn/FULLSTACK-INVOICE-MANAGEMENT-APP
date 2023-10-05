@@ -19,7 +19,7 @@ fields.forEach((field) => (fieldsState[field.id] = ''));
 export default function Login() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const [loginUser, { data, isSuccess, isLoading, isError, error, status }] =
+  const [loginUser, { data, isSuccess, isLoading, isError, error }] =
     useLoginUserMutation();
 
   const err = error as any;
@@ -27,6 +27,13 @@ export default function Login() {
   const [loginState, setLoginState] = useState<{ [key: string]: string }>(
     fieldsState
   );
+
+  const handleSubmitDemo = async () => {
+    await loginUser({
+      email: 'osifojohntec@gmail.com',
+      password: '1234567',
+    });
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoginState({ ...loginState, [e.target.id]: e.target.value });
@@ -58,36 +65,40 @@ export default function Login() {
   }, [isError, isSuccess, err, data, router, dispatch]);
 
   return (
-    <form className="mt-8 space-y-6 mb-5" onSubmit={handleSubmit}>
-      <div className="-space-y-px pb-6">
-        {fields.map((field) => (
-          <Input
-            key={field.id}
-            handleChange={handleChange}
-            value={loginState[field.id]}
-            labelText={field.labelText}
-            labelFor={field.labelFor}
-            id={field.id}
-            name={field.name}
-            type={field.type}
-            isRequired={field.isRequired}
-            placeholder={field.placeholder}
-          />
-        ))}
-      </div>
+    <>
+      <form className="mt-8 space-y-6 mb-5" onSubmit={handleSubmit}>
+        <div className="-space-y-px pb-6">
+          {fields.map((field) => (
+            <Input
+              key={field.id}
+              handleChange={handleChange}
+              value={loginState[field.id]}
+              labelText={field.labelText}
+              labelFor={field.labelFor}
+              id={field.id}
+              name={field.name}
+              type={field.type}
+              isRequired={field.isRequired}
+              placeholder={field.placeholder}
+            />
+          ))}
+        </div>
 
-      <FormAction
-        handleSubmit={handleSubmit}
-        text="Login"
-        isLoading={isLoading}
-      />
+        <FormAction
+          handleSubmit={handleSubmit}
+          text="Login"
+          isLoading={isLoading}
+        />
+      </form>
 
-      <FormAction
-        handleSubmit={handleSubmit}
-        text="Demo"
-        isLoading={isLoading}
-        isDemo={true}
-      />
-    </form>
+      <button
+        className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:ring-red-500   
+        focus:outline-none focus:ring-2 focus:ring-offset-2  mt-10`}
+        disabled={isLoading}
+        onClick={handleSubmitDemo}
+      >
+        {isLoading ? 'Loading' : 'Demo'}
+      </button>
+    </>
   );
 }
