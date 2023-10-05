@@ -84,7 +84,7 @@ export default function Login() {
 
       <FormAction
         handleSubmit={handleSubmit}
-        text="Login"
+        text="Demo"
         isLoading={isLoading}
         isDemo={true}
       />
