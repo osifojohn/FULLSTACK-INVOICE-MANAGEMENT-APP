@@ -1,12 +1,11 @@
-'use client';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import { BeatLoader } from 'react-spinners';
 
 import { selectAuth, setUser } from '@/redux/features/auth.slice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { validateUser } from '@/utils/helpers';
 import { routes } from '@/constants/links';
-import Loader from '@/components/Loader';
 import {
   getUserFromLocalStorage,
   removeUserFromLocalStorage,
@@ -41,11 +40,9 @@ const AuthProvider = ({
     router.push(routes.LANDING);
   }, [router]);
 
-  const processAuthValidations = useMemo(
-    () => () => {
+  useEffect(() => {
+    const processAuthValidations = () => {
       const isNonAuthRoute = matchNonAuthRoute(pathname);
-
-      console.log(isNonAuthRoute);
 
       const user = getUserFromLocalStorage();
 
@@ -57,27 +54,23 @@ const AuthProvider = ({
       if (!isValidUser && isNonAuthRoute) return setLoading(false);
 
       dispatch(setUser(user));
+    };
 
-      if (isNonAuthRoute) router.push(`${routes.DASHBOARD}/home`);
-    },
-    [dispatch, logout, matchNonAuthRoute, pathname, router]
-  );
+    if (user) {
+      setLoading(false);
+    } else {
+      setLoading(true);
+      processAuthValidations();
+    }
+  }, [dispatch, logout, matchNonAuthRoute, pathname, router, user]);
 
-  useEffect(() => {
-    if (user) setLoading(false);
-  }, [user]);
-
-  useEffect(() => {
-    setLoading(true);
-    processAuthValidations();
-  }, [processAuthValidations, user, children]);
-
-  if (loading)
+  if (loading) {
     return (
       <div className="flex items-center justify-center h-screen w-screen">
-        <Loader />
+        <BeatLoader color="#36d7b7" loading speedMultiplier={2} />
       </div>
     );
+  }
 
   return children;
 };

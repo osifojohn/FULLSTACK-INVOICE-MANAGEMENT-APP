@@ -1,5 +1,7 @@
 'use client';
 import { routes } from '@/constants/links';
+import { selectAuth } from '@/redux/features/auth.slice';
+import { useAppSelector } from '@/redux/hooks';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { BeatLoader } from 'react-spinners';

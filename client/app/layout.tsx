@@ -24,23 +24,25 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <StoreProvider>
-        {/* <AuthProvider> */}
-        <body className={inter.className}>{children}</body>
-        <Toaster
-          position="top-right"
-          reverseOrder={false}
-          toastOptions={{
-            className: '',
-            style: {
-              border: '1px solid #713200',
-              padding: '16px',
-              color: '#713200',
-            },
-          }}
-        />
-        {/* </AuthProvider> */}
-      </StoreProvider>
+      <body className={inter.className}>
+        <StoreProvider>
+          <AuthProvider>
+            {children as React.ReactElement}
+            <Toaster
+              position="top-right"
+              reverseOrder={false}
+              toastOptions={{
+                className: '',
+                style: {
+                  border: '1px solid #713200',
+                  padding: '16px',
+                  color: '#713200',
+                },
+              }}
+            />
+          </AuthProvider>
+        </StoreProvider>
+      </body>
     </html>
   );
 }
