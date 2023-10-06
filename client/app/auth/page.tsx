@@ -1,4 +1,5 @@
 'use client';
+import { useToaster, Toast } from 'react-hot-toast';
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 
@@ -11,6 +12,8 @@ import Stepper from './components/stepper';
 import Login from './components/login';
 
 const Onboarding = () => {
+  const [toastDisplayed, setToastDisplayed] = useState(false);
+  const { toasts } = useToaster();
   const [companyData, setCompanyData] = useState<{ [key: string]: string }>({});
   const [userData, setUserData] = useState<{ [key: string]: string }>({});
   const [finalData, setFinalData] = useState<{
@@ -60,7 +63,9 @@ const Onboarding = () => {
     let newStep = currentStep;
 
     if (Object.values(finalData.organisation).length !== OBJECT_LENGTH) {
-      toast.error('Please fill all fields');
+      if (!toasts.some((toast) => toast.message === 'Please fill all fields')) {
+        toast.error('Please fill all fields');
+      }
       return;
     }
     direction === 'next' ? newStep++ : newStep--;
