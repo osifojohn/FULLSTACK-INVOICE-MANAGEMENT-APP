@@ -18,7 +18,7 @@ import '../../app/globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
- const metadata: Metadata = {
+const metadata: Metadata = {
   title: 'Invoice Manager',
   description:
     'Generating, sending, managing invoices, and gaining financial insights with just one click and tab',
