@@ -17,7 +17,7 @@ const SelectMonthYear = ({ startDate, setStartDate }: ISelect) => {
       dateFormat="MM/yyyy"
       showMonthYearPicker
       maxDate={maxDate}
-      placeholderText="Last 30 days"
+      placeholderText="Last 365 days"
     />
   );
 };

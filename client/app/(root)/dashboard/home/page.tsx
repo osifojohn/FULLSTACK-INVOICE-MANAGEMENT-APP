@@ -128,7 +128,7 @@ export default function Invoice() {
           setStartDate={setInvoiceStartChartDate}
         />
       </div>
-      <NoResultFound text="Error loading chart or data does not exist!" />
+      <NoResultFound text="Data does not exist!" />
     </div>
   );
 
