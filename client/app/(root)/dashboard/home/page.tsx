@@ -158,7 +158,7 @@ export default function Invoice() {
         Dashboard
       </h1>
 
-      <div className="flex flex-col justify-between  min-h-min tabPort1:pr-[12.5px] tabPort1:pl-[4px]">
+      <div className="flex flex-col justify-between    min-h-min tabPort1:pr-[12.5px] tabPort1:pl-[5px]">
         <div
           className={`chartFirstContainer  mx-3 ${
             notification && leftSidebar ? 'h-[330px]' : ''
