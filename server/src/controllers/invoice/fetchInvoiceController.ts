@@ -89,6 +89,7 @@ export const getInvoiceByDateRange = asyncHandler(async (req, res) => {
   let count;
 
   const THIRTY_DAYS = 30;
+  const ONE_YEAR = 365;
   const defaultStartDate = format(new Date(), 'yyyy-MM-dd');
   const initialDate = new Date(queryStartDate as string);
 
@@ -100,7 +101,7 @@ export const getInvoiceByDateRange = asyncHandler(async (req, res) => {
 
   if (queryStartDate === 'undefined') {
     const defaultEndDate = format(
-      new Date().setDate(new Date().getDate() - THIRTY_DAYS),
+      new Date().setDate(new Date().getDate() - ONE_YEAR),
       'yyyy-MM-dd'
     );
     invoices = await Invoice.find({
@@ -158,6 +159,7 @@ export const getInvoiceByDateRangeChart = asyncHandler(async (req, res) => {
   let invoices;
 
   const THIRTY_DAYS = 30;
+  const ONE_YEAR = 365;
   const defaultStartDate = format(new Date(), 'yyyy-MM-dd');
   const initialDate = new Date(queryStartDate as string);
 
@@ -169,7 +171,7 @@ export const getInvoiceByDateRangeChart = asyncHandler(async (req, res) => {
 
   if (queryStartDate === 'undefined') {
     const defaultEndDate = format(
-      new Date().setDate(new Date().getDate() - THIRTY_DAYS),
+      new Date().setDate(new Date().getDate() - ONE_YEAR),
       'yyyy-MM-dd'
     );
     invoices = await Invoice.find({
